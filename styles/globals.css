@@ -1,29 +1,103 @@
-:root {
-  --background: #ffffff; /* White background */
-  --foreground: #171717; /* Dark text color */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base colors */
+    --background: #f8fdef; /* Light mint background */
+    --foreground: #171717; /* Dark text */
+
+    --card: #e1e6d9;
+    --card-foreground: #171717;
+
+    --popover: #ffffff;
+    --popover-foreground: #171717;
+
+    /* Main theme colors */
+    --primary: #151614; /* Lime green */
+    --primary-foreground: #519903;
+
+    --secondary: #374838; /* Dark green-gray */
+    --secondary-foreground: #ffffff;
+
+    --accent: #ffdd00; /* Bright yellow */
+    --accent-foreground: #171717;
+
+    --neutral: #4d524d; /* Cool gray */
+    --neutral-foreground: #ffffff;
+
+    /* Base variations */
+    --base-100: #ffffff; /* Pure white */
+    --base-200: #f5f5f5; /* Light gray */
+    --base-300: #ebebeb; /* Slightly darker gray */
+    --base-content: #171717;
+
+    /* Status colors */
+    --info: #0ea5e9; /* Blue */
+    --info-foreground: #ffffff;
+
+    --success: #519903; /* Same as primary */
+    --success-foreground: #ffffff;
+
+    --warning: #eab308; /* Orange */
+    --warning-foreground: #171717;
+
+    --destructive: #efc7c1; /* Red */
+    --destructive-foreground: #ffffff;
+
+    /* System colors */
+    --muted: #f5f5f5;
+    --muted-foreground: #737373;
+
+    --border: #e5e5e5;
+    --input: #e5e5e5;
+    --ring: #519903;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: #0a0a0a;
+    --foreground: #f5f5f5;
+
+    --card: #171717;
+    --card-foreground: #f5f5f5;
+
+    --popover: #0f0f0f;
+    --popover-foreground: #f5f5f5;
+
+    --primary: #519903;
+    --primary-foreground: #ffffff;
+
+    --secondary: #374838;
+    --secondary-foreground: #ffffff;
+
+    --accent: #ffdd00;
+    --accent-foreground: #171717;
+
+    --neutral: #4d524d;
+    --neutral-foreground: #ffffff;
+
+    --muted: #262626;
+    --muted-foreground: #a3a3a3;
+
+    --base-100: #1a1a1a;
+    --base-200: #262626;
+    --base-300: #333333;
+    --base-content: #f5f5f5;
+
+    --border: #262626;
+    --input: #262626;
+    --ring: #519903;
+  }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background); /* Use the variable for consistency */
-  font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; /* Updated to Century Gothic */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
