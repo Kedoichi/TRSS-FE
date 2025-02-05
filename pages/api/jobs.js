@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   });
 
   try {
-    const response = await api.get('http://54.206.239.53/api/jobs', {
+    const response = await api.get('http://13.77.50.113/api/jobs', {
       headers: {
         'Content-Type': 'application/json'
       },
