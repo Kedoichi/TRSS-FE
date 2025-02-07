@@ -140,20 +140,26 @@ const ApplyButton = styled.button`
     background-color: ${({ theme }) => theme.colors.buttonHover};
   }
 `;
-
 const PopularJobs = () => {
+  const [isClient, setIsClient] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await fetch("/api/jobs");
+
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || "Failed to fetch jobs");
         }
+
         const data = await response.json();
         setJobs(data?.data?.jobs || []);
       } catch (error) {
@@ -167,57 +173,69 @@ const PopularJobs = () => {
     fetchJobs();
   }, []);
 
-  if (loading) return <JobsSection>Loading jobs...</JobsSection>;
-  if (error) {
-    return (
-      <JobsSection>
-        <SectionTitle>Error</SectionTitle>
-        <SectionSubtitle>{error}</SectionSubtitle>
-      </JobsSection>
-    );
-  }
-  return (
-    <ThemeProvider theme={theme}>
-      <JobsSection>
-        <SectionTitle>Explore Popular Jobs</SectionTitle>
-        <SectionSubtitle>
-          Discover top opportunities tailored to your career aspirations.
-        </SectionSubtitle>
-        {jobs.length === 0 ? (
-          <p>No jobs available at the moment.</p>
-        ) : (
-          <JobCardContainer>
-            {jobs.map(({ _id, company, type, title, location, createdAt }) => (
-              <JobCard key={_id}>
-                <CompanyRow>
-                  <CompanyName>{company}</CompanyName>
-                  <JobType>{type}</JobType>
-                </CompanyRow>
-                <JobTitle>{title}</JobTitle>
-                <JobDetailsWrapper>
-                  <JobLocation>
-                    <FontAwesomeIcon
-                      icon={faMapMarkerAlt}
-                      style={{ color: theme.colors.iconColor }}
-                    />
-                    {location}
-                  </JobLocation>
-                  <JobDate>
-                    <FontAwesomeIcon
-                      icon={faCalendarAlt}
-                      style={{ color: theme.colors.iconColor }}
-                    />
-                    {new Date(createdAt).toLocaleDateString()}
-                  </JobDate>
-                </JobDetailsWrapper>
-                <ApplyButton>Apply Now</ApplyButton>
-              </JobCard>
-            ))}
-          </JobCardContainer>
-        )}
-      </JobsSection>
-    </ThemeProvider>
+  const formatDate = (dateString) => {
+    if (!isClient) return "";
+    try {
+      return new Date(dateString).toLocaleDateString();
+    } catch (error) {
+      return "";
+    }
+  };
+
+  const content = loading ? (
+    <JobsSection>
+      <SectionTitle>Loading Jobs...</SectionTitle>
+      <SectionSubtitle>
+        Please wait while we fetch available positions.
+      </SectionSubtitle>
+    </JobsSection>
+  ) : error ? (
+    <JobsSection>
+      <SectionTitle>Error Loading Jobs</SectionTitle>
+      <SectionSubtitle>{error}</SectionSubtitle>
+    </JobsSection>
+  ) : (
+    <JobsSection>
+      <SectionTitle>Explore Popular Jobs</SectionTitle>
+      <SectionSubtitle>
+        Discover top opportunities tailored to your career aspirations.
+      </SectionSubtitle>
+      {jobs.length === 0 ? (
+        <SectionSubtitle>No jobs available at the moment.</SectionSubtitle>
+      ) : (
+        <JobCardContainer>
+          {jobs.map(({ _id, company, type, title, location, createdAt }) => (
+            <JobCard key={_id}>
+              <CompanyRow>
+                <CompanyName>{company}</CompanyName>
+                <JobType>{type}</JobType>
+              </CompanyRow>
+              <JobTitle>{title}</JobTitle>
+              <JobDetailsWrapper>
+                <JobLocation>
+                  <FontAwesomeIcon
+                    icon={faMapMarkerAlt}
+                    style={{ color: theme.colors.iconColor }}
+                  />
+                  {location}
+                </JobLocation>
+                <JobDate>
+                  <FontAwesomeIcon
+                    icon={faCalendarAlt}
+                    style={{ color: theme.colors.iconColor }}
+                  />
+                  {formatDate(createdAt)}
+                </JobDate>
+              </JobDetailsWrapper>
+              <ApplyButton>Apply Now</ApplyButton>
+            </JobCard>
+          ))}
+        </JobCardContainer>
+      )}
+    </JobsSection>
   );
+
+  return <ThemeProvider theme={theme}>{content}</ThemeProvider>;
 };
 
 export default PopularJobs;
