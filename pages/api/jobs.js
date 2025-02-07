@@ -16,7 +16,8 @@ export default async function handler(req, res) {
     httpsAgent: new https.Agent({
       rejectUnauthorized: false,
     }),
-    baseURL: "http://13.77.50.113",
+    baseURL:
+      "https://trssbe-eydfbremb6avhybz.australiasoutheast-01.azurewebsites.net/api/jobs",
     timeout: 8000,
     headers: {
       Accept: "application/json",
