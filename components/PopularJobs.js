@@ -141,101 +141,135 @@ const ApplyButton = styled.button`
   }
 `;
 const PopularJobs = () => {
-  const [isClient, setIsClient] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Handle client-side mounting
   useEffect(() => {
-    setIsClient(true);
+    setMounted(true);
   }, []);
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const response = await fetch("/api/jobs");
+    if (mounted) {
+      const fetchJobs = async () => {
+        try {
+          const response = await fetch("/api/jobs");
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch jobs");
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Failed to fetch jobs");
+          }
+
+          const data = await response.json();
+          setJobs(data?.data?.jobs || []);
+        } catch (error) {
+          console.error("API Error:", error);
+          setError(error.message || "Failed to load jobs");
+        } finally {
+          setLoading(false);
         }
+      };
 
-        const data = await response.json();
-        setJobs(data?.data?.jobs || []);
-      } catch (error) {
-        console.error("API Error:", error);
-        setError(error.message || "Failed to load jobs");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchJobs();
-  }, []);
+      fetchJobs();
+    }
+  }, [mounted]);
 
   const formatDate = (dateString) => {
-    if (!isClient) return "";
+    if (!mounted) return ""; // Return empty string during SSR
     try {
-      return new Date(dateString).toLocaleDateString();
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
     } catch (error) {
       return "";
     }
   };
 
-  const content = loading ? (
-    <JobsSection>
-      <SectionTitle>Loading Jobs...</SectionTitle>
-      <SectionSubtitle>
-        Please wait while we fetch available positions.
-      </SectionSubtitle>
-    </JobsSection>
-  ) : error ? (
-    <JobsSection>
-      <SectionTitle>Error Loading Jobs</SectionTitle>
-      <SectionSubtitle>{error}</SectionSubtitle>
-    </JobsSection>
-  ) : (
-    <JobsSection>
-      <SectionTitle>Explore Popular Jobs</SectionTitle>
-      <SectionSubtitle>
-        Discover top opportunities tailored to your career aspirations.
-      </SectionSubtitle>
-      {jobs.length === 0 ? (
-        <SectionSubtitle>No jobs available at the moment.</SectionSubtitle>
-      ) : (
-        <JobCardContainer>
-          {jobs.map(({ _id, company, type, title, location, createdAt }) => (
-            <JobCard key={_id}>
-              <CompanyRow>
-                <CompanyName>{company}</CompanyName>
-                <JobType>{type}</JobType>
-              </CompanyRow>
-              <JobTitle>{title}</JobTitle>
-              <JobDetailsWrapper>
-                <JobLocation>
-                  <FontAwesomeIcon
-                    icon={faMapMarkerAlt}
-                    style={{ color: theme.colors.iconColor }}
-                  />
-                  {location}
-                </JobLocation>
-                <JobDate>
-                  <FontAwesomeIcon
-                    icon={faCalendarAlt}
-                    style={{ color: theme.colors.iconColor }}
-                  />
-                  {formatDate(createdAt)}
-                </JobDate>
-              </JobDetailsWrapper>
-              <ApplyButton>Apply Now</ApplyButton>
-            </JobCard>
-          ))}
-        </JobCardContainer>
-      )}
-    </JobsSection>
-  );
+  // Initial server-side render
+  if (!mounted) {
+    return (
+      <ThemeProvider theme={theme}>
+        <JobsSection>
+          <SectionTitle>Loading Jobs...</SectionTitle>
+          <SectionSubtitle>
+            Please wait while we fetch available positions.
+          </SectionSubtitle>
+        </JobsSection>
+      </ThemeProvider>
+    );
+  }
 
-  return <ThemeProvider theme={theme}>{content}</ThemeProvider>;
+  if (loading) {
+    return (
+      <ThemeProvider theme={theme}>
+        <JobsSection>
+          <SectionTitle>Loading Jobs...</SectionTitle>
+          <SectionSubtitle>
+            Please wait while we fetch available positions.
+          </SectionSubtitle>
+        </JobsSection>
+      </ThemeProvider>
+    );
+  }
+
+  if (error) {
+    return (
+      <ThemeProvider theme={theme}>
+        <JobsSection>
+          <SectionTitle>Error Loading Jobs</SectionTitle>
+          <SectionSubtitle>{error}</SectionSubtitle>
+        </JobsSection>
+      </ThemeProvider>
+    );
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
+      <JobsSection>
+        <SectionTitle>Explore Popular Jobs</SectionTitle>
+        <SectionSubtitle>
+          Discover top opportunities tailored to your career aspirations.
+        </SectionSubtitle>
+        {jobs.length === 0 ? (
+          <SectionSubtitle>No jobs available at the moment.</SectionSubtitle>
+        ) : (
+          <JobCardContainer>
+            {jobs.map(({ _id, company, type, title, location, createdAt }) => (
+              <JobCard key={_id}>
+                <CompanyRow>
+                  <CompanyName>{company}</CompanyName>
+                  <JobType>{type}</JobType>
+                </CompanyRow>
+                <JobTitle>{title}</JobTitle>
+                <JobDetailsWrapper>
+                  <JobLocation>
+                    <FontAwesomeIcon
+                      icon={faMapMarkerAlt}
+                      style={{ color: theme.colors.iconColor }}
+                    />
+                    {location}
+                  </JobLocation>
+                  <JobDate>
+                    <FontAwesomeIcon
+                      icon={faCalendarAlt}
+                      style={{ color: theme.colors.iconColor }}
+                    />
+                    {formatDate(createdAt)}
+                  </JobDate>
+                </JobDetailsWrapper>
+                <ApplyButton>Apply Now</ApplyButton>
+              </JobCard>
+            ))}
+          </JobCardContainer>
+        )}
+      </JobsSection>
+    </ThemeProvider>
+  );
 };
 
 export default PopularJobs;
