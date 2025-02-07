@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       rejectUnauthorized: false,
     }),
     baseURL:
-      "https://trssbe-eydfbremb6avhybz.australiasoutheast-01.azurewebsites.net/api/jobs",
+      "https://trssbe-eydfbremb6avhybz.australiasoutheast-01.azurewebsites.net",
     timeout: 8000,
     headers: {
       Accept: "application/json",
