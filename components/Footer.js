@@ -1,133 +1,14 @@
 import React from "react";
-import styled, { ThemeProvider } from "styled-components";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhoneAlt, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faFacebook } from "@fortawesome/free-brands-svg-icons";
-
-const theme = {
-  colors: {
-    primary: "#72BF78", // Main feature color for background
-    secondary: "#A0D683", // Secondary feature color
-    text: "#ffffff", // White text
-    hoverText: "#D3EE98", // Third feature color for hover text
-    border: "rgba(112, 191, 120, 0.2)", // Light green for borders
-    icon: "#FEFF9F", // Fourth feature color for icons
-  },
-};
-
-const FooterContainer = styled.footer`
-  padding: 40px 20px;
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.text};
-  text-align: left;
-`;
-
-const FooterWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-const FooterSection = styled.div`
-  flex: 1;
-  margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    flex: 1 1 100%;
-  }
-`;
-
-const SectionTitle = styled.h4`
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-`;
-
-const SectionText = styled.p`
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  transition: color 0.3s;
-`;
-
-const LogoSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Logo = styled.img`
-  max-width: 150px;
-  margin-bottom: 10px;
-`;
-
-const LinksList = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const LinksItem = styled.li`
-  margin-bottom: 5px;
-`;
-
-const LinksAnchor = styled.a`
-  text-decoration: none;
-  color: ${({ theme }) => theme.colors.text};
-  transition: color 0.3s;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.hoverText};
-  }
-`;
-
-const SocialMediaLinks = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-`;
-
-const SocialMediaLink = styled.a`
-  text-decoration: none;
-  color: ${({ theme }) => theme.colors.icon};
-  font-size: 1.5rem;
-  transition: color 0.3s;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.hoverText};
-  }
-`;
-
-const OpeningHoursText = styled.p`
-  font-size: 1rem;
-  color: ${({ theme }) => theme.colors.text};
-  margin-bottom: 5px;
-`;
-
-const ContactInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const StyledIcon = styled(FontAwesomeIcon)`
-  transition: color 0.3s;
-  color: ${({ theme }) => theme.colors.icon};
-`;
-
-const ContactItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  &:hover ${StyledIcon}, &:hover ${SectionText} {
-    color: ${({ theme }) => theme.colors.hoverText};
-  }
-`;
+import { Separator } from "@/components/ui/separator";
 
 const footerData = {
-  logo: "/path/to/logo.png",
-  aboutUs: "Talent Spree Solutions connects businesses with top talent through innovative solutions and exceptional service.",
+  logo: "/Images/demoLogo.png",
+  aboutUs:
+    "Talent Spree Solutions connects businesses with top talent through innovative solutions and exceptional service.",
   quickLinks: [
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about-us" },
@@ -136,8 +17,16 @@ const footerData = {
     { label: "Contact Us", href: "/contact" },
   ],
   socialLinks: [
-    { platform: "LinkedIn", href: "https://www.linkedin.com", icon: faLinkedin },
-    { platform: "Facebook", href: "https://www.facebook.com", icon: faFacebook },
+    {
+      platform: "LinkedIn",
+      href: "https://www.linkedin.com",
+      icon: faLinkedin,
+    },
+    {
+      platform: "Facebook",
+      href: "https://www.facebook.com",
+      icon: faFacebook,
+    },
   ],
   contact: {
     phone: "(+123) 456-7890",
@@ -151,64 +40,138 @@ const footerData = {
 };
 
 const Footer = () => {
-  const { logo, aboutUs, quickLinks, socialLinks, contact, openingHours } = footerData;
+  const { logo, aboutUs, quickLinks, socialLinks, contact, openingHours } =
+    footerData;
 
   return (
-    <ThemeProvider theme={theme}>
-      <FooterContainer>
-        <FooterWrapper>
-          <FooterSection>
-            <LogoSection>
-              <Logo src={logo} alt="Talent Spree Solutions Logo" />
-              <SectionText>&copy; {new Date().getFullYear()} Talent Spree Solutions. All rights reserved.</SectionText>
-            </LogoSection>
-          </FooterSection>
-          <FooterSection>
-            <SectionTitle>About Us</SectionTitle>
-            <SectionText>{aboutUs}</SectionText>
-          </FooterSection>
-          <FooterSection>
-            <SectionTitle>Quick Links</SectionTitle>
-            <LinksList>
+    <footer className="relative bg-[#E1E6D9] text-primary-foreground overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F8FDEF]/70 to-[#E1E6D9]" />
+
+      <div className="relative container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+          {/* Logo & Copyright */}
+          <motion.div
+            className="lg:col-span-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="flex flex-col items-start space-y-4">
+              <div className="w-40 rounded-md">
+                <img src={logo} alt="Talent Spree Solutions" />
+              </div>
+              <p className="text-primary text-md font-medium">{aboutUs}</p>
+              <p className="text-sm text-primary">
+                &copy; {new Date().getFullYear()} Talent Spree Solutions. All
+                rights reserved.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Quick Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h4 className="text-lg font-semibold mb-4 text-[#585A55] uppercase">
+              Quick Links
+            </h4>
+            <ul className="space-y-2">
               {quickLinks.map((link, index) => (
-                <LinksItem key={index}>
-                  <LinksAnchor href={link.href}>{link.label}</LinksAnchor>
-                </LinksItem>
+                <li key={index}>
+                  <a
+                    href={link.href}
+                    className="relative text-primary hover:text-primary/80 transition-colors duration-200 group"
+                  >
+                    {link.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                  </a>
+                </li>
               ))}
-            </LinksList>
-          </FooterSection>
-          <FooterSection>
-            <SectionTitle>Opening Hours</SectionTitle>
-            {Object.entries(openingHours).map(([day, hours], index) => (
-              <OpeningHoursText key={index}>
-                {day}: {hours}
-              </OpeningHoursText>
-            ))}
-          </FooterSection>
-          <FooterSection>
-            <SectionTitle>Follow Us</SectionTitle>
-            <SocialMediaLinks>
-              {socialLinks.map((social, index) => (
-                <SocialMediaLink key={index} href={social.href} target="_blank" rel="noopener noreferrer">
-                  <FontAwesomeIcon icon={social.icon} />
-                </SocialMediaLink>
+            </ul>
+          </motion.div>
+
+          {/* Opening Hours */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h4 className="text-lg font-semibold mb-4 text-[#585A55] uppercase">
+              Opening Hours
+            </h4>
+            <div className="space-y-2">
+              {Object.entries(openingHours).map(([day, hours], index) => (
+                <p key={index} className="text-md text-primary">
+                  <span className="font-medium">{day}:</span>
+                  <br />
+                  <span>{hours}</span>
+                </p>
               ))}
-            </SocialMediaLinks>
-            <SectionTitle>Contact Us</SectionTitle>
-            <ContactInfo>
-              <ContactItem>
-                <StyledIcon icon={faPhoneAlt} />
-                <SectionText>{contact.phone}</SectionText>
-              </ContactItem>
-              <ContactItem>
-                <StyledIcon icon={faEnvelope} />
-                <SectionText>{contact.email}</SectionText>
-              </ContactItem>
-            </ContactInfo>
-          </FooterSection>
-        </FooterWrapper>
-      </FooterContainer>
-    </ThemeProvider>
+            </div>
+          </motion.div>
+
+          {/* Contact & Social */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <h4 className="text-lg font-semibold mb-4 text-[#585A55] uppercase">
+              Contact & Social
+            </h4>
+
+            <div className="space-y-4 text-md text-primary">
+              {/* Contact Info */}
+              <div className="space-y-2">
+                <a
+                  href={`tel:${contact.phone}`}
+                  className="flex items-center gap-2 text-primary-foreground/80 hover:text-accent transition-colors duration-200"
+                >
+                  <FontAwesomeIcon
+                    icon={faPhoneAlt}
+                    className="w-4 h-4 text-[#585A55]"
+                  />
+                  <span className="text-md">{contact.phone}</span>
+                </a>
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="flex items-center gap-2 text-primary-foreground/80 hover:text-accent transition-colors duration-200"
+                >
+                  <FontAwesomeIcon
+                    icon={faEnvelope}
+                    className="w-4 h-4 text-[#585A55]"
+                  />
+                  <span className="text-md">{contact.email}</span>
+                </a>
+              </div>
+
+              <Separator className="bg-primary-foreground" />
+
+              {/* Social Links */}
+              <div className="flex gap-4 ">
+                {socialLinks.map((social, index) => (
+                  <a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent hover:text-accent/80 transition-colors duration-200 text-[#B9DCC6]"
+                  >
+                    <FontAwesomeIcon icon={social.icon} className="w-8 h-8" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </footer>
   );
 };
 

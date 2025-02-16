@@ -7,11 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Testimonials from "@/components/DesktopTestimonials";
 import FAQ from "@/components/FAQ";
-
-const ContactForm = dynamic(() => import("@/components/ContactForm"), {
-  ssr: false,
-});
-const Footer = dynamic(() => import("../components/Footer"), { ssr: false });
+import ContactForm from "@/components/ContactForm";
+import Footer from "@/components/Footer";
 
 const HeroButton = ({ children, href }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -79,11 +76,24 @@ const Home = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setShowHeader(window.scrollY <= lastScrollY || window.scrollY === 0);
-      setLastScrollY(window.scrollY);
+      const currentScrollY = window.scrollY;
+      const scrollDifference = Math.abs(currentScrollY - lastScrollY);
+      const minScrollThreshold = 5; // Minimum scroll amount to trigger header
+
+      if (scrollDifference > minScrollThreshold) {
+        // Scroll down -> hide header
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          setShowHeader(false);
+        }
+        // Scroll up OR at top -> show header
+        else {
+          setShowHeader(true);
+        }
+        setLastScrollY(currentScrollY);
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
@@ -92,12 +102,13 @@ const Home = () => {
   return (
     <>
       <motion.div
-        className={`fixed top-0 left-0 right-0 bg-background z-50 transition-transform duration-500 ease-in-out ${
+        className={`fixed top-0 left-0 right-0 bg-background z-50 transition-transform duration-300 ease-out ${
           showHeader ? "translate-y-0" : "-translate-y-28"
         }`}
         initial={{ y: -100 }}
         animate={{ y: showHeader ? 0 : -100 }}
-        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        transition={{stiffness: 120, damping: 15 }}
+        style={{ willChange: "transform" }}
       >
         <Header />
       </motion.div>

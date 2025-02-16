@@ -96,9 +96,9 @@ const Testimonials = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="w-24 h-24 opacity-10">
+                        <div className="w-24 h-24 opacity-70">
                           <img
-                            src={testimonial.logo}
+                            src={testimonial.companyLogo}
                             alt="Company Logo"
                             className="w-full h-full object-contain"
                           />
@@ -140,25 +140,29 @@ const testimonialsData = [
     text: "Talent Spree Solutions helped us find the perfect candidates. Their attention to detail and understanding of our needs was remarkable.",
     author: "John Doe",
     company: "CEO, Example Corp",
-    logo: "/Images/client-logo1.png",
+    logo: "/Images/DemoSet/User/1.png",
+    companyLogo: "/Images/DemoSet/Company/1.webp",
   },
   {
     text: "A fantastic experience from start to finish. The process was seamless, and we were matched with exceptional talent.",
     author: "Jane Smith",
     company: "HR Manager, Tech Innovators",
-    logo: "/Images/client-logo2.png",
+    logo: "/Images/DemoSet/User/2.png",
+    companyLogo: "/Images/DemoSet/Company/2.webp",
   },
   {
     text: "We were impressed by how quickly they found us top-tier candidates. They truly care about long-term success.",
     author: "Emily Johnson",
     company: "COO, Digital Enterprises",
-    logo: "/Images/client-logo3.png",
+    logo: "/Images/DemoSet/User/3.png",
+    companyLogo: "/Images/DemoSet/Company/3.webp",
   },
   {
     text: "Their professionalism and dedication to delivering results exceeded our expectations. Highly recommended.",
     author: "Mark Wilson",
     company: "Director, Growth Solutions",
-    logo: "/Images/client-logo4.png",
+    logo: "/Images/DemoSet/User/4.png",
+    companyLogo: "/Images/DemoSet/Company/1.webp",
   },
 ];
 

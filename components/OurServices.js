@@ -1,133 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import styled, { ThemeProvider } from "styled-components";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Check } from "lucide-react";
-
-const theme = {
-  colors: {
-    primary: "#72BF78", // Main feature color for buttons and title
-    secondary: "#2F5233", // Dark greenish color for list items
-    background: "#ffffff", // White for background
-    text: "#333", // General text color
-    mutedText: "#555", // Muted gray for descriptions
-    highlight: "#A0D683", // Highlight color for icons
-    buttonText: "#ffffff", // White for button text
-    buttonHover: "#5A9E6B", // Slightly darker green for hover effect
-  },
-};
-
-const Section = styled.section`
-  display: flex;
-  justify-content: space-between;
-  padding: 100px 70px;
-  background-color: ${({ theme }) => theme.colors.background};
-  align-items: center;
-  gap: 40px;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-  }
-`;
-
-const ImageContainer = styled.div`
-  flex: 1 1 50%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  width: 50%;
-
-  .image-item {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const TextContainer = styled.div`
-  flex: 1 1 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-  width: 50%;
-
-  @media (max-width: 768px) {
-    text-align: center;
-    width: 90%;
-  }
-`;
-
-const Title = styled.h2`
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.primary};  /* Updated to main feature color */
-  margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-`;
-
-const Description = styled.p`
-  font-size: 1.2rem;
-  color: ${({ theme }) => theme.colors.mutedText};
-  margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-`;
-
-const List = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  margin-bottom: 30px;
-
-  li {
-    font-size: 1rem;
-    color: ${({ theme }) => theme.colors.secondary};  /* Updated to dark greenish color */
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-
-    svg {
-      color: ${({ theme }) => theme.colors.highlight};
-      margin-right: 10px;
-      font-size: 1.5rem;
-    }
-  }
-`;
-
-const Button = styled(motion.button)`
-  padding: 12px 20px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.buttonText};
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: bold;
-  max-width: 200px;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.buttonHover};
-  }
-
-  @media (max-width: 768px) {
-    margin: auto;
-  }
-`;
+import { Button } from "@/components/ui/button";
 
 const OurServices = () => {
   const router = useRouter();
@@ -151,72 +27,89 @@ const OurServices = () => {
     ],
   };
 
-  const handleButtonClick = () => {
-    router.push(servicesData.buttonLink);
-  };
-
   return (
-    <ThemeProvider theme={theme}>
-      <Section
-        as={motion.section}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        <ImageContainer
-          as={motion.div}
-          initial={{ x: -100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1, type: "spring", stiffness: 120 }}
-        >
-          {servicesData.images.map((image, index) => (
-            <Image
-              key={index}
-              src={image}
-              alt={`Team Image ${index + 1}`}
-              width={500}
-              height={400}
-              className="image-item"
-            />
-          ))}
-        </ImageContainer>
-
-        <TextContainer
-          as={motion.div}
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1, type: "spring", stiffness: 120 }}
-        >
-          <Title>{servicesData.title}</Title>
-          <Description>{servicesData.description}</Description>
-          <List>
-            {servicesData.list.map((item, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.2,
-                  type: "spring",
-                  stiffness: 100,
-                }}
-              >
-                <Check />
-                {item}
-              </motion.li>
-            ))}
-          </List>
-          <Button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleButtonClick}
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className="py-20 px-6 md:px-16 lg:px-20 bg-background"
+    >
+      <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row gap-10 lg:gap-20 items-center">
+          {/* Images Grid */}
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1, type: "spring", stiffness: 120 }}
+            className="w-full md:w-1/2"
           >
-            {servicesData.buttonText}
-          </Button>
-        </TextContainer>
-      </Section>
-    </ThemeProvider>
+            <div className="grid grid-cols-2 gap-4">
+              {servicesData.images.map((image, index) => (
+                <div
+                  key={index}
+                  className="relative aspect-[4/3] overflow-hidden rounded-lg"
+                >
+                  <Image
+                    src={image}
+                    alt={`Team Image ${index + 1}`}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Content */}
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1, type: "spring", stiffness: 120 }}
+            className="w-full md:w-1/2 space-y-6 text-center md:text-left"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-primary">
+              {servicesData.title}
+            </h2>
+
+            <p className="text-base md:text-lg text-muted-foreground">
+              {servicesData.description}
+            </p>
+
+            <ul className="space-y-4">
+              {servicesData.list.map((item, index) => (
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.2,
+                    type: "spring",
+                    stiffness: 100,
+                  }}
+                  className="flex items-center gap-3 text-secondary"
+                >
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Check className="w-4 h-4 text-primary" />
+                  </div>
+                  <span>{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+
+            <div className="flex md:justify-start justify-center">
+              <Button
+                onClick={() => router.push(servicesData.buttonLink)}
+                className="px-6 py-3 text-lg font-semibold bg-[#343300] text-[#F8FDEF] hover:scale-110 transition-transform duration-100"
+                size="lg"
+              >
+                {servicesData.buttonText}
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.section>
   );
 };
 

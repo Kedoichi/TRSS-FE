@@ -98,8 +98,8 @@ const JobOpenings = () => {
       <HeroSection>
         <HeroTitle>Explore Exciting Job Opportunities</HeroTitle>
         <HeroSubtitle>
-          Discover a variety of career opportunities that align with your passion and skills.
-          Start your journey with us today!
+          Discover a variety of career opportunities that align with your
+          passion and skills. Start your journey with us today!
         </HeroSubtitle>
       </HeroSection>
 
