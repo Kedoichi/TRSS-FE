@@ -27,7 +27,7 @@ const MainContainer = styled.main`
 const HeroSection = styled.section`
   background: ${({ theme }) => theme.colors.heroBackground};
   color: ${({ theme }) => theme.colors.heroText};
-  text-align: center;
+  text-align: center;a
   justify-content: center;
   display: flex;
   flex-direction: column;

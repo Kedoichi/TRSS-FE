@@ -56,17 +56,18 @@ const ServiceCard = ({ icon, title, description }) => {
   return (
     <motion.div
       variants={itemVariants}
-      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="w-64 sm:w-full sm:max-w-[300px] "
+      className="w-64 sm:w-full sm:max-w-[300px]"
     >
-      <Card className="h-full bg-card hover:shadow-xl transition-shadow duration-300  border-accent/20 hover:border-accent/40">
+      <Card className="h-full bg-white border border-[#72BF78] hover:shadow-lg transition-shadow duration-300 rounded-lg">
         <CardContent className="p-6 flex flex-col items-center">
-          <div className="text-5xl text-primary mb-6">
+          <div className="text-5xl text-[#72BF78] mb-6">
             <FontAwesomeIcon icon={icon} />
           </div>
-          <h3 className="text-2xl font-semibold text-primary mb-3">{title}</h3>
-          <p className="text-base text-muted-foreground">{description}</p>
+          <h3 className="text-2xl font-semibold text-[#1B1B1B] mb-3">
+            {title}
+          </h3>
+          <p className="text-base text-[#606C38]">{description}</p>
         </CardContent>
       </Card>
     </motion.div>
@@ -75,7 +76,7 @@ const ServiceCard = ({ icon, title, description }) => {
 
 const HomeOurServices = () => {
   return (
-    <section className="py-20 px-6 bg-background">
+    <section className="py-20 px-6 bg-[#F0F7ED]">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -85,14 +86,14 @@ const HomeOurServices = () => {
       >
         <motion.h4
           variants={itemVariants}
-          className="text-primary text-lg font-semibold mb-3"
+          className="text-[#72BF78] text-lg font-semibold mb-3"
         >
           What We Offer
         </motion.h4>
 
         <motion.h2
           variants={itemVariants}
-          className="text-4xl md:text-5xl text-foreground max-w-2xl mx-auto mb-12"
+          className="text-4xl md:text-5xl text-[#1B1B1B] max-w-2xl mx-auto mb-12"
         >
           Providing Expert Recruitment Services to Connect Talent with
           Opportunity
@@ -108,7 +109,7 @@ const HomeOurServices = () => {
           <Button
             onClick={() => (window.location.href = "/services")}
             variant="default"
-            className="font-semibold tracking-wide text-2xl hover:scale-105 transition-transform duration-300 bg-[##dde4d7] text-primary hover:bg-[#C3C9BC] h-20 rounded-md px-12"
+            className="font-semibold tracking-wide text-lg hover:scale-105 transition-transform duration-300 bg-[#72BF78] text-white hover:bg-[#5FA461] h-16 rounded-md px-8"
           >
             Explore Our Services
           </Button>

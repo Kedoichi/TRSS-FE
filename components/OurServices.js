@@ -32,7 +32,7 @@ const OurServices = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="py-20 px-6 md:px-16 lg:px-20 bg-background"
+      className="py-20 px-6 md:px-16 lg:px-20"
     >
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row gap-10 lg:gap-20 items-center">
@@ -67,11 +67,11 @@ const OurServices = () => {
             transition={{ duration: 1, type: "spring", stiffness: 120 }}
             className="w-full md:w-1/2 space-y-6 text-center md:text-left"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1B1B1B]">
               {servicesData.title}
             </h2>
 
-            <p className="text-base md:text-lg text-muted-foreground">
+            <p className="text-base md:text-lg text-[#606C38]">
               {servicesData.description}
             </p>
 
@@ -87,10 +87,10 @@ const OurServices = () => {
                     type: "spring",
                     stiffness: 100,
                   }}
-                  className="flex items-center gap-3 text-secondary"
+                  className="flex items-center gap-3 text-[#1B1B1B]"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Check className="w-4 h-4 text-primary" />
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#72BF78]/10 flex items-center justify-center">
+                    <Check className="w-4 h-4 text-[#72BF78]" />
                   </div>
                   <span>{item}</span>
                 </motion.li>
@@ -100,7 +100,7 @@ const OurServices = () => {
             <div className="flex md:justify-start justify-center">
               <Button
                 onClick={() => router.push(servicesData.buttonLink)}
-                className="px-6 py-3 text-lg font-semibold bg-[#343300] text-[#F8FDEF] hover:scale-110 transition-transform duration-100"
+                className="px-6 py-3 text-lg font-semibold bg-[#72BF78] text-white hover:bg-[#5FA461] transition-transform duration-200 hover:scale-105"
                 size="lg"
               >
                 {servicesData.buttonText}
