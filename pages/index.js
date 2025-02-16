@@ -15,66 +15,6 @@ const MainContainer = styled.main`
   scroll-behavior: smooth;
 `;
 
-const HeroSection = styled.section`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 40px 20px;
-  min-height: 80vh;
-  background: url("/Images/Image1.jpg") no-repeat center center/cover;
-  position: relative;
-`;
-
-const HeroOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-`;
-
-const SectionContainer = styled.div`
-  position: relative;
-  width: 45%;
-  text-align: center;
-  z-index: 2;
-`;
-
-const TitleButton = styled(motion.button)`
-  background-color: transparent;
-  border: transparent;
-  color: #ffffff;
-  font-size: 2.5rem;
-  font-weight: bold;
-  padding: 15px 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 20px;
-
-  &:hover {
-    color: #72bf78;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const Underline = styled.div`
-  width: 80px;
-  height: 5px;
-  background-color: #72bf78;
-  margin: 10px auto 0;
-`;
-
-const SubtitleSection = styled.p`
-  color: #ffffff;
-  font-size: 1.1rem;
-  margin-top: 10px;
-`;
-
 const StickyHeader = styled.div`
   position: fixed;
   top: ${({ showHeader }) => (showHeader ? "0" : "-80px")};
@@ -85,7 +25,57 @@ const StickyHeader = styled.div`
   transition: top 0.3s ease-in-out;
 `;
 
-const SectionWrapper = styled(motion.div)``;
+/* HERO SECTION */
+const HeroSection = styled.section`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 40px 5%;
+  background: url("/Images/Image1.jpg") no-repeat center center/cover;
+`;
+
+const HeroOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+`;
+
+const ContentBox = styled(motion.div)`
+  position: relative;
+  z-index: 2;
+  width: 45%;
+  padding: 50px;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+
+  h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    padding: 60px;
+  }
+`;
+
+const GreenUnderline = styled.div`
+  width: 80px;
+  height: 5px;
+  background-color: #72bf78;
+  margin: 10px auto 20px;
+`;
 
 const Home = () => {
   const [isClient, setIsClient] = useState(false);
@@ -106,7 +96,6 @@ const Home = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Render a fallback or nothing until the component is hydrated
   if (!isClient) {
     return null;
   }
@@ -119,60 +108,43 @@ const Home = () => {
 
       <HeroSection>
         <HeroOverlay />
-        <SectionContainer>
-          <TitleButton
-            onClick={() => (window.location.href = "/job-seekers")}
-          >
-            Job Seekers
-          </TitleButton>
-          <Underline />
-          <SubtitleSection>Find your next career opportunity.</SubtitleSection>
-        </SectionContainer>
 
-        <SectionContainer>
-          <TitleButton
-            onClick={() => (window.location.href = "/employers")}
-          >
-            Employers
-          </TitleButton>
-          <Underline />
-          <SubtitleSection>Connect with top-tier talent.</SubtitleSection>
-        </SectionContainer>
+        {/* Job Seekers Section (Left Side) */}
+        <ContentBox
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2>Job Seekers</h2>
+          <GreenUnderline />
+          <p>Find your next career opportunity.</p>
+        </ContentBox>
+
+        {/* Employers Section (Right Side) */}
+        <ContentBox
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2>Employers</h2>
+          <GreenUnderline />
+          <p>Connect with top-tier talent.</p>
+        </ContentBox>
       </HeroSection>
 
       <MainContainer>
-        <SectionWrapper
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
+        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
           <HomeOurServices />
-        </SectionWrapper>
-        <SectionWrapper
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
           <DesktopTestimonials />
-        </SectionWrapper>
-        <SectionWrapper
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
           <FAQ />
-        </SectionWrapper>
-        <SectionWrapper
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
           <ContactForm />
-        </SectionWrapper>
+        </motion.div>
       </MainContainer>
 
       <Footer />

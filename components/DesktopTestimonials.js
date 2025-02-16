@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 const themeColors = {
   primary: "#72BF78",
@@ -13,10 +14,16 @@ const themeColors = {
 
 const Section = styled.section`
   padding: 100px 20px;
-  background: url('/Images/testimonial-bg.jpg') no-repeat center center/cover;
   position: relative;
   text-align: center;
   color: ${themeColors.textPrimary};
+  min-height: 100vh;
+  background: url("/Images/Image2.jpg") no-repeat center center/cover;
+  filter: grayscale(100%); /* Only background is black & white */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Overlay = styled.div`
@@ -54,16 +61,16 @@ const TestimonialContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   z-index: 2;
-
-  @media (max-width: 768px) {
-    padding: 30px;
-  }
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const IconWrapper = styled.div`
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 20px auto;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,7 +78,7 @@ const IconWrapper = styled.div`
   border-radius: 50%;
 
   img {
-    width: 70px;
+    width: 60px;
     height: auto;
   }
 `;
@@ -95,28 +102,69 @@ const Company = styled.p`
   color: #777;
 `;
 
-const Arrow = styled.button`
-  background: transparent;
-  border: none;
-  color: ${themeColors.primary};
-  font-size: 2rem;
-  cursor: pointer;
+/* FIXED ARROW STYLES - NOW VISIBLE */
+const ArrowContainer = styled.div`
   position: absolute;
   top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   transform: translateY(-50%);
-  ${(props) => props.isLeft && 'left: -40px;'}
-  ${(props) => !props.isLeft && 'right: -40px;'}
+  z-index: 10;
+  pointer-events: none;
+`;
+
+const Arrow = styled.button`
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #ffffff;
+  color: ${themeColors.textPrimary};
+  font-size: 2rem;
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  pointer-events: auto; /* Ensures button clicks */
+  height: 3rem;
+  width: 3rem;
 
   &:hover {
-    color: ${themeColors.secondary};
+    background: ${themeColors.primary};
+    transform: scale(1.1);
   }
 
+  ${(props) => (props.isLeft ? "left: 40px;" : "right: 40px;")}
+  position: absolute;
+
   @media (max-width: 768px) {
-    ${(props) => props.isLeft && 'left: -20px;'}
-    ${(props) => !props.isLeft && 'right: -20px;'}
+    font-size: 1.5rem;
+    padding: 10px;
+    ${(props) => (props.isLeft ? "left: 10px;" : "right: 10px;")}
   }
 `;
 
+/* PAGINATION DOTS */
+const DotsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const Dot = styled.button`
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background: ${(props) => (props.isActive ? themeColors.primary : "#ccc")};
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: ${themeColors.secondary};
+  }
+`;
+
+/* TESTIMONIALS COMPONENT */
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -136,50 +184,78 @@ const Testimonials = () => {
     <Section>
       <Overlay />
       <Title>From Our Clients</Title>
+      <Subtitle>What our clients are saying</Subtitle>
 
+      {/* Testimonial Box */}
       <TestimonialContainer>
-        <IconWrapper>
-          <img src={testimonialsData[currentIndex].logo} alt="Client Logo" />
-        </IconWrapper>
-        <TestimonialText>"{testimonialsData[currentIndex].text}"</TestimonialText>
-        <Author>{testimonialsData[currentIndex].author}</Author>
-        <Company>{testimonialsData[currentIndex].company}</Company>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.5 }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+          >
+            <IconWrapper>
+              <img src={testimonialsData[currentIndex].logo} alt="Client Logo" />
+            </IconWrapper>
+            <TestimonialText>"{testimonialsData[currentIndex].text}"</TestimonialText>
+            <Author>{testimonialsData[currentIndex].author}</Author>
+            <Company>{testimonialsData[currentIndex].company}</Company>
+          </motion.div>
+        </AnimatePresence>
+      </TestimonialContainer>
 
+      {/* FIXED ARROWS - ALWAYS VISIBLE */}
+      <ArrowContainer>
         <Arrow isLeft onClick={prevSlide}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </Arrow>
         <Arrow onClick={nextSlide}>
           <FontAwesomeIcon icon={faChevronRight} />
         </Arrow>
-      </TestimonialContainer>
+      </ArrowContainer>
+
+      {/* Pagination Dots */}
+      <DotsContainer>
+        {testimonialsData.map((_, index) => (
+          <Dot
+            key={index}
+            isActive={index === currentIndex}
+            onClick={() => setCurrentIndex(index)}
+          />
+        ))}
+      </DotsContainer>
     </Section>
   );
 };
 
+/* TESTIMONIALS DATA */
 const testimonialsData = [
   {
-    text: 'Talent Spree Solutions helped us find the perfect candidates. Their attention to detail and understanding of our needs was remarkable.',
-    author: 'John Doe',
-    company: 'CEO, Example Corp',
-    logo: '/Images/client-logo1.png', // Replace with actual logos
+    text: "Talent Spree Solutions helped us find the perfect candidates. Their attention to detail and understanding of our needs was remarkable.",
+    author: "John Doe",
+    company: "CEO, Example Corp",
+    logo: "/Images/client-logo1.png",
   },
   {
-    text: 'A fantastic experience from start to finish. The process was seamless, and we were matched with exceptional talent.',
-    author: 'Jane Smith',
-    company: 'HR Manager, Tech Innovators',
-    logo: '/Images/client-logo2.png',
+    text: "A fantastic experience from start to finish. The process was seamless, and we were matched with exceptional talent.",
+    author: "Jane Smith",
+    company: "HR Manager, Tech Innovators",
+    logo: "/Images/client-logo2.png",
   },
   {
-    text: 'We were impressed by how quickly they found us top-tier candidates. They truly care about long-term success.',
-    author: 'Emily Johnson',
-    company: 'COO, Digital Enterprises',
-    logo: '/Images/client-logo3.png',
+    text: "We were impressed by how quickly they found us top-tier candidates. They truly care about long-term success.",
+    author: "Emily Johnson",
+    company: "COO, Digital Enterprises",
+    logo: "/Images/client-logo3.png",
   },
   {
-    text: 'Their professionalism and dedication to delivering results exceeded our expectations. Highly recommended.',
-    author: 'Mark Wilson',
-    company: 'Director, Growth Solutions',
-    logo: '/Images/client-logo4.png',
+    text: "Their professionalism and dedication to delivering results exceeded our expectations. Highly recommended.",
+    author: "Mark Wilson",
+    company: "Director, Growth Solutions",
+    logo: "/Images/client-logo4.png",
   },
 ];
 
