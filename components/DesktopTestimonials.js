@@ -112,7 +112,7 @@ const Testimonials = () => {
           </CarouselContent>
 
           <div className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2">
-            <CarouselPrevious className="w-12 h-12 border-2" />
+            <CarouselPrevious className="w-12 h-12 border-2  hover:bg-red-600" />
           </div>
           <div className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2">
             <CarouselNext className="w-12 h-12 border-2" />

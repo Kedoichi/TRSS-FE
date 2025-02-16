@@ -131,7 +131,7 @@ const Footer = () => {
               <div className="space-y-2">
                 <a
                   href={`tel:${contact.phone}`}
-                  className="flex items-center gap-2 text-primary-foreground/80 hover:text-accent transition-colors duration-200"
+                  className="flex items-center gap-2 text-primary-foreground/80 transition-colors duration-200 "
                 >
                   <FontAwesomeIcon
                     icon={faPhoneAlt}
@@ -141,7 +141,7 @@ const Footer = () => {
                 </a>
                 <a
                   href={`mailto:${contact.email}`}
-                  className="flex items-center gap-2 text-primary-foreground/80 hover:text-accent transition-colors duration-200"
+                  className="flex items-center gap-2 text-primary-foreground/80 transition-colors duration-200"
                 >
                   <FontAwesomeIcon
                     icon={faEnvelope}
@@ -161,9 +161,9 @@ const Footer = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent hover:text-accent/80 transition-colors duration-200 text-[#B9DCC6]"
+                    className="transition-colors duration-200 text-[#B9DCC6]"
                   >
-                    <FontAwesomeIcon icon={social.icon} className="w-8 h-8" />
+                    <FontAwesomeIcon icon={social.icon} className="w-8 h-8  " />
                   </a>
                 ))}
               </div>

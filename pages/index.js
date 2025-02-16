@@ -9,7 +9,13 @@ import Testimonials from "@/components/DesktopTestimonials";
 import FAQ from "@/components/FAQ";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
+import { Bebas_Neue } from "next/font/google";
 
+const bebasNeue = Bebas_Neue({
+  weight: ["400"],
+  style: ["normal"],
+  subsets: ["latin"],
+});
 const HeroButton = ({ children, href }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -107,7 +113,7 @@ const Home = () => {
         }`}
         initial={{ y: -100 }}
         animate={{ y: showHeader ? 0 : -100 }}
-        transition={{stiffness: 120, damping: 15 }}
+        transition={{ stiffness: 120, damping: 15 }}
         style={{ willChange: "transform" }}
       >
         <Header />
@@ -118,7 +124,7 @@ const Home = () => {
         style={{ backgroundImage: "url('/Images/gray1.jpg')" }}
       >
         <motion.div
-          className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
+          className="absolute inset-0 bg-black/60 backdrop-blur-[0px]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}

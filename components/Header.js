@@ -7,6 +7,13 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { FileUp } from "lucide-react";
+import { Bebas_Neue } from "next/font/google";
+
+const bebasNeue = Bebas_Neue({
+  weight: ["400"],
+  style: ["normal"],
+  subsets: ["latin"],
+});
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -28,7 +35,7 @@ const Header = () => {
         <a className="relative group">
           <motion.div
             className={`
-              text-lg font-medium px-4 py-2 rounded-md
+              text-lg font-semibold px-4 py-2 rounded-md
               ${isMobile ? "text-primary" : "text-primary"}
               transition-all duration-200
               hover:bg-primary/5 relative
@@ -58,7 +65,7 @@ const Header = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-2xl md:text-3xl font-bold text-primary"
+            className={`text-2xl md:text-3xl font-bold text-primary ${bebasNeue.className}`}
           >
             Talent Spree Solutions
           </motion.div>
@@ -68,8 +75,8 @@ const Header = () => {
             {navLinks.map((link) => (
               <NavLink key={link.href} {...link} />
             ))}
-            
-            <Link href="/cv" legacyBehavior>
+
+            <Link href="/contact" legacyBehavior>
               <a className="group">
                 <motion.div
                   className="flex items-center gap-2 px-4 py-2 text-lg font-medium text-primary 
@@ -103,8 +110,11 @@ const Header = () => {
                 </motion.div>
               </Button>
             </SheetTrigger>
-            
-            <SheetContent side="right" className="w-[300px] bg-background/95 backdrop-blur-md">
+
+            <SheetContent
+              side="right"
+              className="w-[300px] bg-background/95 backdrop-blur-md"
+            >
               <nav className="flex flex-col space-y-4 mt-12">
                 <AnimatePresence mode="wait">
                   {navLinks.map((link, index) => (
@@ -118,7 +128,7 @@ const Header = () => {
                       <NavLink {...link} isMobile />
                     </motion.div>
                   ))}
-                  
+
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
