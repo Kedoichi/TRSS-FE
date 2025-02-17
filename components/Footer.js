@@ -126,7 +126,7 @@ const ContactItem = styled.div`
 `;
 
 const footerData = {
-  logo: "/path/to/logo.png",
+  logo: "/Images/demoLogo.png",
   aboutUs: "Talent Spree Solutions connects businesses with top talent through innovative solutions and exceptional service.",
   quickLinks: [
     { label: "Home", href: "/" },

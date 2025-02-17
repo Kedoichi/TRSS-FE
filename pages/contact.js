@@ -1,43 +1,34 @@
-import React, { useState, useEffect, Suspense } from 'react';
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhoneAlt, faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import React, { useState, useEffect } from "react";
+import styled, { ThemeProvider } from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhoneAlt, faEnvelope, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const contactData = {
   hero: {
-    title: 'Contact Us',
-    subtitle: 'Thank you for your interest in our services. Please complete the form below, and our team will get in touch with you shortly.',
+    title: "Contact Us",
+    subtitle:
+      "Thank you for your interest in our services. Please complete the form below, and our team will get in touch with you shortly.",
   },
   contactInfo: [
-    { icon: faPhoneAlt, text: '+61283245788', action: 'copy', type: 'phone' },
-    { icon: faEnvelope, text: 'admin@talentspreesolutions.com', action: 'copy', type: 'email' },
-    { icon: faMapMarkerAlt, text: 'Cebu City, Philippines', action: 'link', url: 'https://www.google.com/maps?q=Cebu+City,+Philippines' },
+    { icon: faPhoneAlt, text: "+61283245788", action: "copy", type: "phone" },
+    { icon: faEnvelope, text: "admin@talentspreesolutions.com", action: "copy", type: "email" },
+    {
+      icon: faMapMarkerAlt,
+      text: "Cebu City, Philippines",
+      action: "link",
+      url: "https://www.google.com/maps?q=Cebu+City,+Philippines",
+    },
   ],
-  jobOpening: {
-    title: 'Want to Join Our Talented Team?',
-    text: 'Visit Our Job Board',
-    link: '/job-openings',
-  },
   form: {
-    fields: [
-      { name: 'firstName', type: 'text', placeholder: 'First Name', required: true },
-      { name: 'lastName', type: 'text', placeholder: 'Last Name', required: true },
-      { name: 'email', type: 'email', placeholder: 'Email Address', required: true },
-      { name: 'phone', type: 'tel', placeholder: 'Phone Number', required: true },
-      { name: 'country', type: 'select', placeholder: 'Select Country', options: ['Australia', 'USA', 'UK'], required: true },
-      { name: 'helpType', type: 'select', placeholder: 'How can we help you?', options: ['Recruitment', 'Consulting', 'Job Seekers'], required: true },
-    ],
-    consentText: 'Yes, I would like to receive regular updates. I understand that I can withdraw my consent at any time.',
-    buttonText: 'Contact us',
-    cvUploadText: 'Upload CV (PDF only)',
+    buttonText: "Contact us",
   },
 };
 
 const HeroSection = styled.section`
-  background-color: #72BF78;
-  color: ${({ theme }) => theme.primaryText};
+  background-color: #72bf78;
+  color: ${({ theme }) => theme.primaryText || "#ffffff"};
   text-align: center;
   padding: 100px 20px;
   position: relative;
@@ -97,7 +88,7 @@ const ContactInfoContainer = styled.div`
 `;
 
 const ContactInfoBox = styled.div`
-background-color: #A0D683;
+  background-color: #a0d683;
   color: white;
   width: 250px;
   height: 150px;
@@ -117,14 +108,9 @@ background-color: #A0D683;
   }
 
   &:hover {
-    background-color: #D3EE98; /* Darker green */
+    background-color: #d3ee98;
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-bottom: 10px;
   }
 `;
 
@@ -154,7 +140,7 @@ const FormSection = styled.section`
 
 const FormTitle = styled.h2`
   font-size: 2rem;
-  color: #72BF78;
+  color: #72bf78;
   margin-bottom: 20px;
   text-align: center;
 
@@ -165,7 +151,7 @@ const FormTitle = styled.h2`
 
 const FormSubtitle = styled.p`
   font-size: 1.2rem;
-  color: #2F5233; /* Muted dark green */
+  color: #2f5233;
   text-align: center;
   margin-bottom: 30px;
 
@@ -185,12 +171,12 @@ const Input = styled.input`
   border-radius: 5px;
   border: 1px solid #ddd;
   font-size: 1rem;
-  background-color: #E8F5E9; /* Light green for inputs */
-  color: #1B5E20; /* Dark green for text */
+  background-color: #e8f5e9;
+  color: #1b5e20;
 
   &:focus {
     outline: none;
-    border-color: #D3EE98;
+    border-color: #d3ee98;
   }
 `;
 
@@ -199,8 +185,8 @@ const Select = styled.select`
   border-radius: 5px;
   border: 1px solid #ddd;
   font-size: 1rem;
-  background-color: #E8F5E9; /* Light green for inputs */
-  color: #1B5E20; /* Dark green for text */
+  background-color: #e8f5e9;
+  color: #1b5e20;
 `;
 
 const Checkbox = styled.input`
@@ -209,7 +195,7 @@ const Checkbox = styled.input`
 
 const Button = styled.button`
   padding: 12px 20px;
-  background-color: #72BF78;
+  background-color: #72bf78;
   color: white;
   border: none;
   border-radius: 5px;
@@ -218,8 +204,8 @@ const Button = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #A0D683;
-    color: #FFFFFF;
+    background-color: #a0d683;
+    color: #ffffff;
   }
 `;
 
@@ -228,7 +214,7 @@ const FileInput = styled.input`
   margin-bottom: 15px;
   border-radius: 5px;
   border: 1px solid #ddd;
-  background-color: #E8F5E9; /* Light green */
+  background-color: #e8f5e9;
 `;
 
 const PaddingAdjustment = styled.div`
@@ -241,33 +227,59 @@ const PaddingAdjustment = styled.div`
 
 const StickyHeader = styled.div`
   position: fixed;
-  top: ${({ showHeader }) => (showHeader ? '0' : '-80px')};
+  top: ${({ $showHeader }) => ($showHeader ? "0" : "-100%")};
   left: 0;
   right: 0;
-  background-color: #F1FAF4; /* Soft greenish white */
+  background-color: #f1faf4;
   z-index: 1000;
   transition: top 0.3s ease-in-out;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const handleCopy = (text) => {
-  navigator.clipboard.writeText(text).then(() => {
-    alert(`${text} copied to clipboard!`);
-  }).catch((error) => {
-    console.error("Error copying text: ", error);
-  });
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      alert(`${text} copied to clipboard!`);
+    })
+    .catch((error) => {
+      console.error("Error copying text: ", error);
+    });
 };
 
 const handleLocationClick = (url) => {
-  window.open(url, '_blank');
+  window.open(url, "_blank");
 };
 
 const ContactUs = () => {
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [cvFile, setCvFile] = useState(null);
-  const [isClient, setIsClient] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [cvFile, setCvFile] = useState(null);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY === 0) {
+        setShowHeader(true);
+      } else if (currentScrollY > lastScrollY + 5) {
+        setShowHeader(false);
+      } else if (currentScrollY < lastScrollY - 5) {
+        setShowHeader(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hydrated, lastScrollY]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -275,53 +287,96 @@ const ContactUs = () => {
     setTimeout(() => {
       setShowConfirmation(false);
     }, 3000);
-    console.log('Form submitted');
+    console.log("Form submitted");
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.type === 'application/pdf') {
+    if (file && file.type === "application/pdf") {
       setCvFile(file);
     } else {
-      alert('Please upload a valid PDF file');
+      alert("Please upload a valid PDF file");
     }
   };
 
-  useEffect(() => {
-    setIsClient(true);
+  if (!hydrated) {
+    return (
+      <>
+        <StickyHeader $showHeader={true}>
+          <Header />
+        </StickyHeader>
 
-    const handleResize = () => {
-      setIsClient(window.innerWidth <= 768);
-    };
+        <HeroSection>
+          <HeroContent>
+            <HeroTitle>{contactData.hero.title}</HeroTitle>
+            <HeroSubtitle>{contactData.hero.subtitle}</HeroSubtitle>
+          </HeroContent>
+          <ContactInfoContainer>
+            {contactData.contactInfo.map((info, index) => (
+              <ContactInfoBox
+                key={index}
+                onClick={() =>
+                  info.action === "copy"
+                    ? handleCopy(info.text)
+                    : info.action === "link" && handleLocationClick(info.url)
+                }
+              >
+                <IconWrapper>
+                  <FontAwesomeIcon icon={info.icon} />
+                </IconWrapper>
+                <p>{info.text}</p>
+              </ContactInfoBox>
+            ))}
+          </ContactInfoContainer>
+        </HeroSection>
 
-    const handleScroll = () => {
-      if (window.scrollY > lastScrollY && window.scrollY > 0) {
-        setShowHeader(false);
-      } else if (window.scrollY === 0) {
-        setShowHeader(true);
-      } else {
-        setShowHeader(true);
-      }
+        <PaddingAdjustment />
 
-      setLastScrollY(window.scrollY);
-    };
+        <FormSection>
+          <FormTitle>Send Us a Message</FormTitle>
+          <FormSubtitle>
+            We’d love to hear from you. Please complete the form below and we will get in touch with you shortly.
+          </FormSubtitle>
 
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleScroll);
+          <Form onSubmit={handleSubmit}>
+            <Input type="text" placeholder="First Name" required />
+            <Input type="text" placeholder="Last Name" required />
+            <Input type="email" placeholder="Email Address" required />
+            <Input type="tel" placeholder="Phone Number" required />
+            <Select required>
+              <option value="">How can we help you?</option>
+              <option value="Recruitment">Recruitment</option>
+              <option value="Consulting">Consulting</option>
+              <option value="Job Seekers">Job Seekers</option>
+            </Select>
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [lastScrollY]);
+            <FileInput type="file" accept=".pdf" onChange={handleFileChange} />
+            {cvFile && <p>{cvFile.name}</p>}
 
-  if (!isClient) {
-    return null;
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Checkbox type="checkbox" required />
+              <label>
+                Yes, I would like to receive regular updates. I understand that I can withdraw my consent at any time.
+              </label>
+            </div>
+            <Button type="submit">Contact us</Button>
+          </Form>
+
+          {showConfirmation && (
+            <div style={{ color: "green", textAlign: "center" }}>
+              Your form has been submitted successfully!
+            </div>
+          )}
+        </FormSection>
+
+        <Footer />
+      </>
+    );
   }
 
   return (
     <>
-      <StickyHeader showHeader={showHeader}>
+      <StickyHeader $showHeader={showHeader}>
         <Header />
       </StickyHeader>
 
@@ -332,7 +387,14 @@ const ContactUs = () => {
         </HeroContent>
         <ContactInfoContainer>
           {contactData.contactInfo.map((info, index) => (
-            <ContactInfoBox key={index} onClick={() => info.action === 'copy' ? handleCopy(info.text) : info.action === 'link' && handleLocationClick(info.url)}>
+            <ContactInfoBox
+              key={index}
+              onClick={() =>
+                info.action === "copy"
+                  ? handleCopy(info.text)
+                  : info.action === "link" && handleLocationClick(info.url)
+              }
+            >
               <IconWrapper>
                 <FontAwesomeIcon icon={info.icon} />
               </IconWrapper>
@@ -346,7 +408,9 @@ const ContactUs = () => {
 
       <FormSection>
         <FormTitle>Send Us a Message</FormTitle>
-        <FormSubtitle>We’d love to hear from you. Please complete the form below and we will get in touch with you shortly.</FormSubtitle>
+        <FormSubtitle>
+          We’d love to hear from you. Please complete the form below and we will get in touch with you shortly.
+        </FormSubtitle>
 
         <Form onSubmit={handleSubmit}>
           <Input type="text" placeholder="First Name" required />
@@ -363,7 +427,7 @@ const ContactUs = () => {
           <FileInput type="file" accept=".pdf" onChange={handleFileChange} />
           {cvFile && <p>{cvFile.name}</p>}
 
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Checkbox type="checkbox" required />
             <label>
               Yes, I would like to receive regular updates. I understand that I can withdraw my consent at any time.
@@ -372,7 +436,11 @@ const ContactUs = () => {
           <Button type="submit">Contact us</Button>
         </Form>
 
-        {showConfirmation && <div style={{ color: 'green', textAlign: 'center' }}>Your form has been submitted successfully!</div>}
+        {showConfirmation && (
+          <div style={{ color: "green", textAlign: "center" }}>
+            Your form has been submitted successfully!
+          </div>
+        )}
       </FormSection>
 
       <Footer />

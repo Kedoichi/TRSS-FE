@@ -2,19 +2,26 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLightbulb, faChartLine, faSearch, faPaintBrush, faRocket, faCog } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLightbulb,
+  faChartLine,
+  faSearch,
+  faPaintBrush,
+  faRocket,
+  faCog,
+} from "@fortawesome/free-solid-svg-icons";
 
 const theme = {
   colors: {
-    primary: "#72BF78", // Main feature green
-    secondary: "#2F5233", // Dark green for accents
-    background: "#FFFFFF", // Keeping the white background
-    cardBackground: "#A0D683", // Light green for cards
-    cardHoverBackground: "#72BF78", // Medium green for hover effect
-    text: "#2F5233", // Dark greenish-gray for main text
-    lightText: "#ffffff", // White for text on cards
-    header: "#72BF78", // Green header
-    title: "#2F5233", // Darker green for section titles
+    primary: "#72BF78",
+    secondary: "#2F5233",
+    background: "#FFFFFF",
+    cardBackground: "#A0D683",
+    cardHoverBackground: "#72BF78",
+    text: "#2F5233",
+    lightText: "#ffffff",
+    header: "#72BF78",
+    title: "#2F5233",
   },
 };
 
@@ -105,7 +112,7 @@ const IndustryBox = styled(motion.div)`
   }
 
   h3 {
-    color: ${({ theme }) => theme.colors.lightText}; /* White text for contrast */
+    color: ${({ theme }) => theme.colors.lightText};
     margin-top: 10px;
   }
 
@@ -130,32 +137,38 @@ const OurIndustries = () => {
     {
       icon: faChartLine,
       title: "Accounting",
-      description: "Professional accounting services to manage financial records and tax filings.",
+      description:
+        "Professional accounting services to manage financial records and tax filings.",
     },
     {
       icon: faCog,
       title: "Finance",
-      description: "Strategic financial services including investment advice and financial planning.",
+      description:
+        "Strategic financial services including investment advice and financial planning.",
     },
     {
       icon: faSearch,
       title: "IT Services",
-      description: "Expert IT solutions to support and optimize technology infrastructures.",
+      description:
+        "Expert IT solutions to support and optimize technology infrastructures.",
     },
     {
       icon: faLightbulb,
       title: "Consulting",
-      description: "Providing business consultancy to improve strategy and operations.",
+      description:
+        "Providing business consultancy to improve strategy and operations.",
     },
     {
       icon: faRocket,
       title: "Marketing",
-      description: "Creative marketing solutions for brand building and customer acquisition.",
+      description:
+        "Creative marketing solutions for brand building and customer acquisition.",
     },
     {
       icon: faPaintBrush,
       title: "Design",
-      description: "Graphic and UX/UI design services to enhance user experience and branding.",
+      description:
+        "Graphic and UX/UI design services to enhance user experience and branding.",
     },
   ];
 
@@ -166,7 +179,8 @@ const OurIndustries = () => {
           <SectionHeader>Our Industries</SectionHeader>
           <SectionTitle>We Serve a Range of Professional Careers</SectionTitle>
           <SectionSubtitle>
-            Our industry expertise spans across accounting, finance, IT, and more, offering innovative solutions for business growth.
+            Our industry expertise spans across accounting, finance, IT, and
+            more, offering innovative solutions for business growth.
           </SectionSubtitle>
         </SectionContent>
         <IndustriesContainer>

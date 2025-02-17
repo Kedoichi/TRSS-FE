@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import dynamic from "next/dynamic";
-
 import Header from "../components/Header";
 import PopularJobs from "@/components/PopularJobs.js";
 
@@ -9,14 +8,13 @@ const Footer = dynamic(() => import("../components/Footer.js"), { ssr: false });
 
 const theme = {
   colors: {
-    primary: "#72BF78", // Main feature color for key highlights
-    secondary: "#2F5233", // Dark green for accents
-    background: "#D3EE98", // Light greenish white background
-    heroBackground: "#A0D683", // Slightly deeper green for the hero section
-    heroText: "#FFFFFF", // White for hero text
-    subtitleText: "#FEFF9F", // Soft yellow for subtitle contrast
-    stickyBackground: "#D3EE98", // Light greenish sticky header background
-    stickyShadow: "rgba(0, 0, 0, 0.1)", // Subtle shadow for sticky effect
+    primary: "#72BF78",
+    secondary: "#2F5233",
+    background: "#D3EE98",
+    heroText: "#FFFFFF",
+    subtitleText: "#FEFF9F",
+    stickyBackground: "#D3EE98",
+    stickyShadow: "rgba(0, 0, 0, 0.1)",
   },
 };
 
@@ -25,7 +23,8 @@ const MainContainer = styled.main`
 `;
 
 const HeroSection = styled.section`
-  background: ${({ theme }) => theme.colors.heroBackground};
+  position: relative;
+  background: url("/Images/Image9.png") no-repeat center center/cover;
   color: ${({ theme }) => theme.colors.heroText};
   text-align: center;
   justify-content: center;
@@ -39,6 +38,19 @@ const HeroSection = styled.section`
   @media (max-width: 768px) {
     padding: 60px 15px;
   }
+`;
+
+const HeroOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+`;
+
+const HeroContent = styled.div`
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  text-align: center;
 `;
 
 const HeroTitle = styled.h1`
@@ -63,7 +75,7 @@ const HeroSubtitle = styled.p`
 
 const StickyHeader = styled.div`
   position: fixed;
-  top: ${({ showHeader }) => (showHeader ? "0" : "-80px")};
+  top: ${({ $showHeader }) => ($showHeader ? "0" : "-100%")};
   left: 0;
   right: 0;
   background-color: ${({ theme }) => theme.colors.stickyBackground};
@@ -73,34 +85,75 @@ const StickyHeader = styled.div`
 `;
 
 const JobOpenings = () => {
+  const [hydrated, setHydrated] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+
     const handleScroll = () => {
-      setShowHeader(window.scrollY <= lastScrollY || window.scrollY === 0);
-      setLastScrollY(window.scrollY);
+      const currentScrollY = window.scrollY;
+      if (currentScrollY === 0) {
+        setShowHeader(true);
+      } else if (currentScrollY > lastScrollY + 5) {
+        setShowHeader(false);
+      } else if (currentScrollY < lastScrollY - 5) {
+        setShowHeader(true);
+      }
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hydrated, lastScrollY]);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastScrollY]);
+  if (!hydrated) {
+    return (
+      <ThemeProvider theme={theme}>
+        <StickyHeader $showHeader={true}>
+          <Header />
+        </StickyHeader>
+
+        <HeroSection>
+          <HeroOverlay />
+          <HeroContent>
+            <HeroTitle>Explore Exciting Job Opportunities</HeroTitle>
+            <HeroSubtitle>
+              Discover a variety of career opportunities that align with your passion and skills.
+              Start your journey with us today!
+            </HeroSubtitle>
+          </HeroContent>
+        </HeroSection>
+
+        <MainContainer>
+          <PopularJobs />
+        </MainContainer>
+
+        <Footer />
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      <StickyHeader showHeader={showHeader}>
+      <StickyHeader $showHeader={showHeader}>
         <Header />
       </StickyHeader>
 
       <HeroSection>
-        <HeroTitle>Explore Exciting Job Opportunities</HeroTitle>
-        <HeroSubtitle>
-          Discover a variety of career opportunities that align with your passion and skills.
-          Start your journey with us today!
-        </HeroSubtitle>
+        <HeroOverlay />
+        <HeroContent>
+          <HeroTitle>Explore Exciting Job Opportunities</HeroTitle>
+          <HeroSubtitle>
+            Discover a variety of career opportunities that align with your passion and skills.
+            Start your journey with us today!
+          </HeroSubtitle>
+        </HeroContent>
       </HeroSection>
 
       <MainContainer>

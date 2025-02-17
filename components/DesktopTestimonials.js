@@ -18,12 +18,27 @@ const Section = styled.section`
   text-align: center;
   color: ${themeColors.textPrimary};
   min-height: 100vh;
-  background: url("/Images/Image2.jpg") no-repeat center center/cover;
-  filter: grayscale(100%); /* Only background is black & white */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  /* MOBILE ADJUSTMENTS - Does not affect desktop view */
+  @media (max-width: 768px) {
+    padding: 60px 15px; /* Less padding for smaller screens */
+    min-height: auto;   /* Let content dictate height on mobile */
+  }
+`;
+
+const Background = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("/Images/Image2.jpg") no-repeat center center/cover;
+  filter: grayscale(100%);
+  z-index: -1;
 `;
 
 const Overlay = styled.div`
@@ -42,6 +57,10 @@ const Title = styled.h2`
   margin-bottom: 10px;
   position: relative;
   z-index: 2;
+
+  @media (max-width: 768px) {
+    font-size: 2rem; /* Smaller on mobile */
+  }
 `;
 
 const Subtitle = styled.p`
@@ -50,6 +69,10 @@ const Subtitle = styled.p`
   color: ${themeColors.accent};
   position: relative;
   z-index: 2;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem; /* Slightly smaller for mobile */
+  }
 `;
 
 const TestimonialContainer = styled.div`
@@ -65,6 +88,11 @@ const TestimonialContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 768px) {
+    max-width: 90%;   /* More fluid on mobile */
+    padding: 30px 20px; /* Slightly reduced padding */
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -88,21 +116,32 @@ const TestimonialText = styled.p`
   font-style: italic;
   color: #333;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem; /* Slightly smaller text on mobile */
+  }
 `;
 
 const Author = styled.h3`
   font-size: 1.5rem;
   font-weight: bold;
-  color: ${themeColors.primary};
+  color: ${(props) => (props.isActive ? themeColors.secondary : themeColors.primary)};
   margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem; 
+  }
 `;
 
 const Company = styled.p`
   font-size: 1.2rem;
   color: #777;
+
+  @media (max-width: 768px) {
+    font-size: 1rem; 
+  }
 `;
 
-/* FIXED ARROW STYLES - NOW VISIBLE */
 const ArrowContainer = styled.div`
   position: absolute;
   top: 50%;
@@ -119,30 +158,32 @@ const Arrow = styled.button`
   border: 2px solid #ffffff;
   color: ${themeColors.textPrimary};
   font-size: 2rem;
-  padding: 15px;
+  width: 3rem;
+  height: 3rem;
   cursor: pointer;
   border-radius: 50%;
   transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
-  pointer-events: auto; /* Ensures button clicks */
-  height: 3rem;
-  width: 3rem;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background: ${themeColors.primary};
     transform: scale(1.1);
   }
 
-  ${(props) => (props.isLeft ? "left: 40px;" : "right: 40px;")}
+  ${(props) => (props.isleft ? "left: 40px;" : "right: 40px;")}
   position: absolute;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
-    padding: 10px;
-    ${(props) => (props.isLeft ? "left: 10px;" : "right: 10px;")}
+    width: 2.5rem;
+    height: 2.5rem;
+    ${(props) => (props.isleft ? "left: 10px;" : "right: 10px;")}
   }
 `;
 
-/* PAGINATION DOTS */
 const DotsContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -154,17 +195,16 @@ const Dot = styled.button`
   height: 12px;
   margin: 0 5px;
   border-radius: 50%;
-  background: ${(props) => (props.isActive ? themeColors.primary : "#ccc")};
+  background: ${(props) => (props.isActive ? themeColors.secondary : "#ccc")};
   border: none;
   cursor: pointer;
   transition: background 0.3s;
 
   &:hover {
-    background: ${themeColors.secondary};
+    background: ${themeColors.primary};
   }
 `;
 
-/* TESTIMONIALS COMPONENT */
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -182,11 +222,11 @@ const Testimonials = () => {
 
   return (
     <Section>
+      <Background />
       <Overlay />
       <Title>From Our Clients</Title>
       <Subtitle>What our clients are saying</Subtitle>
 
-      {/* Testimonial Box */}
       <TestimonialContainer>
         <AnimatePresence mode="wait">
           <motion.div
@@ -207,9 +247,8 @@ const Testimonials = () => {
         </AnimatePresence>
       </TestimonialContainer>
 
-      {/* FIXED ARROWS - ALWAYS VISIBLE */}
       <ArrowContainer>
-        <Arrow isLeft onClick={prevSlide}>
+        <Arrow isleft onClick={prevSlide}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </Arrow>
         <Arrow onClick={nextSlide}>
@@ -217,7 +256,6 @@ const Testimonials = () => {
         </Arrow>
       </ArrowContainer>
 
-      {/* Pagination Dots */}
       <DotsContainer>
         {testimonialsData.map((_, index) => (
           <Dot
@@ -231,7 +269,6 @@ const Testimonials = () => {
   );
 };
 
-/* TESTIMONIALS DATA */
 const testimonialsData = [
   {
     text: "Talent Spree Solutions helped us find the perfect candidates. Their attention to detail and understanding of our needs was remarkable.",
