@@ -3,16 +3,19 @@ import { motion, useAnimation } from "framer-motion";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import Header from "../components/Header";
-import OurServices from "../components/OurServices";
 
-const OurIndustries = dynamic(() => import("@/components/OurIndustries.js"), { ssr: false });
-const ProcessSteps = dynamic(() => import("@/components/ProcessSteps.js"), { ssr: false });
-const ContactForm = dynamic(() => import("@/components/ContactForm.js"), { ssr: false });
-const Footer = dynamic(() => import("../components/Footer.js"), { ssr: false });
+const CompanyOverview = dynamic(() => import("@/components/CompanyOverview"), { ssr: false });
+const OurCoreValues = dynamic(() => import("../components/OurCoreValues"), { ssr: false });
+const MeetOurTeam = dynamic(() => import("@/components/MeetOurTeam"), { ssr: false });
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 
-const HeroSection = styled(motion.section)`
+const MainContainer = styled(motion.main)`
+  scroll-behavior: smooth;
+  margin-bottom: 40px;
+`;
+
+const HeroSection = styled.section`
   position: relative;
-  background: url("/Images/Image6.jpg") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,13 +23,14 @@ const HeroSection = styled(motion.section)`
   text-align: center;
   padding: 40px 20px;
   min-height: 80vh;
+  background: url("/Images/Image3.jpg") no-repeat center center/cover;
 
   @media (max-width: 768px) {
-    padding: 30px 15px;
+    min-height: 60vh;
   }
 `;
 
-const HeroOverlay = styled(motion.div)`
+const HeroOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -35,22 +39,18 @@ const HeroOverlay = styled(motion.div)`
   background: rgba(0, 0, 0, 0.5);
 `;
 
-const HeroContent = styled(motion.div)`
+const HeroContent = styled.div`
   position: relative;
   z-index: 1;
   max-width: 800px;
 `;
 
-const Subtitle = styled(motion.h4)`
+const Subtitle = styled.h4`
   font-size: 1.2rem;
   margin-bottom: 10px;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
 `;
 
-const Title = styled(motion.h1)`
+const Title = styled.h1`
   font-size: 3rem;
   font-weight: bold;
   margin: 0;
@@ -60,11 +60,7 @@ const Title = styled(motion.h1)`
   }
 `;
 
-const MainContainer = styled(motion.main)`
-  scroll-behavior: smooth;
-`;
-
-const StickyHeader = styled(motion.div)`
+const StickyHeader = styled.div`
   position: fixed;
   top: ${({ $showHeader }) => ($showHeader ? "0" : "-100%")};
   left: 0;
@@ -75,14 +71,14 @@ const StickyHeader = styled(motion.div)`
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
-const Services = () => {
+const AboutUs = () => {
   const [hydrated, setHydrated] = useState(false);
-  const [showHeader, setShowHeader] = useState(true); 
+  const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
   const sectionsRef = useRef([]);
-  const controlsArray = useRef([useAnimation(), useAnimation(), useAnimation(), useAnimation()]);
+  const controlsArray = useRef([useAnimation(), useAnimation(), useAnimation()]);
 
+  // Ensure hydration before rendering components
   useEffect(() => {
     setHydrated(true);
   }, []);
@@ -92,13 +88,10 @@ const Services = () => {
 
     const handleScrollSections = () => {
       sectionsRef.current.forEach((ref, index) => {
-        if (ref && controlsArray.current[index]) {
+        if (ref) {
           const { top, bottom } = ref.getBoundingClientRect();
-          if (top < window.innerHeight * 0.8 && bottom > 0) {
-            controlsArray.current[index].start({ opacity: 1, y: 0, transition: { duration: 0.5 } });
-          } else {
-            controlsArray.current[index].start({ opacity: 0, y: 50, transition: { duration: 0.3 } });
-          }
+          const isInViewport = top < window.innerHeight * 0.8 && bottom > 0;
+          controlsArray.current[index].start({ opacity: isInViewport ? 1 : 0 });
         }
       });
     };
@@ -106,7 +99,9 @@ const Services = () => {
     window.addEventListener("scroll", handleScrollSections);
     handleScrollSections();
 
-    return () => window.removeEventListener("scroll", handleScrollSections);
+    return () => {
+      window.removeEventListener("scroll", handleScrollSections);
+    };
   }, [hydrated]);
 
   useEffect(() => {
@@ -128,83 +123,44 @@ const Services = () => {
     return () => window.removeEventListener("scroll", handleScrollHeader);
   }, [hydrated, lastScrollY]);
 
-  if (!hydrated) {
-    return (
-      <>
-        <StickyHeader $showHeader={true}>
+  return (
+    <>
+      {/* Sticky Header */}
+      {hydrated && (
+        <StickyHeader $showHeader={showHeader}>
           <Header />
         </StickyHeader>
+      )}
+
+      {/* Hero Section */}
+      {hydrated && (
         <HeroSection>
           <HeroOverlay />
           <HeroContent>
-            <Subtitle>Our Services</Subtitle>
-            <Title>Empowering Your Business with Tailored Solutions</Title>
+            <Subtitle>About Us</Subtitle>
+            <Title>Empowering Businesses with Expert Recruitment</Title>
           </HeroContent>
         </HeroSection>
-        <OurServices />
-        <ProcessSteps />
-        <OurIndustries />
-        <ContactForm />
-        <Footer />
-      </>
-    );
-  }
+      )}
 
-  return (
-    <>
-      <StickyHeader
-        $showHeader={showHeader}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Header />
-      </StickyHeader>
-
-      <HeroSection
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <HeroOverlay
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ duration: 0.2 }}
-        />
-        <HeroContent>
-          <Subtitle
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            Our Services
-          </Subtitle>
-          <Title
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
+      {/* Main Content */}
+      {hydrated &&
+        [CompanyOverview, OurCoreValues, MeetOurTeam].map((Component, index) => (
+          <MainContainer
+            key={index}
+            ref={(el) => (sectionsRef.current[index] = el)}
+            initial={{ opacity: 0 }}
+            animate={controlsArray.current[index]}
             transition={{ duration: 0.5 }}
           >
-            Empowering Your Business with Tailored Solutions
-          </Title>
-        </HeroContent>
-      </HeroSection>
+            <Component />
+          </MainContainer>
+        ))}
 
-      {[OurServices, ProcessSteps, OurIndustries, ContactForm].map((Component, index) => (
-        <MainContainer
-          key={index}
-          ref={(el) => {
-            if (el) sectionsRef.current[index] = el;
-          }}
-          initial={{ opacity: 0, y: 50 }}
-          animate={controlsArray.current[index]}
-        >
-          <Component />
-        </MainContainer>
-      ))}
-
-      <Footer />
+      {/* Footer */}
+      {hydrated && <Footer />}
     </>
   );
 };
 
-export default Services;
+export default AboutUs;

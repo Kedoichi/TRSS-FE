@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -84,7 +84,11 @@ const teamMembers = [
     id: "vuong-do",
     name: "Vuong Do",
     role: "Director of Connections/Founder",
-    description: "Vuong is a visionary leader with a strong background in fostering connections and driving organizational success.",
+    description: `Vuong graduated with a Bachelor of Accounting and Finance from Monash University. As the founder of OneLedger, a business offering accounting, finance, and insurance services, he has extensive experience in launching and scaling successful businesses, both in Australia and offshore.
+
+    His entrepreneurial journey exposed him to the challenges of offshoring, leading him to identify a crucial gap in the recruitment market—ensuring a seamless hiring process in Australia for offshore ventures.
+
+    Outside of work, Vuong is a passionate sports fan who supports all teams red and black—Chicago Bulls, Essendon Bombers, Manchester United, and Ferrari. A proud husband and father of two boys, he dreams of one day traveling to Mars.`,
     email: "vuong.do@oneledger.com.au",
     phone: "+123456789",
     linkedin: "https://www.linkedin.com/in/vuong-do-b3b8b576/",
@@ -93,7 +97,11 @@ const teamMembers = [
     id: "vanessa",
     name: "Vanessa",
     role: "Head of Executive Recruitment",
-    description: "Vanessa leads executive and recruitment efforts, ensuring businesses are matched with the best talent.",
+    description: `Vanessa started her career in banking but soon found her true passion in recruitment when she joined a startup outsourcing company in Cebu. With over seven years of experience in end-to-end hiring, she has worked closely with clients in Australia and the US to deliver customized recruitment solutions.
+
+    She specializes in sourcing top talent for Recruitment, Executive Assistance, and Finance roles, believing that the best candidates aren’t necessarily “perfect,” but rather those whose values align with a company’s mission.
+
+    Outside of work, Vanessa is an avid runner—having completed a full marathon and planning to make it a yearly goal! She enjoys functional workouts, traveling with her family, and hosting lively game nights. When she’s not staying active, she loves spending time with her adorable three-year-old pup, Rafa.`,
     email: "admin@talentspreesolutions.com",
     phone: "+123456789",
     linkedin: "https://www.linkedin.com/in/jennylloyd",
@@ -103,10 +111,19 @@ const teamMembers = [
 const TeamMemberDetails = () => {
   const router = useRouter();
   const { id } = router.query;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!router.isReady || !isClient) {
+    return <p>Loading...</p>;
+  }
 
   const member = teamMembers.find((member) => member.id === id);
 
-  if (!member) return <p>Loading...</p>;
+  if (!member) return <p>Member not found.</p>;
 
   return (
     <>
@@ -122,18 +139,22 @@ const TeamMemberDetails = () => {
         <Description>{member.description}</Description>
 
         <ContactDetails>
-          <ContactItem href={`mailto:${member.email}`}>
-            <FontAwesomeIcon icon={faEnvelope} />
-            {member.email}
-          </ContactItem>
-          <ContactItem href={`tel:${member.phone}`}>
-            <FontAwesomeIcon icon={faPhoneAlt} />
-            {member.phone}
-          </ContactItem>
-          <ContactItem href={member.linkedin} target="_blank" rel="noopener noreferrer">
-            <FontAwesomeIcon icon={faLinkedin} />
-            Connect on LinkedIn
-          </ContactItem>
+          {isClient && (
+            <>
+              <ContactItem href={`mailto:${member.email}`}>
+                <FontAwesomeIcon icon={faEnvelope} />
+                {member.email}
+              </ContactItem>
+              <ContactItem href={`tel:${member.phone}`}>
+                <FontAwesomeIcon icon={faPhoneAlt} />
+                {member.phone}
+              </ContactItem>
+              <ContactItem href={member.linkedin} target="_blank" rel="noopener noreferrer">
+                <FontAwesomeIcon icon={faLinkedin} />
+                Connect on LinkedIn
+              </ContactItem>
+            </>
+          )}
         </ContactDetails>
       </Section>
       <Footer />
