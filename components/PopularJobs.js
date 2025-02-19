@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMapMarkerAlt,
-  faCalendarAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 const theme = {
   colors: {
-    primary: "#72BF78", // Bright green for primary elements
-    secondary: "#1B5E20", // Dark green for secondary accents
-    background: "#FFFFFF", // White background
-    text: "#333", // Dark gray for text
-    mutedText: "#666", // Muted gray for secondary text
-    jobTypeBackground: "#E8F5E9", // Light green for job type background
-    jobTypeText: "#388E3C", // Darker green for job type text
-    buttonBackground: "#72BF78", // Green for buttons
-    buttonHover: "#A0D683", // Corrected green for button hover
-    iconColor: "#72BF78", // Green for icons
+    primary: "#72BF78",
+    secondary: "#1B5E20",
+    background: "#FFFFFF",
+    text: "#333",
+    mutedText: "#666",
+    jobTypeBackground: "#FEFF9F",
+    jobTypeText: "#72BF78",
+    jobTypeBorder: "#72BF78",
+    buttonBackground: "#72BF78",
+    buttonHover: "#FEFF9F",
+    buttonHoverText: "#72BF78",
+    buttonHoverBorder: "#72BF78",
+    iconColor: "#72BF78",
   },
 };
 
@@ -44,8 +43,7 @@ const SectionSubtitle = styled.p`
   color: ${({ theme }) => theme.colors.mutedText};
   padding: 0 20px;
   max-width: 800px;
-  margin: 0 auto;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
 `;
 
 const JobCardContainer = styled.div`
@@ -89,9 +87,10 @@ const CompanyName = styled.p`
 `;
 
 const JobType = styled.p`
-  padding: 5px;
+  padding: 5px 10px;
   background: ${({ theme }) => theme.colors.jobTypeBackground};
   color: ${({ theme }) => theme.colors.jobTypeText};
+  border: 2px solid ${({ theme }) => theme.colors.jobTypeBorder};
   border-radius: 5px;
   font-size: 0.9rem;
 `;
@@ -134,10 +133,12 @@ const ApplyButton = styled.button`
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.buttonHover};
+    color: ${({ theme }) => theme.colors.buttonHoverText};
+    border: 2px solid ${({ theme }) => theme.colors.buttonHoverBorder};
   }
 `;
 
@@ -151,14 +152,12 @@ const PopularJobs = () => {
       try {
         const response = await fetch("/api/jobs");
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch jobs");
+          throw new Error("Failed to fetch jobs");
         }
         const data = await response.json();
         setJobs(data?.data?.jobs || []);
       } catch (error) {
-        console.error("API Error:", error);
-        setError(error.message || "Failed to load jobs");
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -168,14 +167,14 @@ const PopularJobs = () => {
   }, []);
 
   if (loading) return <JobsSection>Loading jobs...</JobsSection>;
-  if (error) {
+  if (error)
     return (
       <JobsSection>
         <SectionTitle>Error</SectionTitle>
         <SectionSubtitle>{error}</SectionSubtitle>
       </JobsSection>
     );
-  }
+
   return (
     <ThemeProvider theme={theme}>
       <JobsSection>
@@ -196,17 +195,11 @@ const PopularJobs = () => {
                 <JobTitle>{title}</JobTitle>
                 <JobDetailsWrapper>
                   <JobLocation>
-                    <FontAwesomeIcon
-                      icon={faMapMarkerAlt}
-                      style={{ color: theme.colors.iconColor }}
-                    />
+                    <FontAwesomeIcon icon={faMapMarkerAlt} style={{ color: theme.colors.iconColor }} />
                     {location}
                   </JobLocation>
                   <JobDate>
-                    <FontAwesomeIcon
-                      icon={faCalendarAlt}
-                      style={{ color: theme.colors.iconColor }}
-                    />
+                    <FontAwesomeIcon icon={faCalendarAlt} style={{ color: theme.colors.iconColor }} />
                     {new Date(createdAt).toLocaleDateString()}
                   </JobDate>
                 </JobDetailsWrapper>

@@ -7,16 +7,22 @@ import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
+const themeColors = {
+  primary: "#72BF78",
+  iconHover: "#FEFF9F",
+};
+
 const Section = styled.section`
   max-width: 900px;
-  margin: 60px auto;
+  margin: 80px auto;
   padding: 20px;
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 30px;
   align-items: center;
+  justify-content: space-between;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -25,20 +31,31 @@ const HeaderContainer = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  width: 200px;
-  height: 200px;
-  background-color: #72bf78;
+  width: 250px;
+  height: 250px;
+  background-color: ${themeColors.primary};
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: bold;
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 200px;
+    font-size: 3rem;
+  }
 `;
 
 const DetailsContainer = styled.div`
   flex: 1;
+  text-align: left;
+
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 
 const Name = styled.h1`
@@ -53,29 +70,29 @@ const Role = styled.h2`
   color: #777;
 `;
 
-const Description = styled.p`
-  margin-top: 20px;
-  font-size: 1.2rem;
-  line-height: 1.8;
+const ContactIcons = styled.div`
+  display: flex;
+  gap: 25px;
+  margin-top: 15px;
 `;
 
-const ContactDetails = styled.div`
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const ContactItem = styled.a`
-  font-size: 1.1rem;
-  color: #72bf78;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
+const IconLink = styled.a`
+  font-size: 1.8rem;
+  color: ${themeColors.primary};
+  transition: color 0.3s;
 
   &:hover {
-    text-decoration: underline;
+    color: ${themeColors.iconHover};
+  }
+`;
+
+const Description = styled.div`
+  margin-top: 30px;
+  font-size: 1.2rem;
+  line-height: 1.8;
+
+  p {
+    margin-bottom: 15px;
   }
 `;
 
@@ -84,7 +101,18 @@ const teamMembers = [
     id: "vuong-do",
     name: "Vuong Do",
     role: "Director of Connections/Founder",
-    description: "Vuong is a visionary leader with a strong background in fostering connections and driving organizational success.",
+    description: [
+      `Vuong graduated with a Bachelor of Accounting and Finance from Monash University. 
+      As the founder of OneLedger, a business offering accounting, finance, and insurance services, 
+      Vuong has extensive experience in starting and growing multiple successful businesses, 
+      both in Australia and offshore.`,
+      `His entrepreneurial journey has given him valuable insights into the challenges of offshoring, 
+      leading him to identify a gap in the recruitment market—especially when it comes to ensuring a seamless 
+      recruitment process in Australia for offshore ventures.`,
+      `Outside of work, Vuong is a passionate sports fan who loves all teams red and black - 
+      Chicago Bulls, Essendon Bombers, Man United, and Ferrari. 
+      He is also a proud husband and father of two boys and hopes to one day travel to Mars.`,
+    ],
     email: "vuong.do@oneledger.com.au",
     phone: "+123456789",
     linkedin: "https://www.linkedin.com/in/vuong-do-b3b8b576/",
@@ -93,7 +121,17 @@ const teamMembers = [
     id: "vanessa",
     name: "Vanessa",
     role: "Head of Executive Recruitment",
-    description: "Vanessa leads executive and recruitment efforts, ensuring businesses are matched with the best talent.",
+    description: [
+      `Vanessa kicked off her career in the banking industry after college but soon discovered her passion 
+      for recruitment when she joined a startup outsourcing company in Cebu.`,
+      `With over seven years of experience in end-to-end hiring, she has worked closely with clients in Australia 
+      and the US to provide tailored recruitment solutions. She has a knack for finding top talent in Recruitment, 
+      Executive Assistance, and Finance roles—always believing that the best candidates aren’t “perfect,” but 
+      the ones whose values align with the business.`,
+      `Outside of work, Vanessa keeps active with running—she’s conquered a full marathon and plans to make it a yearly goal! 
+      She also enjoys functional workouts and loves traveling with family. Game nights are her thing, and she’s always the 
+      enthusiastic game master at family parties. When she’s not on the move, she’s hanging out with her adorable three-year-old pup, Rafa.`,
+    ],
     email: "admin@talentspreesolutions.com",
     phone: "+123456789",
     linkedin: "https://www.linkedin.com/in/jennylloyd",
@@ -117,24 +155,25 @@ const TeamMemberDetails = () => {
           <DetailsContainer>
             <Name>{member.name}</Name>
             <Role>{member.role}</Role>
+            <ContactIcons>
+              <IconLink href={`mailto:${member.email}`} title="Email">
+                <FontAwesomeIcon icon={faEnvelope} />
+              </IconLink>
+              <IconLink href={`tel:${member.phone}`} title="Phone">
+                <FontAwesomeIcon icon={faPhoneAlt} />
+              </IconLink>
+              <IconLink href={member.linkedin} title="LinkedIn" target="_blank" rel="noopener noreferrer">
+                <FontAwesomeIcon icon={faLinkedin} />
+              </IconLink>
+            </ContactIcons>
           </DetailsContainer>
         </HeaderContainer>
-        <Description>{member.description}</Description>
 
-        <ContactDetails>
-          <ContactItem href={`mailto:${member.email}`}>
-            <FontAwesomeIcon icon={faEnvelope} />
-            {member.email}
-          </ContactItem>
-          <ContactItem href={`tel:${member.phone}`}>
-            <FontAwesomeIcon icon={faPhoneAlt} />
-            {member.phone}
-          </ContactItem>
-          <ContactItem href={member.linkedin} target="_blank" rel="noopener noreferrer">
-            <FontAwesomeIcon icon={faLinkedin} />
-            Connect on LinkedIn
-          </ContactItem>
-        </ContactDetails>
+        <Description>
+          {member.description.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </Description>
       </Section>
       <Footer />
     </>

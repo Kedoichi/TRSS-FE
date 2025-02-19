@@ -20,7 +20,7 @@ const navLinks = [
   { href: "/about-us", label: "Who We Are" },
   { href: "/services", label: "What We Offer" },
   { href: "/job-openings", label: "Explore Opportunities" },
-  { href: "/contact", label: "Get in Touch" },
+  { href: "/contact", label: "Let's Talk" },
 ];
 
 const Header = () => {
@@ -34,18 +34,14 @@ const Header = () => {
       <Link href={href} legacyBehavior>
         <a className="relative group">
           <motion.div
-            className={`
-              text-lg font-semibold px-4 py-2 rounded-md
-              ${isMobile ? "text-primary" : "text-primary"}
-              transition-all duration-200
-              hover:bg-primary/5 relative
-            `}
+            className="text-lg font-semibold px-4 py-2 rounded-md transition-all duration-200 hover:bg-gray-200/20 relative"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
             {label}
             <motion.div
-              className="absolute bottom-0 left-0 h-0.5 bg-primary w-full origin-left"
+              className="absolute bottom-0 left-0 h-0.5 w-full origin-left"
+              style={{ backgroundColor: "#72BF78" }}
               initial={{ scaleX: 0 }}
               animate={{ scaleX: isActive ? 1 : 0 }}
               transition={{ duration: 0.2 }}
@@ -57,20 +53,18 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full backdrop-blur-sm">
+    <header className="w-full backdrop-blur-sm bg-white/80 shadow-md">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className={`text-2xl md:text-3xl font-bold text-primary ${bebasNeue.className}`}
+            className={`text-2xl md:text-3xl font-bold ${bebasNeue.className}`}
           >
             Talent Spree Solutions
           </motion.div>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
             {navLinks.map((link) => (
               <NavLink key={link.href} {...link} />
@@ -79,42 +73,27 @@ const Header = () => {
             <Link href="/contact" legacyBehavior>
               <a className="group">
                 <motion.div
-                  className="flex items-center gap-2 px-4 py-2 text-lg font-medium text-primary 
-                    rounded-md hover:bg-primary/5 transition-all duration-300"
+                  className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] bg-[#FEFF9F] transition-all duration-300"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <FileUp className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]" />
-                  <span>CV</span>
+                  <FileUp className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]" style={{ color: "#72BF78" }} />
+                  <span style={{ color: "#72BF78" }}>CV</span>
                 </motion.div>
               </a>
             </Link>
           </nav>
 
-          {/* Mobile Navigation */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-primary hover:bg-primary/5"
-              >
-                <motion.div
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <FontAwesomeIcon
-                    icon={isOpen ? faTimes : faBars}
-                    className="text-xl"
-                  />
+              <Button variant="ghost" size="icon" className="hover:bg-gray-200/20">
+                <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                  <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="text-xl" />
                 </motion.div>
               </Button>
             </SheetTrigger>
 
-            <SheetContent
-              side="right"
-              className="w-[300px] bg-background/95 backdrop-blur-md"
-            >
+            <SheetContent side="right" className="w-[300px] bg-white/90 backdrop-blur-md shadow-lg">
               <nav className="flex flex-col space-y-4 mt-12">
                 <AnimatePresence mode="wait">
                   {navLinks.map((link, index) => (
@@ -138,13 +117,12 @@ const Header = () => {
                     <Link href="/cv" legacyBehavior>
                       <a className="group">
                         <motion.div
-                          className="flex items-center gap-2 px-4 py-2 text-lg font-medium text-primary 
-                            rounded-md hover:bg-primary/5 transition-all duration-300"
+                          className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] bg-[#FEFF9F] transition-all duration-300"
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                         >
-                          <FileUp className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]" />
-                          <span>CV</span>
+                          <FileUp className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]" style={{ color: "#72BF78" }} />
+                          <span style={{ color: "#72BF78" }}>CV</span>
                         </motion.div>
                       </a>
                     </Link>

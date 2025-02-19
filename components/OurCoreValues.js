@@ -3,21 +3,44 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 const themeColors = {
-  primary: "#72BF78", // Green for titles
-  textPrimary: "#1B1B1B", // Dark text for descriptions
-  backgroundText: "#E0E0E0", // Lighter gray for background words
+  primary: "#72BF78",
+  textPrimary: "#1B1B1B",
+  backgroundText: "#E0E0E0",
 };
 
 const Section = styled.section`
-  padding: 80px 20px;
-  margin-bottom: 6rem;
+  padding: 0px 60px 40px;
+  margin-bottom: 4rem;
   display: flex;
   flex-direction: column;
-  gap: 120px;
+  align-items: center;
 
   @media (max-width: 768px) {
-    gap: 60px;
-    padding: 60px 15px;
+    padding: 50px 15px;
+  }
+`;
+
+const Heading = styled(motion.h1)`
+  font-size: 3rem;
+  font-weight: bold;
+  color: ${themeColors.primary};
+  text-align: center;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+`;
+
+const ValuesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 100px; /* Increased gap between values */
+  width: 100%;
+  max-width: 1100px;
+
+  @media (max-width: 768px) {
+    gap: 80px;
   }
 `;
 
@@ -27,13 +50,12 @@ const Row = styled(motion.div)`
   justify-content: space-between;
   flex-wrap: wrap;
   position: relative;
-  max-width: 1100px;
-  margin: 0 auto;
-  gap: 2rem;
+  gap: 8rem;
 
   @media (max-width: 768px) {
     flex-direction: column;
     text-align: center;
+    gap: 5rem;
   }
 `;
 
@@ -61,7 +83,7 @@ const Title = styled(motion.h2)`
   font-size: 2.5rem;
   font-weight: bold;
   color: ${themeColors.primary};
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   text-align: left;
 
   @media (max-width: 768px) {
@@ -71,7 +93,7 @@ const Title = styled(motion.h2)`
 `;
 
 const Description = styled(motion.p)`
-  margin-top: 2rem;
+  margin-top: 1rem;
   font-size: 1.1rem;
   color: ${themeColors.textPrimary};
   line-height: 1.7;
@@ -79,7 +101,7 @@ const Description = styled(motion.p)`
 
   @media (max-width: 768px) {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     font-size: 1rem;
   }
 `;
@@ -136,23 +158,29 @@ const OurCoreValues = () => {
 
   return (
     <Section>
-      {values.map((value, index) => (
-        <Row
-          key={index}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true }}
-          {...animations.row}
-        >
-          <LeftContainer>
-            <Title {...animations.text}>{value.title}</Title>
-          </LeftContainer>
-          <RightContainer>
-            <Description {...animations.text}>{value.description}</Description>
-          </RightContainer>
-          <BackgroundText>{value.backgroundWord}</BackgroundText>
-        </Row>
-      ))}
+      <Heading initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }}>
+        Our Core Values
+      </Heading>
+
+      <ValuesContainer>
+        {values.map((value, index) => (
+          <Row
+            key={index}
+            initial="initial"
+            whileInView="whileInView"
+            viewport={{ once: true }}
+            {...animations.row}
+          >
+            <LeftContainer>
+              <Title {...animations.text}>{value.title}</Title>
+            </LeftContainer>
+            <RightContainer>
+              <Description {...animations.text}>{value.description}</Description>
+            </RightContainer>
+            <BackgroundText>{value.backgroundWord}</BackgroundText>
+          </Row>
+        ))}
+      </ValuesContainer>
     </Section>
   );
 };

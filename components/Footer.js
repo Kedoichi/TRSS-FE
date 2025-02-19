@@ -84,10 +84,10 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="relative text-primary hover:text-primary/80 transition-colors duration-200 group"
+                    className="relative text-[#0D110E] hover:text-[#FEFF9F] transition-colors duration-200 group"
                   >
                     {link.label}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FEFF9F] transition-all duration-300 group-hover:w-full" />
                   </a>
                 </li>
               ))}
@@ -131,21 +131,21 @@ const Footer = () => {
               <div className="space-y-2">
                 <a
                   href={`tel:${contact.phone}`}
-                  className="flex items-center gap-2 text-primary-foreground/80 transition-colors duration-200 "
+                  className="flex items-center gap-2 text-[#0D110E] hover:text-[#FEFF9F] transition-colors duration-200 group"
                 >
                   <FontAwesomeIcon
                     icon={faPhoneAlt}
-                    className="w-4 h-4 text-[#585A55]"
+                    className="w-4 h-4 text-[#72BF78] group-hover:text-[#FEFF9F] transition-colors duration-200"
                   />
                   <span className="text-md">{contact.phone}</span>
                 </a>
                 <a
                   href={`mailto:${contact.email}`}
-                  className="flex items-center gap-2 text-primary-foreground/80 transition-colors duration-200"
+                  className="flex items-center gap-2 text-[#0D110E] hover:text-[#FEFF9F] transition-colors duration-200 group"
                 >
                   <FontAwesomeIcon
                     icon={faEnvelope}
-                    className="w-4 h-4 text-[#585A55]"
+                    className="w-4 h-4 text-[#72BF78] group-hover:text-[#FEFF9F] transition-colors duration-200"
                   />
                   <span className="text-md">{contact.email}</span>
                 </a>
@@ -154,16 +154,16 @@ const Footer = () => {
               <Separator className="bg-primary-foreground" />
 
               {/* Social Links */}
-              <div className="flex gap-4 ">
+              <div className="flex gap-4">
                 {socialLinks.map((social, index) => (
                   <a
                     key={index}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors duration-200 text-[#B9DCC6]"
+                    className="transition-colors duration-200 text-[#72BF78] hover:text-[#FEFF9F]"
                   >
-                    <FontAwesomeIcon icon={social.icon} className="w-8 h-8  " />
+                    <FontAwesomeIcon icon={social.icon} className="w-8 h-8" />
                   </a>
                 ))}
               </div>

@@ -9,10 +9,12 @@ const Section = styled.section`
 
 const Title = styled.h4`
   font-size: 2.5rem;
-  color: black;
+  color: #72BF78;
   width: 50%;
   margin: auto;
   margin-bottom: 40px;
+  font-weight: bold;
+  text-align: center;
 
   @media (max-width: 768px) {
     font-size: 2rem;
