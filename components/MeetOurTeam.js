@@ -97,10 +97,9 @@ const Overlay = styled.div`
   text-align: center;
   opacity: 0; /* Hidden by default */
   transition: opacity 0.3s;
-  pointer-events: none; /* Not clickable unless active */
+  pointer-events: none;
 
   @media (max-width: 768px) {
-    /* We'll use inline style to toggle on mobile */
     position: absolute; 
   }
 `;
@@ -126,21 +125,18 @@ const TeamMemberCard = ({ name, role, id, activeCard, setActiveCard }) => {
 
   const handleTap = () => {
     if (window.innerWidth <= 768) {
-      // If this card is active, close it; else open it
       setActiveCard(isActive ? null : id);
     }
   };
 
   const handleReadMore = (e) => {
-    e.stopPropagation(); // Prevent toggling overlay when tapping button
+    e.stopPropagation();
     router.push(`/team/${id}`);
   };
 
   return (
     <CardContainer onClick={handleTap}>
       <ImageContainer>{name.split(" ")[0]}</ImageContainer>
-      {/* Desktop: .overlay is shown on hover
-          Mobile: use isActive to set inline style (opacity=1, pointerEvents=auto) */}
       <Overlay
         className="overlay"
         style={
