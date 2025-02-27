@@ -32,7 +32,7 @@ const OurServices = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="py-20 px-6 md:px-16 lg:px-20 bg-[#F6F6F6]"
+      className="py-20 px-6 md:px-16 lg:px-20"
     >
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row gap-12 lg:gap-24 items-center">
@@ -53,7 +53,7 @@ const OurServices = () => {
                     src={image}
                     alt={`Our Service ${index + 1}`}
                     fill
-                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    className="object-cover hover:scale-105 transition-transform duration-500 rounded-lg"
                     priority={index === 0}
                     placeholder="blur"
                     blurDataURL="/Images/placeholder.jpg"
@@ -71,11 +71,11 @@ const OurServices = () => {
             transition={{ duration: 1, type: "spring", stiffness: 120 }}
             className="w-full md:w-1/2 space-y-6 text-center md:text-left"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1B1B1B]">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#72bf78]">
               {servicesData.title}
             </h2>
 
-            <p className="text-base md:text-lg text-[#606C38] leading-relaxed">
+            <p className="text-base md:text-lg text-[#333333] leading-relaxed">
               {servicesData.description}
             </p>
 
@@ -91,10 +91,10 @@ const OurServices = () => {
                     type: "spring",
                     stiffness: 100,
                   }}
-                  className="flex items-center gap-3 text-[#1B1B1B]"
+                  className="flex items-center gap-3 text-[#333333]"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#72BF78]/10 flex items-center justify-center">
-                    <Check className="w-4 h-4 text-[#72BF78]" />
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#a0d683] flex items-center justify-center">
+                    <Check className="w-4 h-4 text-white" />
                   </div>
                   <span>{item}</span>
                 </motion.li>
@@ -104,7 +104,7 @@ const OurServices = () => {
             <div className="flex md:justify-start justify-center mt-4">
               <Button
                 onClick={() => router.push(servicesData.buttonLink)}
-                className="px-6 py-3 text-lg font-semibold bg-[#72BF78] text-white hover:bg-[#5FA461] transition-transform duration-300 hover:scale-105 rounded-lg shadow-md"
+                className="px-6 py-3 text-lg font-semibold bg-[#72bf78] text-white hover:bg-[#5FA461] transition-transform duration-300 hover:scale-105 rounded-lg shadow-md"
                 size="lg"
               >
                 {servicesData.buttonText}

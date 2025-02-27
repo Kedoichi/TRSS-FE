@@ -9,16 +9,8 @@ import {
   faUsers,
   faDesktop,
 } from "@fortawesome/free-solid-svg-icons";
-import { Bebas_Neue, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 
-// Import Bebas Neue for Headers
-const bebasNeue = Bebas_Neue({
-  weight: ["400"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
-
-// Import Poppins for Descriptions and Buttons
 const poppins = Poppins({
   weight: ["400", "600"],
   style: ["normal"],
@@ -48,7 +40,7 @@ const servicesData = [
   },
 ];
 
-// Container Animation Variants
+// Animation Variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -59,7 +51,6 @@ const containerVariants = {
   },
 };
 
-// Item Animation Variants
 const itemVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: {
@@ -93,15 +84,15 @@ const ServiceCard = ({ icon, title, description }) => {
       viewport={{ once: true, amount: 0.2 }}
       className="w-64 sm:w-full sm:max-w-[300px]"
     >
-      <Card className="h-full bg-white border border-[#72BF78] hover:shadow-lg transition-shadow duration-300 rounded-lg">
+      <Card className="h-full bg-white border border-[#72BF78] hover:shadow-lg transition-shadow duration-300 rounded-xl">
         <CardContent className="p-6 flex flex-col items-center">
-          <div className="text-5xl text-[#72BF78] mb-6">
+          <div className="text-5xl text-[#72BF78] mb-4">
             <FontAwesomeIcon icon={icon} />
           </div>
-          <h3 className={`text-2xl font-semibold text-[#1B1B1B] mb-3 ${poppins.className}`}>
+          <h3 className={`text-lg font-semibold text-[#1B1B1B] mb-2 ${poppins.className}`}>
             {title}
           </h3>
-          <p className={`text-base text-[#606C38] ${poppins.className}`}>
+          <p className={`text-sm text-[#606C38] ${poppins.className}`}>
             {description}
           </p>
         </CardContent>
@@ -112,7 +103,7 @@ const ServiceCard = ({ icon, title, description }) => {
 
 const HomeOurServices = () => {
   return (
-    <section className="py-20 px-6 bg-[#F0F7ED]">
+    <section className="py-20 px-6 bg-[#F8FBEF]">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -122,30 +113,20 @@ const HomeOurServices = () => {
       >
         <motion.h4
           variants={titleVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className={`text-[#72BF78] text-4xl md:text-5xl mb-3 uppercase tracking-wider ${bebasNeue.className}`}
+          className={`text-[#72BF78] text-lg uppercase tracking-wider mb-2 ${poppins.className}`}
         >
           What We Offer
         </motion.h4>
 
         <motion.h2
           variants={titleVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className={`text-3xl md:text-4xl text-[#1B1B1B] max-w-2xl mx-auto mb-12 leading-tight ${poppins.className}`}
+          className={`text-4xl md:text-5xl font-bold text-[#1B1B1B] max-w-3xl mx-auto mb-12 leading-tight ${poppins.className}`}
         >
-          Providing Expert Recruitment Services to Connect Talent with
-          Opportunity
+          Providing Expert Recruitment Services to Connect Talent with Opportunity
         </motion.h2>
 
         <motion.div
           variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center mb-12"
         >
           {servicesData.map((service, index) => (
@@ -155,9 +136,6 @@ const HomeOurServices = () => {
 
         <motion.div
           variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
           className="mt-8 flex justify-center"
         >
           <Button

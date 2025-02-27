@@ -1,212 +1,115 @@
 import React from "react";
-import styled, { ThemeProvider } from "styled-components";
 import { motion } from "framer-motion";
 import Image from "next/image";
-
-const theme = {
-  colors: {
-    primary: "#72BF78", // Updated for the title color
-    secondary: "#2F5233",
-    background: "#E8F5E9",
-    text: "#333333",
-    mutedText: "#666666",
-    stepCircle: "#A0D683", // Updated circle color
-    stepText: "#FFFFFF",
-  },
-};
-
-const Container = styled(motion.div)`
-  display: flex;
-  align-items: center;
-  padding: 40px 80px;
-  background: ${({ theme }) => theme.colors.background};
-  width: 100%;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    padding: 20px 10px;
-  }
-`;
-
-const Title = styled.h2`
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.primary};  /* Updated color */
-  margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    text-align: center;
-  }
-`;
-
-const Subtitle = styled.p`
-  font-size: 1.2rem;
-  color: ${({ theme }) => theme.colors.mutedText};
-  margin-bottom: 40px;
-  max-width: 800px;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    text-align: center;
-  }
-`;
-
-const StepsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 800px;
-
-  @media (max-width: 768px) {
-    align-items: center;
-  }
-`;
-
-const Step = styled(motion.div)`
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 20px;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-  }
-`;
-
-const StepCircle = styled.div`
-  min-width: 60px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.stepCircle};  /* Updated circle color */
-  color: ${({ theme }) => theme.colors.stepText};
-  font-size: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20px;
-
-  @media (max-width: 768px) {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-`;
-
-const StepText = styled.div`
-  font-size: 1rem;
-  color: ${({ theme }) => theme.colors.text};
-  display: flex;
-  flex-direction: column;
-
-  @media (max-width: 768px) {
-    text-align: center;
-  }
-`;
-
-const StepTitle = styled.div`
-  font-weight: bold;
-`;
-
-const StepDescription = styled.p`
-  font-size: 0.9rem;
-  color: ${({ theme }) => theme.colors.mutedText};
-`;
-
-const ImageContainer = styled(motion.div)`
-  width: 50%;
-  display: flex;
-  justify-content: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  img {
-    max-width: 80%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-const TextContainer = styled.div`
-  width: 50%;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
 
 const steps = [
   {
     title: "Client Engagement & Job Order",
-    description: "Initial client request to discuss and finalize the job specifications and role requirements.",
+    description:
+      "Initial client request to discuss and finalize the job specifications and role requirements.",
   },
   {
     title: "Candidate Sourcing & Screening",
-    description: "Receiving the job order to identify and submit the initial list of candidates.",
+    description:
+      "Receiving the job order to identify and submit the initial list of candidates.",
   },
   {
     title: "Interview Process",
-    description: "Submitting the shortlist to schedule interviews and completing the interview rounds.",
+    description:
+      "Submitting the shortlist to schedule interviews and completing the interview rounds.",
   },
   {
     title: "Decision, Offer & Negotiation",
-    description: "Extending an offer to the selected candidate after the final interview. Negotiations between client and candidate may occur.",
+    description:
+      "Extending an offer to the selected candidate after the final interview. Negotiations between client and candidate may occur.",
   },
   {
     title: "Placement & Onboarding",
-    description: "Confirming the candidate’s start date after the offer is accepted and assisting with onboarding tasks.",
+    description:
+      "Confirming the candidate’s start date after the offer is accepted and assisting with onboarding tasks.",
   },
 ];
 
+const animationVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
 const ProcessSteps = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Container
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <ImageContainer
-          initial={{ x: -100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1 }}
+    <section className="bg-[#E6F4EA] py-20 px-6 md:px-16 lg:px-20 !mt-0">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
+        {/* Left Column: Image */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full md:w-1/2 flex justify-center"
         >
           <Image
             src="/Images/Image7.jpg"
             alt="Recruitment Process"
-            width={600}
-            height={400}
+            width={400}
+            height={300}
+            className="rounded-xl shadow-lg object-cover"
           />
-        </ImageContainer>
+        </motion.div>
 
-        <TextContainer>
-          <Title>Recruitment Process</Title>
-          <Subtitle>Step-by-step guide to how we streamline the recruitment process for you.</Subtitle>
-          <StepsContainer>
+        {/* Right Column: Text and Steps */}
+        <div className="w-full md:w-1/2 space-y-6 text-center md:text-left">
+          <motion.h2
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-4xl font-bold text-[#72bf78]"
+          >
+            Recruitment Process
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-base md:text-lg text-[#666666] leading-relaxed"
+          >
+            Step-by-step guide to how we streamline the recruitment process for
+            you.
+          </motion.p>
+
+          <div className="space-y-6">
             {steps.map((step, index) => (
-              <Step
+              <motion.div
                 key={index}
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
+                variants={animationVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+                className="flex items-center gap-4"
               >
-                <StepCircle>{index + 1}</StepCircle>
-                <StepText>
-                  <StepTitle>{step.title}</StepTitle>
-                  <StepDescription>{step.description}</StepDescription>
-                </StepText>
-              </Step>
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#a0d683] text-white flex items-center justify-center shadow-md">
+                  {index + 1}
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-[#333333]">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-[#666666]">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
             ))}
-          </StepsContainer>
-        </TextContainer>
-      </Container>
-    </ThemeProvider>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

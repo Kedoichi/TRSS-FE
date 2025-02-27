@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Poppins } from "next/font/google";
 
 const faqData = [
   {
@@ -30,6 +31,24 @@ const faqData = [
       "Depending on the role and level of seniority, it usually takes 2 to 6 weeks to fill a position from start to finish.",
   },
 ];
+
+const poppins = Poppins({
+  weight: ["400", "600"],
+  style: ["normal"],
+  subsets: ["latin"],
+});
+
+const titleVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  },
+};
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -66,12 +85,19 @@ const FAQ = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h4 className="text-lg font-semibold text-primary mb-3">
+          <motion.h4
+            variants={titleVariants}
+            className={`text-[#72BF78] text-lg uppercase tracking-wider mb-2 ${poppins.className}`}
+          >
             Frequently Asked Questions
-          </h4>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground max-w-2xl mx-auto">
+          </motion.h4>
+          
+          <motion.h2
+            variants={titleVariants}
+            className={`text-4xl md:text-5xl font-bold text-[#1B1B1B] max-w-3xl mx-auto mb-12 leading-tight ${poppins.className}`}
+          >
             All the information you need about our recruitment process.
-          </h2>
+          </motion.h2>
         </motion.div>
 
         <motion.div
