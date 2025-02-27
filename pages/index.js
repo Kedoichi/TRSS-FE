@@ -16,6 +16,7 @@ const bebasNeue = Bebas_Neue({
   style: ["normal"],
   subsets: ["latin"],
 });
+
 const HeroButton = ({ children, href }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -37,27 +38,27 @@ const HeroButton = ({ children, href }) => {
       <div className="relative z-10 flex flex-col items-center">
         <Button
           size="lg"
-          className="bg-transparent text-5xl font-bold text-base-300 hover:text-white transition-colors duration-300 mb-4"
+          className={`bg-transparent text-6xl text-white font-bold transition-colors duration-300 mb-4 ${bebasNeue.className}`}
           onClick={() => (window.location.href = href)}
         >
           {children}
         </Button>
 
         <motion.div
-          className="h-1 bg-primary-foreground"
-          animate={{ width: isHovered ? "200px" : "80px" }}
+          className="h-1.5 bg-[#72BF78]"
+          animate={{ width: isHovered ? "220px" : "100px" }}
           transition={{ duration: 0.3 }}
         />
 
         <motion.p
-          className="text-base-300 text-xl mt-6 max-w-md text-center"
+          className="text-[#FEFF9F] text-xl mt-6 max-w-md text-center"
           animate={{
             y: isHovered ? 0 : 10,
             opacity: isHovered ? 1 : 0.8,
           }}
           transition={{ duration: 0.3 }}
         >
-          {href === "/job-seekers"
+          {href === "/job-openings"
             ? "Find your next career opportunity."
             : "Connect with top-tier talent."}
         </motion.p>
@@ -84,15 +85,12 @@ const Home = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const scrollDifference = Math.abs(currentScrollY - lastScrollY);
-      const minScrollThreshold = 5; // Minimum scroll amount to trigger header
+      const minScrollThreshold = 5;
 
       if (scrollDifference > minScrollThreshold) {
-        // Scroll down -> hide header
         if (currentScrollY > lastScrollY && currentScrollY > 100) {
           setShowHeader(false);
-        }
-        // Scroll up OR at top -> show header
-        else {
+        } else {
           setShowHeader(true);
         }
         setLastScrollY(currentScrollY);
@@ -138,7 +136,7 @@ const Home = () => {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <Card className="bg-transparent border-none shadow-none">
-              <HeroButton href="/job-seekers">Job Seekers</HeroButton>
+              <HeroButton href="/job-openings">Job Seekers</HeroButton>
             </Card>
           </motion.div>
 
@@ -149,7 +147,7 @@ const Home = () => {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <Card className="bg-transparent border-none shadow-none">
-              <HeroButton href="/employers">Employers</HeroButton>
+              <HeroButton href="/job-openings">Employers</HeroButton>
             </Card>
           </motion.div>
         </div>
