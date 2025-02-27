@@ -45,7 +45,7 @@ const Testimonials = () => {
       {/* Dark Overlay for Readability */}
       <div className="absolute inset-0 bg-black/50"></div>
 
-      <div className="relative z-20 container mx-auto max-w-5xl">
+      <div className="relative z-20 container mx-auto max-w-5xl flex flex-col items-center justify-center min-h-[80vh]">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}

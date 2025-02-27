@@ -32,10 +32,10 @@ const OurServices = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="py-20 px-6 md:px-16 lg:px-20"
+      className="py-20 px-6 md:px-16 lg:px-20 bg-[#F6F6F6]"
     >
       <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row gap-10 lg:gap-20 items-center">
+        <div className="flex flex-col md:flex-row gap-12 lg:gap-24 items-center">
           {/* Images Grid */}
           <motion.div
             initial={{ x: -100, opacity: 0 }}
@@ -47,13 +47,17 @@ const OurServices = () => {
               {servicesData.images.map((image, index) => (
                 <div
                   key={index}
-                  className="relative aspect-[4/3] overflow-hidden rounded-lg"
+                  className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-md"
                 >
                   <Image
                     src={image}
-                    alt={`Team Image ${index + 1}`}
+                    alt={`Our Service ${index + 1}`}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500"
+                    priority={index === 0}
+                    placeholder="blur"
+                    blurDataURL="/Images/placeholder.jpg"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               ))}
@@ -71,7 +75,7 @@ const OurServices = () => {
               {servicesData.title}
             </h2>
 
-            <p className="text-base md:text-lg text-[#606C38]">
+            <p className="text-base md:text-lg text-[#606C38] leading-relaxed">
               {servicesData.description}
             </p>
 
@@ -97,10 +101,10 @@ const OurServices = () => {
               ))}
             </ul>
 
-            <div className="flex md:justify-start justify-center">
+            <div className="flex md:justify-start justify-center mt-4">
               <Button
                 onClick={() => router.push(servicesData.buttonLink)}
-                className="px-6 py-3 text-lg font-semibold bg-[#72BF78] text-white hover:bg-[#5FA461] transition-transform duration-200 hover:scale-105"
+                className="px-6 py-3 text-lg font-semibold bg-[#72BF78] text-white hover:bg-[#5FA461] transition-transform duration-300 hover:scale-105 rounded-lg shadow-md"
                 size="lg"
               >
                 {servicesData.buttonText}
