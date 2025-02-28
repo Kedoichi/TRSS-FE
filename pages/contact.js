@@ -177,6 +177,7 @@ const ContactUs = () => {
       })
       .catch(console.error);
   };
+  
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const maxSize = 25 * 1024 * 1024; // 5MB

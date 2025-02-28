@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* Base colors */
-    --background: #f8fdef; /* Light mint background */
+    --background: white; /* Light mint background */
     --foreground: #171717; /* Dark text */
 
     --card: #e1e6d9;

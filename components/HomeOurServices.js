@@ -103,7 +103,7 @@ const ServiceCard = ({ icon, title, description }) => {
 
 const HomeOurServices = () => {
   return (
-    <section className="py-20 px-6 bg-[#F8FBEF]">
+    <section className="py-20 px-6">
       <motion.div
         variants={containerVariants}
         initial="hidden"

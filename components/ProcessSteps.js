@@ -41,7 +41,7 @@ const animationVariants = {
 
 const ProcessSteps = () => {
   return (
-    <section className="bg-[#E6F4EA] py-20 px-6 md:px-16 lg:px-20 !mt-0">
+    <section className="bg-[#f8fdef] py-20 px-6 md:px-16 lg:px-20 !mt-0">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
         {/* Left Column: Image */}
         <motion.div
