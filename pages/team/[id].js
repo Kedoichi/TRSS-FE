@@ -1,100 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-
-const themeColors = {
-  primary: "#72BF78",
-  iconHover: "#FEFF9F",
-};
-
-const Section = styled.section`
-  max-width: 900px;
-  margin: 80px auto;
-  padding: 20px;
-`;
-
-const HeaderContainer = styled.div`
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  justify-content: space-between;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-  }
-`;
-
-const ImageContainer = styled.div`
-  width: 250px;
-  height: 250px;
-  background-color: ${themeColors.primary};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 4rem;
-  font-weight: bold;
-  border-radius: 10px;
-
-  @media (max-width: 768px) {
-    width: 200px;
-    height: 200px;
-    font-size: 3rem;
-  }
-`;
-
-const DetailsContainer = styled.div`
-  flex: 1;
-  text-align: left;
-
-  @media (max-width: 768px) {
-    text-align: center;
-  }
-`;
-
-const Name = styled.h1`
-  font-size: 2.5rem;
-  margin: 0;
-  color: #1b1b1b;
-`;
-
-const Role = styled.h2`
-  font-size: 1.5rem;
-  margin: 10px 0;
-  color: #777;
-`;
-
-const ContactIcons = styled.div`
-  display: flex;
-  gap: 25px;
-  margin-top: 15px;
-`;
-
-const IconLink = styled.a`
-  font-size: 1.8rem;
-  color: ${themeColors.primary};
-  transition: color 0.3s;
-
-  &:hover {
-    color: ${themeColors.iconHover};
-  }
-`;
-
-const Description = styled.div`
-  margin-top: 30px;
-  font-size: 1.2rem;
-  line-height: 1.8;
-
-  p {
-    margin-bottom: 15px;
-  }
-`;
 
 const teamMembers = [
   {
@@ -144,37 +54,39 @@ const TeamMemberDetails = () => {
 
   const member = teamMembers.find((member) => member.id === id);
 
-  if (!member) return <p>Loading...</p>;
+  if (!member) return <p className="text-center text-gray-600 mt-10">Loading...</p>;
 
   return (
     <>
       <Header />
-      <Section>
-        <HeaderContainer>
-          <ImageContainer>{member.name.split(" ")[0][0]}</ImageContainer>
-          <DetailsContainer>
-            <Name>{member.name}</Name>
-            <Role>{member.role}</Role>
-            <ContactIcons>
-              <IconLink href={`mailto:${member.email}`} title="Email">
+      <section className="max-w-4xl mx-auto my-20 px-6">
+        <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
+          <div className="w-64 h-64 md:w-72 md:h-72 bg-[#72BF78] flex items-center justify-center text-white text-5xl font-bold rounded-lg">
+            {member.name.split(" ")[0][0]}
+          </div>
+          <div className="text-center md:text-left flex-1">
+            <h1 className="text-4xl font-bold text-gray-900">{member.name}</h1>
+            <h2 className="text-2xl text-gray-600 mt-2">{member.role}</h2>
+            <div className="flex gap-6 mt-4 justify-center md:justify-start">
+              <a href={`mailto:${member.email}`} title="Email" className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]">
                 <FontAwesomeIcon icon={faEnvelope} />
-              </IconLink>
-              <IconLink href={`tel:${member.phone}`} title="Phone">
+              </a>
+              <a href={`tel:${member.phone}`} title="Phone" className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]">
                 <FontAwesomeIcon icon={faPhoneAlt} />
-              </IconLink>
-              <IconLink href={member.linkedin} title="LinkedIn" target="_blank" rel="noopener noreferrer">
+              </a>
+              <a href={member.linkedin} title="LinkedIn" target="_blank" rel="noopener noreferrer" className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]">
                 <FontAwesomeIcon icon={faLinkedin} />
-              </IconLink>
-            </ContactIcons>
-          </DetailsContainer>
-        </HeaderContainer>
+              </a>
+            </div>
+          </div>
+        </div>
 
-        <Description>
+        <div className="mt-10 text-lg text-gray-800 leading-relaxed">
           {member.description.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
+            <p key={index} className="mb-6">{paragraph}</p>
           ))}
-        </Description>
-      </Section>
+        </div>
+      </section>
       <Footer />
     </>
   );
