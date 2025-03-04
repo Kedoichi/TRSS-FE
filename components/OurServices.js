@@ -54,7 +54,7 @@ const OurServices = () => {
                     alt={`Our Service ${index + 1}`}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500 rounded-lg"
-                    priority={index === 0}
+                    priority={true} // Loads all images eagerly
                     placeholder="blur"
                     blurDataURL="/Images/placeholder.jpg"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

@@ -1,131 +1,5 @@
 import React from "react";
-import styled from "styled-components";
 import { motion } from "framer-motion";
-
-const themeColors = {
-  primary: "#72BF78",
-  textPrimary: "#1B1B1B",
-  backgroundText: "#E0E0E0",
-};
-
-const Section = styled.section`
-  padding: 0px 60px 40px;
-  margin-bottom: 4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    padding: 50px 15px;
-  }
-`;
-
-const Heading = styled(motion.h1)`
-  font-size: 3rem;
-  font-weight: bold;
-  color: ${themeColors.primary};
-  text-align: center;
-  margin-bottom: 40px;
-
-  @media (max-width: 768px) {
-    font-size: 2.5rem;
-  }
-`;
-
-const ValuesContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 100px; /* Increased gap between values */
-  width: 100%;
-  max-width: 1100px;
-
-  @media (max-width: 768px) {
-    gap: 80px;
-  }
-`;
-
-const Row = styled(motion.div)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  position: relative;
-  gap: 8rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-    gap: 5rem;
-  }
-`;
-
-const LeftContainer = styled.div`
-  flex: 1;
-  z-index: 2;
-  min-width: 300px;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const RightContainer = styled.div`
-  flex: 2;
-  z-index: 2;
-  min-width: 300px;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const Title = styled(motion.h2)`
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: ${themeColors.primary};
-  margin-bottom: 16px;
-  text-align: left;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    text-align: center;
-  }
-`;
-
-const Description = styled(motion.p)`
-  margin-top: 1rem;
-  font-size: 1.1rem;
-  color: ${themeColors.textPrimary};
-  line-height: 1.7;
-  text-align: left;
-
-  @media (max-width: 768px) {
-    text-align: center;
-    margin-top: 0.5rem;
-    font-size: 1rem;
-  }
-`;
-
-const BackgroundText = styled.h1`
-  font-size: 12rem;
-  font-weight: bold;
-  color: ${themeColors.backgroundText};
-  position: absolute;
-  top: -10px;
-  left: -40px;
-  z-index: 1;
-  line-height: 0.8;
-  text-transform: uppercase;
-  white-space: nowrap;
-  opacity: 0.3;
-
-  @media (max-width: 768px) {
-    font-size: 6rem;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-  }
-`;
 
 const animations = {
   row: {
@@ -157,31 +31,53 @@ const OurCoreValues = () => {
   ];
 
   return (
-    <Section>
-      <Heading initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }}>
+    <section className="py-16 px-6 md:px-12 flex flex-col items-center bg-white overflow-hidden">
+      {/* Heading */}
+      <motion.h1
+        className="text-3xl md:text-4xl font-bold text-[#72BF78] text-center mb-10 relative"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
         Our Core Values
-      </Heading>
+        {/* <span className="block w-16 h-1 bg-[#72BF78] mx-auto mt-2"></span> */}
+      </motion.h1>
 
-      <ValuesContainer>
+      <div className="flex flex-col gap-20 w-full max-w-4xl">
         {values.map((value, index) => (
-          <Row
+          <motion.div
             key={index}
             initial="initial"
             whileInView="whileInView"
             viewport={{ once: true }}
             {...animations.row}
+            className="relative flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-12"
           >
-            <LeftContainer>
-              <Title {...animations.text}>{value.title}</Title>
-            </LeftContainer>
-            <RightContainer>
-              <Description {...animations.text}>{value.description}</Description>
-            </RightContainer>
-            <BackgroundText>{value.backgroundWord}</BackgroundText>
-          </Row>
+            <h1 className="absolute -top-4 md:-top-10 text-[4rem] md:text-[10rem] font-bold text-[#E0E0E0] opacity-25 w-full max-w-[80vw] md:max-w-full text-center uppercase select-none pointer-events-none overflow-hidden">
+              {value.backgroundWord}
+            </h1>
+
+            <div className="w-full md:w-1/3 z-10">
+              <motion.h2
+                className="text-2xl md:text-3xl font-bold text-[#72BF78]"
+                {...animations.text}
+              >
+                {value.title}
+              </motion.h2>
+            </div>
+
+            <div className="w-full md:w-2/3 z-10">
+              <motion.p
+                className="text-lg text-[#1B1B1B] leading-relaxed"
+                {...animations.text}
+              >
+                {value.description}
+              </motion.p>
+            </div>
+          </motion.div>
         ))}
-      </ValuesContainer>
-    </Section>
+      </div>
+    </section>
   );
 };
 

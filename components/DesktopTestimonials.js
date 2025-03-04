@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/carousel";
 import { Poppins } from "next/font/google";
 
-// Import Poppins for Consistent Typography
 const poppins = Poppins({
   weight: ["400", "600"],
   style: ["normal"],
@@ -25,7 +24,7 @@ const Testimonials = () => {
   const plugin = React.useMemo(
     () =>
       Autoplay({
-        delay: 5000,
+        delay: 3000,
         stopOnInteraction: true,
         stopOnMouseEnter: true,
       }),
@@ -126,10 +125,11 @@ const Testimonials = () => {
             ))}
           </CarouselContent>
 
-          <div className="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2">
+          {/* Hide arrows on mobile view */}
+          <div className="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2 hidden md:block">
             <CarouselPrevious className="w-12 h-12 md:w-14 md:h-14 border-2 border-[#FEFF9F] text-[#2F5233] bg-white hover:bg-[#FEFF9F] hover:text-[#2F5233] transition-all rounded-full shadow-lg" />
           </div>
-          <div className="absolute -right-6 md:-right-12 top-1/2 -translate-y-1/2">
+          <div className="absolute -right-6 md:-right-12 top-1/2 -translate-y-1/2 hidden md:block">
             <CarouselNext className="w-12 h-12 md:w-14 md:h-14 border-2 border-[#FEFF9F] text-[#2F5233] bg-white hover:bg-[#FEFF9F] hover:text-[#2F5233] transition-all rounded-full shadow-lg" />
           </div>
         </Carousel>

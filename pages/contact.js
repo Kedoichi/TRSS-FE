@@ -205,6 +205,7 @@ const ContactUs = () => {
                   <Input id="firstName" placeholder="First Name" required />
                   <Input id="lastName" placeholder="Last Name" required />
                 </div>
+
                 <Input
                   id="email"
                   type="email"
@@ -217,18 +218,29 @@ const ContactUs = () => {
                   placeholder="Phone Number"
                   required
                 />
-                <Input
-                  id="resume"
-                  type="file"
-                  accept=".pdf"
-                  onChange={handleFileChange}
-                />
-                <Input
+
+                {/* Resume Uploader with Heading */}
+                <div className="space-y-2">
+                  <label htmlFor="resume" className="text-sm font-semibold text-gray-800">
+                    Upload Resume (PDF Only)
+                  </label>
+                  <Input
+                    id="resume"
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileChange}
+                    className="border border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+
+                {/* Message Text Area */}
+                <textarea
                   id="message"
                   placeholder="Comment or message"
                   required
-                  className="h-24"
+                  className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary resize-none overflow-y-auto"
                 />
+
                 <div className="flex justify-center" id="recaptcha"></div>
 
                 <Button
@@ -242,6 +254,7 @@ const ContactUs = () => {
             </CardContent>
           </Card>
         </div>
+
       </div>
 
       <Footer />

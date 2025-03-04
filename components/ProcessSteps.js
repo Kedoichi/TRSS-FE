@@ -43,6 +43,7 @@ const ProcessSteps = () => {
   return (
     <section className="bg-[#f8fdef] py-20 px-6 md:px-16 lg:px-20 !mt-0">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
+        
         {/* Left Column: Image */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -57,6 +58,9 @@ const ProcessSteps = () => {
             width={400}
             height={300}
             className="rounded-xl shadow-lg object-cover"
+            priority={true}
+            placeholder="blur"
+            blurDataURL="/Images/placeholder.jpg"
           />
         </motion.div>
 
@@ -100,9 +104,7 @@ const ProcessSteps = () => {
                   <h3 className="text-lg font-semibold text-[#333333]">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-[#666666]">
-                    {step.description}
-                  </p>
+                  <p className="text-sm text-[#666666]">{step.description}</p>
                 </div>
               </motion.div>
             ))}
