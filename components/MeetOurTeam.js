@@ -1,133 +1,38 @@
 import React from "react";
-import styled from "styled-components";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 
-const Section = styled.section`
-  margin: 60px 0;
-  text-align: center;
-`;
-
-const Title = styled.h4`
-  font-size: 2.5rem;
-  color: #72BF78;
-  width: 50%;
-  margin: auto;
-  margin-bottom: 40px;
-  font-weight: bold;
-  text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    width: 100%;
-  }
-`;
-
-const GridContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 40px;
-  min-height: 30vw;
-`;
-
-const CardContainer = styled.div`
-  width: 250px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-  position: relative;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-
-  &:hover .overlay {
-    opacity: 1;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-  }
-`;
-
-const ImageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: red;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 2rem;
-  font-weight: bold;
-`;
-
-const Name = styled.h3`
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 10px 0 5px;
-`;
-
-const Role = styled.p`
-  font-size: 1rem;
-`;
-
-const Overlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 15px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    position: relative;
-    opacity: 1;
-    height: auto;
-  }
-`;
-
-const ReadMoreButton = styled.button`
-  margin-top: 10px;
-  padding: 8px 15px;
-  border: none;
-  background-color: #72bf78;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-
-  &:hover {
-    background-color: #5ba563;
-  }
-`;
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } },
+};
 
 const TeamMemberCard = ({ name, role, id }) => {
   const router = useRouter();
 
   return (
-    <CardContainer>
-      <ImageContainer>{name.split(" ")[0]}</ImageContainer>
-      <Overlay className="overlay">
-        <Name>{name}</Name>
-        <Role>{role}</Role>
-        <ReadMoreButton onClick={() => router.push(`/team/${id}`)}>Read More</ReadMoreButton>
-      </Overlay>
-    </CardContainer>
+    <motion.div
+      whileHover={{ y: -5 }}
+      initial="hidden"
+      whileInView="visible"
+      exit="exit"
+      variants={fadeInVariants}
+      viewport={{ once: false, amount: 0.3 }}
+      className="relative w-64 md:w-72 overflow-hidden shadow-lg rounded-lg cursor-pointer transition-all duration-300"
+      onClick={() => router.push(`/team/${id}`)}
+    >
+      <div className="w-full h-64 bg-red-500 flex items-center justify-center text-white text-3xl font-bold">
+        {name.split(" ")[0]}
+      </div>
+      <div className="absolute inset-0 bg-black/70 text-white p-4 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center">
+        <h3 className="text-xl font-bold">{name}</h3>
+        <p className="text-sm">{role}</p>
+        <button className="mt-3 px-4 py-2 bg-[#72BF78] text-white rounded-lg hover:bg-[#5ba563] transition-all">
+          Read More
+        </button>
+      </div>
+    </motion.div>
   );
 };
 
@@ -137,31 +42,45 @@ const MeetOurTeam = () => {
       id: "vuong-do",
       name: "Vuong Do",
       role: "Director of Connections/Founder",
-      description: "Vuong is a visionary leader with a strong background in fostering connections and driving organizational success.",
-      email: "vuong.do@oneledger.com.au",
-      phone: "+123456789",
-      linkedin: "https://www.linkedin.com/in/vuong-do-b3b8b576/",
     },
     {
       id: "vanessa",
       name: "Vanessa",
       role: "Head of Executive Recruitment",
-      description: "Vanessa leads executive and recruitment efforts, ensuring businesses are matched with the best talent.",
-      email: "admin@talentspreesolutions.com",
-      phone: "+123456789",
-      linkedin: "https://www.linkedin.com/in/jennylloyd",
     },
   ];
 
   return (
-    <Section>
-      <Title>Meet The Team</Title>
-      <GridContainer>
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      exit="exit"
+      variants={fadeInVariants}
+      viewport={{ once: false, amount: 0.3 }}
+      className="text-center my-16 px-4"
+    >
+      <motion.h4
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        variants={fadeInVariants}
+        className="text-4xl font-bold text-[#72BF78] mb-8"
+      >
+        Meet The Team
+      </motion.h4>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        variants={fadeInVariants}
+        className="flex flex-wrap justify-center gap-6"
+      >
         {teamMembers.map((member) => (
           <TeamMemberCard key={member.id} {...member} />
         ))}
-      </GridContainer>
-    </Section>
+      </motion.div>
+    </motion.section>
   );
 };
 

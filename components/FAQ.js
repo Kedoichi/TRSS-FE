@@ -1,12 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Poppins } from "next/font/google";
 
 const faqData = [
@@ -38,8 +32,8 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-const titleVariants = {
-  hidden: { opacity: 0, y: -20 },
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
     y: 0,
@@ -48,6 +42,7 @@ const titleVariants = {
       ease: "easeOut",
     },
   },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } }, // Smooth exit animation
 };
 
 const containerVariants = {
@@ -55,63 +50,58 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.15, // Smooth staggered appearance
     },
   },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-    },
-  },
+  exit: { opacity: 0, transition: { duration: 0.5 } }, // Scroll-out fade effect
 };
 
 const FAQ = () => {
   return (
-    <section className="relative py-24 bg-gradient-to-b from-background to-white">
+    <motion.section
+      className="relative py-24 bg-gradient-to-b from-background to-white"
+      variants={fadeInVariants}
+      initial="hidden"
+      whileInView="visible"
+      exit="exit"
+      viewport={{ once: false, amount: 0.3 }}
+    >
       <div className="absolute inset-0 bg-grid-small-black/[0.2] bg-grid-small-white/[0.2]" />
       <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
 
       <div className="relative container mx-auto px-4">
+        {/* Title Animation */}
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          variants={fadeInVariants}
         >
           <motion.h4
-            variants={titleVariants}
             className={`text-[#72BF78] text-lg uppercase tracking-wider mb-2 ${poppins.className}`}
           >
             Frequently Asked Questions
           </motion.h4>
-          
+
           <motion.h2
-            variants={titleVariants}
             className={`text-4xl md:text-5xl font-bold text-[#1B1B1B] max-w-3xl mx-auto mb-12 leading-tight ${poppins.className}`}
           >
             All the information you need about our recruitment process.
           </motion.h2>
         </motion.div>
 
+        {/* FAQ Accordion */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          exit="exit"
+          viewport={{ once: false, amount: 0.3 }}
           className="max-w-3xl mx-auto"
         >
           <Accordion type="single" collapsible className="w-full space-y-4">
             {faqData.map((item, index) => (
               <motion.div
                 key={index}
-                variants={itemVariants}
+                variants={fadeInVariants}
                 className="overflow-hidden"
               >
                 <AccordionItem
@@ -127,6 +117,7 @@ const FAQ = () => {
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
                     >
                       {item.answer}
@@ -138,7 +129,7 @@ const FAQ = () => {
           </Accordion>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

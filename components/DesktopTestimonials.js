@@ -17,6 +17,19 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } },
+};
+
 const Testimonials = () => {
   const [api, setApi] = useState();
   const [current, setCurrent] = useState(0);
@@ -47,17 +60,17 @@ const Testimonials = () => {
           filter: "grayscale(100%)",
         }}
       ></div>
-
       <div className="absolute inset-0 bg-black/50"></div>
 
-      <div className="relative z-20 container mx-auto max-w-5xl flex flex-col items-center justify-center min-h-[80vh]">
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+      <motion.div
+        variants={fadeInVariants}
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        viewport={{ once: false, amount: 0.3 }}
+        className="relative z-20 container mx-auto max-w-5xl flex flex-col items-center justify-center min-h-[80vh]"
+      >
+        <motion.div className="text-center mb-12" variants={fadeInVariants}>
           <h2
             className={`text-4xl md:text-5xl font-bold mb-4 text-white ${poppins.className}`}
           >
@@ -77,13 +90,7 @@ const Testimonials = () => {
           <CarouselContent>
             {testimonialsData.map((testimonial, index) => (
               <CarouselItem key={index} className="px-4">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                  className="relative w-full"
-                >
+                <motion.div variants={fadeInVariants} className="relative w-full">
                   <Card className="bg-white text-[#2F5233] rounded-xl border border-[#72BF78] shadow-lg max-w-2xl mx-auto transition-all duration-300">
                     <CardContent className="p-6 md:p-8">
                       <div className="mb-6">
@@ -148,7 +155,7 @@ const Testimonials = () => {
             />
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

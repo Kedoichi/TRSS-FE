@@ -41,13 +41,17 @@ const servicesData = [
 ];
 
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
+    y: 0,
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.15, // Stagger for smooth flow
+      duration: 0.8, // Smooth entrance
+      ease: "easeOut",
     },
   },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } }, // Exit animation
 };
 
 const itemVariants = {
@@ -56,10 +60,11 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
-      ease: "easeOut",
+      duration: 0.8,
+      ease: "anticipate",
     },
   },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } }, // Scroll out animation
 };
 
 const titleVariants = {
@@ -68,10 +73,11 @@ const titleVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.8,
+      duration: 1,
       ease: "easeOut",
     },
   },
+  exit: { opacity: 0, y: -20, transition: { duration: 0.6 } },
 };
 
 const ServiceCard = ({ icon, title, description }) => {
@@ -80,7 +86,8 @@ const ServiceCard = ({ icon, title, description }) => {
       variants={itemVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      exit="exit"
+      viewport={{ once: false, amount: 0.2 }}
       className="w-64 sm:w-full sm:max-w-[300px]"
     >
       <Card className="h-full bg-white border border-[#72BF78] hover:shadow-lg transition-shadow duration-300 rounded-xl">
@@ -102,12 +109,16 @@ const ServiceCard = ({ icon, title, description }) => {
 
 const HomeOurServices = () => {
   return (
-    <section className="py-20 px-6">
+    <motion.section
+      className="py-20 px-6"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      exit="exit"
+      viewport={{ once: false, amount: 0.3 }}
+    >
       <motion.div
         variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        viewport={{ once: true, amount: 0.2 }}
         className="max-w-6xl mx-auto text-center"
       >
         <motion.h4
@@ -146,7 +157,7 @@ const HomeOurServices = () => {
           </Button>
         </motion.div>
       </motion.div>
-    </section>
+    </motion.section>
   );
 };
 

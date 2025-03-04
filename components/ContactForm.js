@@ -268,7 +268,7 @@ const ContactForm = () => {
             </Card>
           </motion.div>
 
-          {/* Job Openings Section - Same Width as Contact Form */}
+          {/* Job Openings Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

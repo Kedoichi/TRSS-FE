@@ -118,40 +118,59 @@ const Home = () => {
       </motion.div>
 
       <section
-        className="relative flex flex-col md:flex-row justify-center items-stretch min-h-screen bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/Images/gray1.jpg')" }}
-      >
-        <motion.div
-          className="absolute inset-0 bg-black/60 backdrop-blur-[0px]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        />
+  className="relative flex flex-col md:flex-row justify-center items-stretch min-h-screen bg-cover bg-center bg-no-repeat"
+  style={{ backgroundImage: "url('/Images/gray1.jpg')" }}
+>
+  <motion.div
+    className="absolute inset-0 bg-black/60 backdrop-blur-[0px]"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1 }}
+  />
 
-        <div className="relative z-10 container mx-auto px-6 py-20 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
-          <motion.div
-            className="w-full md:w-1/2 max-w-xl"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
+  <div className="relative z-10 container mx-auto px-6 py-20 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
+    
+    {/* Job Seekers Clickable Section */}
+    <motion.div
+      className="w-full md:w-1/2 max-w-xl"
+      initial={{ opacity: 0, x: -50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, delay: 0.1 }}
+    >
+      <a href="/job-openings" className="block">
+        <Card className="bg-transparent border-none shadow-none cursor-pointer">
+          <HeroButton
+            href="/job-openings"
+            className="shadow-none hover:shadow-none"
           >
-            <Card className="bg-transparent border-none shadow-none">
-              <HeroButton href="/job-openings">Job Seekers</HeroButton>
-            </Card>
-          </motion.div>
+            Job Seekers
+          </HeroButton>
+        </Card>
+      </a>
+    </motion.div>
 
-          <motion.div
-            className="w-full md:w-1/2 max-w-xl"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
+    {/* Employers Clickable Section */}
+    <motion.div
+      className="w-full md:w-1/2 max-w-xl"
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, delay: 0.1 }}
+    >
+      <a href="/job-openings" className="block">
+        <Card className="bg-transparent border-none shadow-none cursor-pointer">
+          <HeroButton
+            href="/job-openings"
+            className="shadow-none hover:shadow-none"
           >
-            <Card className="bg-transparent border-none shadow-none">
-              <HeroButton href="/job-openings">Employers</HeroButton>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
+            Employers
+          </HeroButton>
+        </Card>
+      </a>
+    </motion.div>
+
+  </div>
+</section>
+
 
       <main className="scroll-smooth">
         <HomeOurServices />
