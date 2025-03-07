@@ -58,7 +58,7 @@ const ProcessSteps = () => {
             width={400}
             height={300}
             className="rounded-xl shadow-lg object-cover"
-            priority={true}
+            loading="eager"
             placeholder="blur"
             blurDataURL="/Images/placeholder.jpg"
           />

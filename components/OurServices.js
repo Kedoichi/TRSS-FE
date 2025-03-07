@@ -36,7 +36,6 @@ const OurServices = () => {
     >
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row gap-12 lg:gap-24 items-center">
-          {/* Images Grid */}
           <motion.div
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -54,7 +53,7 @@ const OurServices = () => {
                     alt={`Our Service ${index + 1}`}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500 rounded-lg"
-                    priority={true} // Loads all images eagerly
+                    loading="eager" // Removes lazy loading
                     placeholder="blur"
                     blurDataURL="/Images/placeholder.jpg"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -64,7 +63,6 @@ const OurServices = () => {
             </div>
           </motion.div>
 
-          {/* Content */}
           <motion.div
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
