@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 
 const steps = [
@@ -30,25 +30,34 @@ const steps = [
   },
 ];
 
-const animationVariants = {
+// Variants for steps animation
+const stepVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: {
+  visible: (index) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
+    transition: { duration: 0.8, delay: index * 0.3, ease: "easeOut" },
+  }),
 };
 
 const ProcessSteps = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.2 });
+
   return (
-    <section className="bg-[#f8fdef] py-20 px-6 md:px-16 lg:px-20 !mt-0">
+    <motion.section
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="bg-[#f8fdef] py-20 px-6 md:px-16 lg:px-20 !mt-0"
+    >
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
         
         {/* Left Column: Image */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
           transition={{ duration: 0.6 }}
           className="w-full md:w-1/2 flex justify-center"
         >
@@ -68,8 +77,7 @@ const ProcessSteps = () => {
         <div className="w-full md:w-1/2 space-y-6 text-center md:text-left">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.6 }}
             className="text-3xl md:text-4xl font-bold text-[#72bf78]"
           >
@@ -78,8 +86,7 @@ const ProcessSteps = () => {
 
           <motion.p
             initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base md:text-lg text-[#666666] leading-relaxed"
           >
@@ -91,10 +98,10 @@ const ProcessSteps = () => {
             {steps.map((step, index) => (
               <motion.div
                 key={index}
-                variants={animationVariants}
+                custom={index} // Passing index for stagger effect
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+                animate={isInView ? "visible" : "hidden"}
+                variants={stepVariants}
                 className="flex items-center gap-4"
               >
                 <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#a0d683] text-white flex items-center justify-center shadow-md">
@@ -111,7 +118,7 @@ const ProcessSteps = () => {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

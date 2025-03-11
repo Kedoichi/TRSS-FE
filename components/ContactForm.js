@@ -166,7 +166,7 @@ const ContactForm = () => {
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
-                    onClick={() => document.getElementById("file-input").click()}
+                    onClick={() => document.getElementById("file-input")?.click()}
                   >
                     <input type="file" id="file-input" accept=".pdf" onChange={handleFileChange} className="hidden" />
                     <p>
@@ -177,7 +177,7 @@ const ContactForm = () => {
                   {/* Submit Button */}
                   <Button 
                     type="submit" 
-                    className="w-full bg-[#FEFF9F] text-[#72BF78] font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#72BF78] hover:text-white transition-all duration-300" 
+                    className="w-full bg-[#72BF78] text-white font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#5CA965] transition-all duration-300" 
                     size="lg"
                   >
                     Send
@@ -247,7 +247,7 @@ const ContactForm = () => {
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
-                    onClick={() => document.getElementById("file-input").click()}
+                    onClick={() => document.getElementById("file-input")?.click()}
                   >
                     <input type="file" id="file-input" accept=".pdf" onChange={handleFileChange} className="hidden" />
                     <p>
@@ -258,7 +258,7 @@ const ContactForm = () => {
                   {/* Submit Button */}
                   <Button 
                     type="submit" 
-                    className="w-full bg-[#FEFF9F] text-[#72BF78] font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#72BF78] hover:text-white transition-all duration-300" 
+                    className="w-full bg-[#72BF78] text-white font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#5CA965] transition-all duration-300" 
                     size="lg"
                   >
                     Send

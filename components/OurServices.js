@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Check } from "lucide-react";
@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 
 const OurServices = () => {
   const router = useRouter();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.2 });
 
   const servicesData = {
     title: "Our Expertise in Connecting Talent and Opportunity",
@@ -29,16 +31,18 @@ const OurServices = () => {
 
   return (
     <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
       className="py-20 px-6 md:px-16 lg:px-20"
     >
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row gap-12 lg:gap-24 items-center">
+          {/* Image Grid */}
           <motion.div
             initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
+            animate={isInView ? { x: 0, opacity: 1 } : { x: -100, opacity: 0 }}
             transition={{ duration: 1, type: "spring", stiffness: 120 }}
             className="w-full md:w-1/2"
           >
@@ -53,7 +57,7 @@ const OurServices = () => {
                     alt={`Our Service ${index + 1}`}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500 rounded-lg"
-                    loading="eager" // Removes lazy loading
+                    loading="eager"
                     placeholder="blur"
                     blurDataURL="/Images/placeholder.jpg"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -63,9 +67,10 @@ const OurServices = () => {
             </div>
           </motion.div>
 
+          {/* Text Content */}
           <motion.div
             initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
+            animate={isInView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
             transition={{ duration: 1, type: "spring", stiffness: 120 }}
             className="w-full md:w-1/2 space-y-6 text-center md:text-left"
           >
@@ -81,8 +86,8 @@ const OurServices = () => {
               {servicesData.list.map((item, index) => (
                 <motion.li
                   key={index}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                   transition={{
                     duration: 0.5,
                     delay: index * 0.2,

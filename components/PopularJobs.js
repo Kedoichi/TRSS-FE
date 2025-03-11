@@ -1,146 +1,6 @@
 import React, { useEffect, useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
-
-const theme = {
-  colors: {
-    primary: "#72BF78",
-    secondary: "#1B5E20",
-    background: "#FFFFFF",
-    text: "#333",
-    mutedText: "#666",
-    jobTypeBackground: "#FEFF9F",
-    jobTypeText: "#72BF78",
-    jobTypeBorder: "#72BF78",
-    buttonBackground: "#72BF78",
-    buttonHover: "#FEFF9F",
-    buttonHoverText: "#72BF78",
-    buttonHoverBorder: "#72BF78",
-    iconColor: "#72BF78",
-  },
-};
-
-const JobsSection = styled.section`
-  padding: 60px 20px;
-  text-align: center;
-  margin: 0 60px;
-
-  @media (max-width: 768px) {
-    padding: 20px;
-    margin: 0 20px;
-  }
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: 20px;
-`;
-
-const SectionSubtitle = styled.p`
-  font-size: 1.2rem;
-  color: ${({ theme }) => theme.colors.mutedText};
-  padding: 0 20px;
-  max-width: 800px;
-  margin: 0 auto 20px;
-`;
-
-const JobCardContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  justify-items: center;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const JobCard = styled.div`
-  background-color: ${({ theme }) => theme.colors.background};
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  text-align: start;
-  width: 100%;
-  transition: transform 0.3s;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-`;
-
-const CompanyRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const CompanyName = styled.p`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 1rem;
-`;
-
-const JobType = styled.p`
-  padding: 5px 10px;
-  background: ${({ theme }) => theme.colors.jobTypeBackground};
-  color: ${({ theme }) => theme.colors.jobTypeText};
-  border: 2px solid ${({ theme }) => theme.colors.jobTypeBorder};
-  border-radius: 5px;
-  font-size: 0.9rem;
-`;
-
-const JobTitle = styled.h3`
-  font-size: 1.4rem;
-  color: ${({ theme }) => theme.colors.text};
-  margin: 20px 0 10px;
-`;
-
-const JobDetailsWrapper = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-`;
-
-const JobLocation = styled.p`
-  color: ${({ theme }) => theme.colors.mutedText};
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`;
-
-const JobDate = styled.p`
-  color: ${({ theme }) => theme.colors.mutedText};
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`;
-
-const ApplyButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.buttonBackground};
-  color: ${({ theme }) => theme.colors.background};
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  text-align: center;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background-color 0.3s, color 0.3s, border 0.3s;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.buttonHover};
-    color: ${({ theme }) => theme.colors.buttonHoverText};
-    border: 2px solid ${({ theme }) => theme.colors.buttonHoverBorder};
-  }
-`;
 
 const PopularJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -166,50 +26,69 @@ const PopularJobs = () => {
     fetchJobs();
   }, []);
 
-  if (loading) return <JobsSection>Loading jobs...</JobsSection>;
+  if (loading)
+    return <section className="py-16 text-center">Loading jobs...</section>;
+
   if (error)
     return (
-      <JobsSection>
-        <SectionTitle>Error</SectionTitle>
-        <SectionSubtitle>{error}</SectionSubtitle>
-      </JobsSection>
+      <section className="py-16 text-center">
+        <h2 className="text-3xl font-bold text-[#72BF78]">Error</h2>
+        <p className="text-lg text-gray-600">{error}</p>
+      </section>
     );
 
   return (
-    <ThemeProvider theme={theme}>
-      <JobsSection>
-        <SectionTitle>Explore Popular Jobs</SectionTitle>
-        <SectionSubtitle>
-          Discover top opportunities tailored to your career aspirations.
-        </SectionSubtitle>
-        {jobs.length === 0 ? (
-          <p>No jobs available at the moment.</p>
-        ) : (
-          <JobCardContainer>
-            {jobs.map(({ _id, company, type, title, location, createdAt }) => (
-              <JobCard key={_id}>
-                <CompanyRow>
-                  <CompanyName>{company}</CompanyName>
-                  <JobType>{type}</JobType>
-                </CompanyRow>
-                <JobTitle>{title}</JobTitle>
-                <JobDetailsWrapper>
-                  <JobLocation>
-                    <FontAwesomeIcon icon={faMapMarkerAlt} style={{ color: theme.colors.iconColor }} />
-                    {location}
-                  </JobLocation>
-                  <JobDate>
-                    <FontAwesomeIcon icon={faCalendarAlt} style={{ color: theme.colors.iconColor }} />
-                    {new Date(createdAt).toLocaleDateString()}
-                  </JobDate>
-                </JobDetailsWrapper>
-                <ApplyButton>Apply Now</ApplyButton>
-              </JobCard>
-            ))}
-          </JobCardContainer>
-        )}
-      </JobsSection>
-    </ThemeProvider>
+    <section className="py-16 px-6 md:px-16 lg:px-20 text-center">
+      <h2 className="text-3xl md:text-4xl font-bold text-[#72BF78] mb-4">
+        Explore Popular Jobs
+      </h2>
+      <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+        Discover top opportunities tailored to your career aspirations.
+      </p>
+
+      {jobs.length === 0 ? (
+        <p className="text-lg text-gray-600">No jobs available at the moment.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {jobs.map(({ _id, company, type, title, location, createdAt }) => (
+            <div
+              key={_id}
+              className="bg-white shadow-md rounded-lg p-6 text-left transform transition duration-300 hover:scale-105"
+            >
+              {/* Company and Job Type */}
+              <div className="flex justify-between items-center mb-4">
+                <p className="text-gray-800 font-medium">{company}</p>
+                <span className="px-3 py-1 bg-[#FEFF9F] text-[#72BF78] border border-[#72BF78] rounded-md text-sm">
+                  {type}
+                </span>
+              </div>
+
+              {/* Job Title */}
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                {title}
+              </h3>
+
+              {/* Job Details */}
+              <div className="flex items-center space-x-4 text-gray-500 text-sm mb-4">
+                <p className="flex items-center space-x-2">
+                  <FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#72BF78]" />
+                  <span>{location}</span>
+                </p>
+                <p className="flex items-center space-x-2">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="text-[#72BF78]" />
+                  <span>{new Date(createdAt).toLocaleDateString()}</span>
+                </p>
+              </div>
+
+              {/* Apply Button */}
+              <button className="w-full bg-[#72BF78] text-white py-2 px-4 rounded-lg font-semibold transition duration-300 hover:bg-[#5FA461]">
+                Apply Now
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
   );
 };
 

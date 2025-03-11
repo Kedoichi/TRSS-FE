@@ -56,96 +56,53 @@ const Header = () => {
     <header className="w-full backdrop-blur-sm bg-white/80 shadow-md">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo with Link to Home Page */}
           <Link href="/" legacyBehavior>
-            <a
-              className={`text-2xl xl:text-3xl font-bold ${bebasNeue.className}`}
-              aria-label="Talent Spree Solutions - Home"
-            >
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-              >
+            <a className={`text-2xl xl:text-3xl font-bold ${bebasNeue.className}`} aria-label="Talent Spree Solutions - Home">
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
                 Talent Spree Solutions
               </motion.div>
             </a>
           </Link>
 
-          {/* Navigation Links */}
           <nav className="hidden xl:flex items-center gap-4">
             {navLinks.map((link) => (
               <NavLink key={link.href} {...link} />
             ))}
-
-            {/* CV Button - Now Linked to Contact Page */}
             <Link href="/contact" legacyBehavior>
               <a className="group">
                 <motion.div
-                  className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] bg-[#FEFF9F] transition-all duration-300"
+                  className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] transition-all duration-300"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <FileUp
-                    className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]"
-                    style={{ color: "#72BF78" }}
-                  />
+                  <FileUp className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]" style={{ color: "#72BF78" }} />
                   <span style={{ color: "#72BF78" }}>CV</span>
                 </motion.div>
               </a>
             </Link>
           </nav>
 
-          {/* Burger Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="xl:hidden">
               <Button variant="ghost" size="icon" className="hover:bg-gray-200/20">
-                <motion.div
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
+                <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
                   <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="text-xl" />
                 </motion.div>
               </Button>
             </SheetTrigger>
-
-            {/* Mobile Menu */}
-            <SheetContent
-              side="right"
-              className="w-[300px] bg-white/90 backdrop-blur-md shadow-lg"
-            >
+            <SheetContent side="right" className="w-[300px] bg-white/90 backdrop-blur-md shadow-lg">
               <nav className="flex flex-col space-y-4 mt-12">
                 <AnimatePresence mode="wait">
                   {navLinks.map((link, index) => (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
+                    <motion.div key={link.href} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ delay: index * 0.1 }}>
                       <NavLink {...link} isMobile />
                     </motion.div>
                   ))}
-
-                  {/* Mobile CV Button - Now Linked to Contact Page */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ delay: navLinks.length * 0.1 }}
-                  >
+                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ delay: navLinks.length * 0.1 }}>
                     <Link href="/contact" legacyBehavior>
                       <a className="group">
-                        <motion.div
-                          className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] bg-[#FEFF9F] transition-all duration-300"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <FileUp
-                            className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]"
-                            style={{ color: "#72BF78" }}
-                          />
+                        <motion.div className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] transition-all duration-300" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                          <FileUp className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]" style={{ color: "#72BF78" }} />
                           <span style={{ color: "#72BF78" }}>CV</span>
                         </motion.div>
                       </a>
