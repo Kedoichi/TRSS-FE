@@ -7,13 +7,8 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { FileUp } from "lucide-react";
-import { Bebas_Neue } from "next/font/google";
-
-const bebasNeue = Bebas_Neue({
-  weight: ["400"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
+import Image from "next/image";
+import logo from "../public/Images/demoLogo1.png";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -57,9 +52,9 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" legacyBehavior>
-            <a className={`text-2xl xl:text-3xl font-bold ${bebasNeue.className}`} aria-label="Talent Spree Solutions - Home">
+            <a aria-label="Home">
               <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-                Talent Spree Solutions
+                <Image src={logo} alt="Company Logo" width={220} height={80} />
               </motion.div>
             </a>
           </Link>

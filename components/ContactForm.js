@@ -73,7 +73,7 @@ const ContactForm = () => {
   };
 
   return (
-    <section className="relative bg-[#f8fdef] py-16 px-4 md:px-8"
+    <section className="relative bg-[#E6F0E6] py-16 px-4 md:px-8"
       style={{ paddingBottom: '0rem', borderBottomLeftRadius: '0rem', borderBottomRightRadius: '0rem' }}
     >
     {!isMobile ? (
