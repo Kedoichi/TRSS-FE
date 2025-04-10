@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
@@ -10,14 +12,14 @@ const PopularJobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch("/api/jobs");
+        const response = await fetch("http://localhost:5100/job");
         if (!response.ok) {
           throw new Error("Failed to fetch jobs");
         }
         const data = await response.json();
-        setJobs(data?.data?.jobs || []);
+        setJobs(data || []);
       } catch (error) {
-        setError(error.message);
+        setError(error.message || "Something went wrong");
       } finally {
         setLoading(false);
       }
@@ -50,25 +52,22 @@ const PopularJobs = () => {
         <p className="text-lg text-gray-600">No jobs available at the moment.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {jobs.map(({ _id, company, type, title, location, createdAt }) => (
+          {jobs.map(({ id, company, type, title, location, createdAt }) => (
             <div
-              key={_id}
+              key={id}
               className="bg-white shadow-md rounded-lg p-6 text-left transform transition duration-300 hover:scale-105"
             >
-              {/* Company and Job Type */}
               <div className="flex justify-between items-center mb-4">
                 <p className="text-gray-800 font-medium">{company}</p>
-                <span className="px-3 py-1 bg-[#FEFF9F] text-[#72BF78] border border-[#72BF78] rounded-md text-sm">
+                <span className="px-3 py-1 text-[#72BF78] border border-[#72BF78] rounded-md text-sm">
                   {type}
                 </span>
               </div>
 
-              {/* Job Title */}
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
                 {title}
               </h3>
 
-              {/* Job Details */}
               <div className="flex items-center space-x-4 text-gray-500 text-sm mb-4">
                 <p className="flex items-center space-x-2">
                   <FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#72BF78]" />
@@ -80,7 +79,6 @@ const PopularJobs = () => {
                 </p>
               </div>
 
-              {/* Apply Button */}
               <button className="w-full bg-[#72BF78] text-white py-2 px-4 rounded-lg font-semibold transition duration-300 hover:bg-[#5FA461]">
                 Apply Now
               </button>
