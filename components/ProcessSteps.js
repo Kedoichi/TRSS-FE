@@ -66,6 +66,7 @@ const ProcessSteps = () => {
             alt="Recruitment Process"
             width={400}
             height={300}
+            draggable={false}
             className="rounded-xl shadow-lg object-cover"
             loading="eager"
             placeholder="blur"
@@ -98,7 +99,7 @@ const ProcessSteps = () => {
             {steps.map((step, index) => (
               <motion.div
                 key={index}
-                custom={index} // Passing index for stagger effect
+                custom={index}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
                 variants={stepVariants}

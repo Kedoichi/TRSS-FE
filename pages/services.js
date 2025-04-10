@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
 import Header from "../components/Header";
@@ -60,7 +60,7 @@ const Services = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-background">
+    <div className="relative min-h-screen bg-background overflow-x-hidden">
       {/* Fixed Header */}
       <motion.div
         className={`fixed top-0 left-0 right-0 bg-background z-50 transition-transform duration-300 ease-out ${
@@ -102,6 +102,7 @@ const Services = () => {
         </div>
       </main>
 
+      {/* Footer */}
       <Footer />
     </div>
   );

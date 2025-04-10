@@ -1,25 +1,31 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBuilding,
+  faMapMarkerAlt,
+  faCalendar,
+  faArrowRight
+} from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 const PopularJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await fetch("http://localhost:5100/job");
-        if (!response.ok) {
-          throw new Error("Failed to fetch jobs");
-        }
+        if (!response.ok) throw new Error("Failed to fetch jobs");
         const data = await response.json();
-        setJobs(data || []);
-      } catch (error) {
-        setError(error.message || "Something went wrong");
+        setJobs(data); // assuming the data is in the correct format
+      } catch (err) {
+        setError(err.message);
+        setJobs([]);
       } finally {
         setLoading(false);
       }
@@ -28,16 +34,24 @@ const PopularJobs = () => {
     fetchJobs();
   }, []);
 
-  if (loading)
-    return <section className="py-16 text-center">Loading jobs...</section>;
+  const handleJobClick = (jobId) => {
+    router.push(`/job-description/${jobId}`);
+  };
 
-  if (error)
+  if (loading) {
+    return (
+      <section className="py-16 text-center">Loading jobs...</section>
+    );
+  }
+
+  if (error) {
     return (
       <section className="py-16 text-center">
         <h2 className="text-3xl font-bold text-[#72BF78]">Error</h2>
         <p className="text-lg text-gray-600">{error}</p>
       </section>
     );
+  }
 
   return (
     <section className="py-16 px-6 md:px-16 lg:px-20 text-center">
@@ -55,16 +69,17 @@ const PopularJobs = () => {
           {jobs.map(({ id, company, type, title, location, createdAt }) => (
             <div
               key={id}
-              className="bg-white shadow-md rounded-lg p-6 text-left transform transition duration-300 hover:scale-105"
+              className="bg-white shadow-md rounded-lg p-6 text-left transform transition duration-300 hover:scale-105 cursor-pointer"
+              onClick={() => handleJobClick(id)}
             >
               <div className="flex justify-between items-center mb-4">
                 <p className="text-gray-800 font-medium">{company}</p>
-                <span className="px-3 py-1 text-[#72BF78] border border-[#72BF78] rounded-md text-sm">
+                <span className="px-3 py-1 bg-[#FEFF9F] text-[#72BF78] border border-[#72BF78] rounded-md text-sm">
                   {type}
                 </span>
               </div>
 
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <h3 className="text-xl font-semibold text-gray-800 mb-3 line-clamp-2 hover:text-[#72BF78] transition-colors">
                 {title}
               </h3>
 
@@ -74,13 +89,13 @@ const PopularJobs = () => {
                   <span>{location}</span>
                 </p>
                 <p className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faCalendarAlt} className="text-[#72BF78]" />
+                  <FontAwesomeIcon icon={faCalendar} className="text-[#72BF78]" />
                   <span>{new Date(createdAt).toLocaleDateString()}</span>
                 </p>
               </div>
 
-              <button className="w-full bg-[#72BF78] text-white py-2 px-4 rounded-lg font-semibold transition duration-300 hover:bg-[#5FA461]">
-                Apply Now
+              <button className="w-full bg-[#72BF78] text-white py-2 px-4 rounded-lg font-semibold transition-all duration-300 hover:bg-[#5FA461]">
+                View Details
               </button>
             </div>
           ))}

@@ -56,6 +56,7 @@ const OurServices = () => {
                     src={image}
                     alt={`Our Service ${index + 1}`}
                     fill
+                    draggable={false}
                     className="object-cover hover:scale-105 transition-transform duration-500 rounded-lg"
                     loading="eager"
                     placeholder="blur"
