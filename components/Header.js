@@ -61,10 +61,8 @@ const Header = () => {
               <Image
                 src={logo}
                 alt="Company Logo"
-                width={220}
-                height={80}
                 priority
-                className="w-auto h-auto"
+                className="w-32 sm:w-40 md:w-48 h-auto"
               />
             </motion.div>
           </Link>
