@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -6,11 +8,13 @@ const animations = {
     initial: { opacity: 0, y: 50 },
     whileInView: { opacity: 1, y: 0 },
     transition: { duration: 0.8 },
+    viewport: { once: true, amount: 0.3 },
   },
   text: {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
     transition: { duration: 1 },
+    viewport: { once: true, amount: 0.3 },
   },
 };
 
@@ -31,27 +35,24 @@ const OurCoreValues = () => {
   ];
 
   return (
-    <section className="py-16 px-6 md:px-12 flex flex-col items-center bg-white overflow-hidden">
+    <section className="pb-16 pt-0 px-6 md:px-12 flex flex-col items-center bg-white overflow-hidden">
       {/* Heading */}
       <motion.h1
         className="text-3xl md:text-4xl font-bold text-[#72BF78] text-center mb-10 relative"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         Our Core Values
-        {/* <span className="block w-16 h-1 bg-[#72BF78] mx-auto mt-2"></span> */}
       </motion.h1>
 
       <div className="flex flex-col gap-20 w-full max-w-4xl">
         {values.map((value, index) => (
           <motion.div
             key={index}
-            initial="initial"
-            whileInView="whileInView"
-            viewport={{ once: true }}
-            {...animations.row}
             className="relative flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-12"
+            {...animations.row}
           >
             <h1 className="absolute -top-4 md:-top-10 text-[4rem] md:text-[10rem] font-bold text-[#E0E0E0] opacity-25 w-full max-w-[80vw] md:max-w-full text-center uppercase select-none pointer-events-none overflow-hidden">
               {value.backgroundWord}

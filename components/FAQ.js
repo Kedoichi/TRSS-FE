@@ -1,6 +1,13 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Poppins } from "next/font/google";
 
 const faqData = [
@@ -42,7 +49,7 @@ const fadeInVariants = {
       ease: "easeOut",
     },
   },
-  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } }, // Smooth exit animation
+  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } },
 };
 
 const containerVariants = {
@@ -50,10 +57,10 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15, // Smooth staggered appearance
+      staggerChildren: 0.15,
     },
   },
-  exit: { opacity: 0, transition: { duration: 0.5 } }, // Scroll-out fade effect
+  exit: { opacity: 0, transition: { duration: 0.5 } },
 };
 
 const FAQ = () => {

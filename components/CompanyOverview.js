@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -45,8 +47,8 @@ const CompanyOverview = () => (
       Why Talent Spree
     </motion.h2>
     <motion.p {...animations.description} className="max-w-2xl text-lg text-[#2F5233] leading-relaxed">
-      Talent Spree Solutions is committed to connecting businesses with top talent by leveraging our deep industry expertise, 
-      innovative technology, and a network of outstanding professionals. We help clients build and optimize their workforce, 
+      Talent Spree Solutions is committed to connecting businesses with top talent by leveraging our deep industry expertise,
+      innovative technology, and a network of outstanding professionals. We help clients build and optimize their workforce,
       creating lasting value and delivering exceptional results.
     </motion.p>
   </motion.section>

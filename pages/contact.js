@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,7 +19,6 @@ import { useToast } from "@/hooks/use-toast";
 import Header from "../components/Header";
 import Hero1 from "@/components/hero1";
 import Footer from "../components/Footer";
-import emailjs from "@emailjs/browser";
 
 const contactData = {
   hero: {
@@ -46,11 +46,17 @@ const contactData = {
 };
 
 const ContactUs = () => {
-  const [cvFile, setCvFile] = useState(null);
-  const form = useRef();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setValue,
+  } = useForm();
+
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [fileName, setFileName] = useState("");
 
   const checkIsMobile = useCallback(() => {
     setIsMobile(window.innerWidth < 1023);
@@ -64,6 +70,24 @@ const ContactUs = () => {
     };
   }, [checkIsMobile]);
 
+  const onSubmit = async (data) => {
+    try {
+      console.log("Form submitted:", data);
+      toast({
+        title: "Success!",
+        description: "Your message has been sent successfully.",
+      });
+      reset();
+      setFileName("");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const maxSize = 25 * 1024 * 1024;
@@ -75,7 +99,6 @@ const ContactUs = () => {
           description: "Please upload a PDF file only",
           variant: "destructive",
         });
-        e.target.value = "";
         return;
       }
 
@@ -85,61 +108,17 @@ const ContactUs = () => {
           description: "File size should be less than 25MB",
           variant: "destructive",
         });
-        e.target.value = "";
         return;
       }
 
-      setCvFile(file);
+      setFileName(file.name);
+      setValue("resume", file);
     }
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    emailjs
-      .sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        form.current,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-      )
-      .then(
-        (response) => {
-          toast({
-            title: "Success!",
-            description: "Your message has been sent successfully.",
-            duration: 3000,
-          });
-          setCvFile(null);
-          form.current.reset();
-        },
-        (error) => {
-          toast({
-            title: "Error",
-            description: "Failed to send message. Please try again.",
-            duration: 3000,
-            variant: "destructive",
-          });
-        }
-      )
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  };
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.grecaptcha) {
-      window.grecaptcha.render("recaptcha", {
-        sitekey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
-      });
-    }
-  }, []);
 
   return (
     <div className="relative min-h-screen bg-gray-50">
       <Header />
-
       <Hero1
         title="Contact Us"
         subtitle={contactData.hero.subtitle}
@@ -150,18 +129,14 @@ const ContactUs = () => {
         className="pt-16"
       />
 
-      {/* Desktop View */}
       {!isMobile ? (
         <div className="hidden sm:flex container mx-auto max-w-5xl px-4 py-20 relative z-30 gap-0">
-          {/* Left Column - Image and Contact Info */}
           <div className="relative w-1/3 flex items-center">
             <img
               src="/Images/Image6.jpg"
               alt="Contact Us"
               className="w-full h-full object-cover rounded-l-xl shadow-lg"
             />
-
-            {/* Floating Contact Info Card */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -174,19 +149,12 @@ const ContactUs = () => {
                     key={index}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    style={{width: "100%"}}
+                    style={{ width: "100%" }}
                     className="flex items-center gap-3 text-[#2F5233] hover:text-[#72BF78] transition-colors p-4 rounded-lg hover:bg-[#72BF78]/10 w-auto"
-                    onClick={() =>
-                      info.label === "Phone"
-                        ? (window.location.href = `tel:${info.text}`)
-                        : info.label === "Email"
-                        ? (window.location.href = `mailto:${info.text}`)
-                        : info.action === "copy"
-                        ? navigator.clipboard.writeText(info.text)
-                        : info.url
-                        ? window.open(info.url, "_blank")
-                        : null
-                    }
+                    onClick={() => {
+                      if (info.label === "Phone") window.location.href = `tel:${info.text}`;
+                      if (info.label === "Email") window.location.href = `mailto:${info.text}`;
+                    }}
                   >
                     <FontAwesomeIcon icon={info.icon} className="text-[#72BF78] text-xl" />
                     <div className="text-left">
@@ -199,7 +167,6 @@ const ContactUs = () => {
             </motion.div>
           </div>
 
-          {/* Right Column - Contact Form */}
           <div className="w-2/3">
             <Card className="shadow-xl border border-gray-100 bg-white w-full h-full rounded-l-none">
               <CardHeader className="p-8">
@@ -208,26 +175,27 @@ const ContactUs = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form ref={form} onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input id="firstName" placeholder="First Name" required />
-                    <Input id="lastName" placeholder="Last Name" required />
+                    <Input placeholder="First Name" {...register("firstName", { required: "First name is required" })} />
+                    <Input placeholder="Last Name" {...register("lastName", { required: "Last name is required" })} />
                   </div>
-
                   <Input
-                    id="email"
                     type="email"
                     placeholder="Email"
-                    required
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Invalid email address",
+                      },
+                    })}
                   />
                   <Input
-                    id="phone"
                     type="tel"
                     placeholder="Phone Number"
-                    required
+                    {...register("phone", { required: "Phone number is required" })}
                   />
-
-                  {/* Resume Uploader with Heading */}
                   <div className="space-y-2">
                     <label htmlFor="resume" className="text-sm font-semibold text-gray-800">
                       Upload Resume (PDF Only)
@@ -239,18 +207,13 @@ const ContactUs = () => {
                       onChange={handleFileChange}
                       className="border border-gray-300 rounded-lg px-4 py-2"
                     />
+                    {fileName && <p className="text-sm text-green-600">{fileName}</p>}
                   </div>
-
-                  {/* Message Text Area */}
                   <textarea
-                    id="message"
                     placeholder="Comment or message"
-                    required
-                    className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary resize-none overflow-y-auto"
+                    {...register("message", { required: "Message is required" })}
+                    className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg resize-none overflow-y-auto"
                   />
-
-                  <div className="flex justify-center" id="recaptcha"></div>
-
                   <Button
                     type="submit"
                     disabled={isSubmitting}
@@ -262,14 +225,10 @@ const ContactUs = () => {
               </CardContent>
             </Card>
           </div>
-
         </div>
       ) : (
         <div className="container mx-auto max-w-5xl px-4 py-20 relative z-30 flex flex-col gap-8">
-          {/* Top Section */}
           <div className="relative w-full flex flex-col items-center">
-
-            {/* Floating Contact Info Card */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -283,13 +242,10 @@ const ContactUs = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="flex items-center gap-3 text-[#2F5233] hover:text-[#72BF78] transition-colors p-4 rounded-lg hover:bg-[#72BF78]/10 w-full"
-                    onClick={() =>
-                      info.label === "Phone"
-                        ? (window.location.href = `tel:${info.text}`)
-                        : info.label === "Email"
-                        ? (window.location.href = `mailto:${info.text}`)
-                        : null
-                    }
+                    onClick={() => {
+                      if (info.label === "Phone") window.location.href = `tel:${info.text}`;
+                      if (info.label === "Email") window.location.href = `mailto:${info.text}`;
+                    }}
                   >
                     <FontAwesomeIcon icon={info.icon} className="text-[#72BF78] text-xl" />
                     <div className="text-left">
@@ -301,8 +257,6 @@ const ContactUs = () => {
               </div>
             </motion.div>
           </div>
-
-          {/* Bottom Section - Contact Form */}
           <div className="w-full">
             <Card className="shadow-xl border border-gray-100 bg-white w-full rounded-b-xl">
               <CardHeader className="p-8">
@@ -311,16 +265,27 @@ const ContactUs = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form ref={form} onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input id="firstName" placeholder="First Name" required />
-                    <Input id="lastName" placeholder="Last Name" required />
+                    <Input placeholder="First Name" {...register("firstName", { required: "First name is required" })} />
+                    <Input placeholder="Last Name" {...register("lastName", { required: "Last name is required" })} />
                   </div>
-
-                  <Input id="email" type="email" placeholder="Email" required />
-                  <Input id="phone" type="tel" placeholder="Phone Number" required />
-
-                  {/* Resume Uploader */}
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Invalid email address",
+                      },
+                    })}
+                  />
+                  <Input
+                    type="tel"
+                    placeholder="Phone Number"
+                    {...register("phone", { required: "Phone number is required" })}
+                  />
                   <div className="space-y-2">
                     <label htmlFor="resume" className="text-sm font-semibold text-gray-800">
                       Upload Resume (PDF Only)
@@ -332,18 +297,13 @@ const ContactUs = () => {
                       onChange={handleFileChange}
                       className="border border-gray-300 rounded-lg px-4 py-2"
                     />
+                    {fileName && <p className="text-sm text-green-600">{fileName}</p>}
                   </div>
-
-                  {/* Message Text Area */}
                   <textarea
-                    id="message"
                     placeholder="Comment or message"
-                    required
+                    {...register("message", { required: "Message is required" })}
                     className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg resize-none overflow-y-auto"
                   />
-
-                  <div className="flex justify-center" id="recaptcha"></div>
-
                   <Button
                     type="submit"
                     disabled={isSubmitting}

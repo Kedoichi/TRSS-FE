@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
@@ -7,7 +9,6 @@ import OurServices from "../components/OurServices";
 import Hero1 from "@/components/hero1";
 import OurIndustries from "@/components/OurIndustries";
 
-// Dynamic imports with loading states
 const ProcessSteps = dynamic(() => import("@/components/ProcessSteps"), {
   ssr: false,
   loading: () => (
@@ -29,8 +30,9 @@ const Footer = dynamic(() => import("../components/Footer"), {
 
 const Services = () => {
   const [showHeader, setShowHeader] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const lastScrollYRef = useRef(0);
+  const scrollTimeoutRef = useRef(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -39,21 +41,25 @@ const Services = () => {
   useEffect(() => {
     if (!isClient) return;
 
-    let scrollTimeout;
     const handleScroll = () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        setShowHeader(window.scrollY <= lastScrollY || window.scrollY === 0);
-        setLastScrollY(window.scrollY);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        const currentY = window.scrollY;
+        setShowHeader(currentY <= lastScrollYRef.current || currentY === 0);
+        lastScrollYRef.current = currentY;
       }, 50);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      clearTimeout(scrollTimeout);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
     };
-  }, [lastScrollY, isClient]);
+  }, [isClient]);
 
   if (!isClient) {
     return null;
@@ -61,7 +67,6 @@ const Services = () => {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-hidden">
-      {/* Fixed Header */}
       <motion.div
         className={`fixed top-0 left-0 right-0 bg-background z-50 transition-transform duration-300 ease-out ${
           showHeader ? "translate-y-0" : "-translate-y-28"

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
@@ -30,7 +32,6 @@ const steps = [
   },
 ];
 
-// Variants for steps animation
 const stepVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (index) => ({
@@ -53,7 +54,6 @@ const ProcessSteps = () => {
       className="bg-[#f8fdef] py-20 px-6 md:px-16 lg:px-20 !mt-0"
     >
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
-        
         {/* Left Column: Image */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -91,8 +91,7 @@ const ProcessSteps = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base md:text-lg text-[#666666] leading-relaxed"
           >
-            Step-by-step guide to how we streamline the recruitment process for
-            you.
+            Step-by-step guide to how we streamline the recruitment process for you.
           </motion.p>
 
           <div className="space-y-6">

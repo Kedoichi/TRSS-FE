@@ -2,13 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBuilding,
-  faMapMarkerAlt,
-  faCalendar,
-  faArrowRight
-} from "@fortawesome/free-solid-svg-icons";
-import { useRouter } from "next/router";
+import { faMapMarkerAlt, faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/navigation";
 
 const PopularJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -22,9 +17,9 @@ const PopularJobs = () => {
         const response = await fetch("http://localhost:5100/job");
         if (!response.ok) throw new Error("Failed to fetch jobs");
         const data = await response.json();
-        setJobs(data); // assuming the data is in the correct format
+        setJobs(data);
       } catch (err) {
-        setError(err.message);
+        setError(err?.message || "Something went wrong");
         setJobs([]);
       } finally {
         setLoading(false);
@@ -40,7 +35,9 @@ const PopularJobs = () => {
 
   if (loading) {
     return (
-      <section className="py-16 text-center">Loading jobs...</section>
+      <section className="py-16 text-center">
+        Loading jobs...
+      </section>
     );
   }
 
@@ -63,7 +60,9 @@ const PopularJobs = () => {
       </p>
 
       {jobs.length === 0 ? (
-        <p className="text-lg text-gray-600">No jobs available at the moment.</p>
+        <p className="text-lg text-gray-600">
+          No jobs available at the moment.
+        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {jobs.map(({ id, company, type, title, location, createdAt }) => (
@@ -85,11 +84,17 @@ const PopularJobs = () => {
 
               <div className="flex items-center space-x-4 text-gray-500 text-sm mb-4">
                 <p className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#72BF78]" />
+                  <FontAwesomeIcon
+                    icon={faMapMarkerAlt}
+                    className="text-[#72BF78]"
+                  />
                   <span>{location}</span>
                 </p>
                 <p className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faCalendar} className="text-[#72BF78]" />
+                  <FontAwesomeIcon
+                    icon={faCalendar}
+                    className="text-[#72BF78]"
+                  />
                   <span>{new Date(createdAt).toLocaleDateString()}</span>
                 </p>
               </div>

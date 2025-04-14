@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -21,28 +23,27 @@ const navLinks = [
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
-  const NavLink = ({ href, label, isMobile = false }) => {
-    const isActive = router.pathname === href;
+  const NavLink = ({ href, label }) => {
+    const isActive = pathname === href;
 
     return (
-      <Link href={href} legacyBehavior>
-        <a className="relative group">
-          <motion.div
-            className="text-lg font-semibold px-4 py-2 rounded-md transition-all duration-200 hover:bg-gray-200/20 relative"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {label}
-            <motion.div
-              className="absolute bottom-0 left-0 h-0.5 w-full origin-left"
-              style={{ backgroundColor: "#72BF78" }}
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: isActive ? 1 : 0 }}
-              transition={{ duration: 0.2 }}
-            />
-          </motion.div>
-        </a>
+      <Link href={href} className="relative group">
+        <motion.span
+          className="text-lg font-semibold px-4 py-2 rounded-md transition-all duration-200 hover:bg-gray-200/20 block"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          {label}
+          <motion.span
+            className="absolute bottom-0 left-0 h-0.5 w-full origin-left"
+            style={{ backgroundColor: "#72BF78" }}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: isActive ? 1 : 0 }}
+            transition={{ duration: 0.2 }}
+          />
+        </motion.span>
       </Link>
     );
   };
@@ -51,56 +52,88 @@ const Header = () => {
     <header className="w-full backdrop-blur-sm bg-white/80 shadow-md">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" legacyBehavior>
-            <a aria-label="Home">
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-                <Image src={logo} alt="Company Logo" width={220} height={80} />
-              </motion.div>
-            </a>
+          <Link href="/" aria-label="Home">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Image
+                src={logo}
+                alt="Company Logo"
+                width={220}
+                height={80}
+                priority
+                className="w-auto h-auto"
+              />
+            </motion.div>
           </Link>
 
           <nav className="hidden xl:flex items-center gap-4">
             {navLinks.map((link) => (
               <NavLink key={link.href} {...link} />
             ))}
-            <Link href="/contact" legacyBehavior>
-              <a className="group">
-                <motion.div
-                  className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] transition-all duration-300"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <FileUp className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]" style={{ color: "#72BF78" }} />
-                  <span style={{ color: "#72BF78" }}>CV</span>
-                </motion.div>
-              </a>
+            <Link href="/contact" className="group">
+              <motion.div
+                className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] transition-all duration-300"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <FileUp
+                  className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]"
+                  style={{ color: "#72BF78" }}
+                />
+                <span style={{ color: "#72BF78" }}>CV</span>
+              </motion.div>
             </Link>
           </nav>
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="xl:hidden">
               <Button variant="ghost" size="icon" className="hover:bg-gray-200/20">
-                <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <motion.div
+                  animate={{ rotate: isOpen ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="text-xl" />
                 </motion.div>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] bg-white/90 backdrop-blur-md shadow-lg">
+            <SheetContent
+              side="right"
+              className="w-[300px] bg-white/90 backdrop-blur-md shadow-lg"
+            >
               <nav className="flex flex-col space-y-4 mt-12">
                 <AnimatePresence mode="wait">
                   {navLinks.map((link, index) => (
-                    <motion.div key={link.href} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ delay: index * 0.1 }}>
-                      <NavLink {...link} isMobile />
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <NavLink {...link} />
                     </motion.div>
                   ))}
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ delay: navLinks.length * 0.1 }}>
-                    <Link href="/contact" legacyBehavior>
-                      <a className="group">
-                        <motion.div className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] transition-all duration-300" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                          <FileUp className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]" style={{ color: "#72BF78" }} />
-                          <span style={{ color: "#72BF78" }}>CV</span>
-                        </motion.div>
-                      </a>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ delay: navLinks.length * 0.1 }}
+                  >
+                    <Link href="/contact" className="group">
+                      <motion.div
+                        className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] transition-all duration-300"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <FileUp
+                          className="w-5 h-5 transition-transform group-hover:translate-y-[-2px]"
+                          style={{ color: "#72BF78" }}
+                        />
+                        <span style={{ color: "#72BF78" }}>CV</span>
+                      </motion.div>
                     </Link>
                   </motion.div>
                 </AnimatePresence>

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { m, motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPhoneAlt,
@@ -11,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { toast } from 'react-hot-toast';
 
 const contactData = {
   title: "Contact with Our Team of Experts",
@@ -71,6 +73,25 @@ const ContactForm = () => {
       setFile(droppedFile);
     }
   };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm();
+
+  const onSubmit = (data => {
+    try {
+      console.log({ ...data, file});
+      toast.success("Message sent successfully!");
+      reset();
+      setFile(null);
+    } catch (err) {
+      console.error("Submission failed:", err);
+      toast.error("Something went wrong. Please try again.");
+    }
+  });
 
   return (
     <section className="relative bg-[#E6F0E6] py-16 px-4 md:px-8"
@@ -153,15 +174,52 @@ const ContactForm = () => {
             <Card className="bg-white border-2 border-[#72BF78] text-[#0D110E] shadow-md rounded-lg w-full max-w-lg">
               <CardContent className="p-6 space-y-5">
                 <h3 className="text-2xl font-bold text-center">Let's Talk</h3>
-                <form className="space-y-4">
-                  <Input id="name" placeholder="Your name" className="border-[#72BF78] bg-white text-[#0D110E]" />
-                  <Input id="email" type="email" placeholder="Your email" className="border-[#72BF78] bg-white text-[#0D110E]" />
-                  <Input id="phone" placeholder="Your phone number" className="border-[#72BF78] bg-white text-[#0D110E]" />
-                  <Textarea id="message" placeholder="Your message" className="border-[#72BF78] bg-white text-[#0D110E] min-h-[100px]" />
+
+                <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                  <div>
+                    <Input
+                      {...register("name", { required: "Name is required" })}
+                      id="name"
+                      placeholder="Your name"
+                      className="border-[#72BF78] bg-white text-[#0D110E]"
+                    />
+                    {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>}
+                  </div>
+
+                  <div>
+                    <Input
+                      {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                          message: "Invalid email address",
+                        },
+                      })}
+                      id="email"
+                      type="email"
+                      placeholder="Your email"
+                      className="border-[#72BF78] bg-white text-[#0D110E]"
+                    />
+                    {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>}
+                  </div>
+
+                  <Input
+                    {...register("phone")}
+                    id="phone"
+                    placeholder="Your phone number"
+                    className="border-[#72BF78] bg-white text-[#0D110E]"
+                  />
+
+                  <Textarea
+                    {...register("message")}
+                    id="message"
+                    placeholder="Your message"
+                    className="border-[#72BF78] bg-white text-[#0D110E] min-h-[100px]"
+                  />
 
                   {/* Drag & Drop Upload */}
                   <div
-                    className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#72BF78]
+                    className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#72BF78] 
                     ${isDragging ? "bg-primary/5" : "hover:bg-primary/10"}`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
@@ -169,15 +227,12 @@ const ContactForm = () => {
                     onClick={() => document.getElementById("file-input")?.click()}
                   >
                     <input type="file" id="file-input" accept=".pdf" onChange={handleFileChange} className="hidden" />
-                    <p>
-                      {file ? file.name : "Drag and drop your Resume/CV here or click to upload"}
-                    </p>
+                    <p>{file ? file.name : "Drag and drop your Resume/CV here or click to upload"}</p>
                   </div>
 
-                  {/* Submit Button */}
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-[#72BF78] text-white font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#5CA965] transition-all duration-300" 
+                  <Button
+                    type="submit"
+                    className="w-full bg-[#72BF78] text-white font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#5CA965] transition-all duration-300"
                     size="lg"
                   >
                     Send
@@ -186,6 +241,7 @@ const ContactForm = () => {
               </CardContent>
             </Card>
           </motion.div>
+
         </div>
       </div>
     ) : (
@@ -234,31 +290,79 @@ const ContactForm = () => {
             <Card className="bg-white border-2 border-[#72BF78] text-[#0D110E] shadow-md rounded-lg w-full max-w-lg">
               <CardContent className="p-6 space-y-5">
                 <h3 className="text-2xl font-bold text-center">Let's Talk</h3>
-                <form className="space-y-4">
-                  <Input id="name" placeholder="Your name" className="border-[#72BF78] bg-white text-[#0D110E]" />
-                  <Input id="email" type="email" placeholder="Your email" className="border-[#72BF78] bg-white text-[#0D110E]" />
-                  <Input id="phone" placeholder="Your phone number" className="border-[#72BF78] bg-white text-[#0D110E]" />
-                  <Textarea id="message" placeholder="Your message" className="border-[#72BF78] bg-white text-[#0D110E] min-h-[100px]" />
+                <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                  <div>
+                    <Input
+                      {...register("name", { required: "Name is required" })}
+                      id="name"
+                      placeholder="Your name"
+                      className="border-[#72BF78] bg-white text-[#0D110E]"
+                    />
+                    {errors.name && (
+                      <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Input
+                      {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                          message: "Invalid email address",
+                        },
+                      })}
+                      id="email"
+                      type="email"
+                      placeholder="Your email"
+                      className="border-[#72BF78] bg-white text-[#0D110E]"
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>
+                    )}
+                  </div>
+
+                  <Input
+                    {...register("phone")}
+                    id="phone"
+                    placeholder="Your phone number"
+                    className="border-[#72BF78] bg-white text-[#0D110E]"
+                  />
+
+                  <Textarea
+                    {...register("message")}
+                    id="message"
+                    placeholder="Your message"
+                    className="border-[#72BF78] bg-white text-[#0D110E] min-h-[100px]"
+                  />
 
                   {/* Drag & Drop Upload */}
                   <div
-                    className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#72BF78]
-                    ${isDragging ? "bg-primary/5" : "hover:bg-primary/10"}`}
+                    className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#72BF78] ${
+                      isDragging ? "bg-primary/5" : "hover:bg-primary/10"
+                    }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     onClick={() => document.getElementById("file-input")?.click()}
                   >
-                    <input type="file" id="file-input" accept=".pdf" onChange={handleFileChange} className="hidden" />
+                    <input
+                      type="file"
+                      id="file-input"
+                      accept=".pdf"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
                     <p>
-                      {file ? file.name : "Drag and drop your Resume/CV here or click to upload"}
+                      {file
+                        ? file.name
+                        : "Drag and drop your Resume/CV here or click to upload"}
                     </p>
                   </div>
 
-                  {/* Submit Button */}
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-[#72BF78] text-white font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#5CA965] transition-all duration-300" 
+                  <Button
+                    type="submit"
+                    className="w-full bg-[#72BF78] text-white font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#5CA965] transition-all duration-300"
                     size="lg"
                   >
                     Send

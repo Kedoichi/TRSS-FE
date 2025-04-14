@@ -1,6 +1,8 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const fadeInVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -11,6 +13,10 @@ const fadeInVariants = {
 const TeamMemberCard = ({ name, role, id }) => {
   const router = useRouter();
 
+  const handleClick = () => {
+    router.push(`/team/${id}`);
+  };
+
   return (
     <motion.div
       whileHover={{ y: -5 }}
@@ -20,7 +26,7 @@ const TeamMemberCard = ({ name, role, id }) => {
       variants={fadeInVariants}
       viewport={{ once: false, amount: 0.3 }}
       className="relative w-64 md:w-72 overflow-hidden shadow-lg rounded-lg cursor-pointer transition-all duration-300"
-      onClick={() => router.push(`/team/${id}`)}
+      onClick={handleClick}
     >
       <div className="w-full h-64 bg-red-500 flex items-center justify-center text-white text-3xl font-bold">
         {name.split(" ")[0]}
@@ -57,8 +63,8 @@ const MeetOurTeam = () => {
       exit="exit"
       variants={fadeInVariants}
       viewport={{ once: false, amount: 0.3 }}
-      className="text-center my-16 px-4"
-    >
+      className="text-center m-0 px-4 py-8"
+      >
       <motion.h4
         initial="hidden"
         whileInView="visible"

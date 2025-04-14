@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -30,11 +33,28 @@ const fadeInVariants = {
   exit: { opacity: 0, y: 50, transition: { duration: 0.6 } },
 };
 
+const testimonialsData = [
+  {
+    text: "Talent Spree Solutions helped us find the perfect candidates. Their attention to detail and understanding of our needs was remarkable.",
+    author: "John Doe",
+    company: "CEO, Example Corp",
+    logo: "/Images/DemoSet/User/1.png",
+    companyLogo: "/Images/DemoSet/Company/1.webp",
+  },
+  {
+    text: "A fantastic experience from start to finish. The process was seamless, and we were matched with exceptional talent.",
+    author: "Jane Smith",
+    company: "HR Manager, Tech Innovators",
+    logo: "/Images/DemoSet/User/2.png",
+    companyLogo: "/Images/DemoSet/Company/2.webp",
+  },
+];
+
 const Testimonials = () => {
-  const [api, setApi] = useState();
+  const [api, setApi] = useState(null);
   const [current, setCurrent] = useState(0);
 
-  const plugin = React.useMemo(
+  const plugin = useMemo(
     () =>
       Autoplay({
         delay: 3000,
@@ -46,9 +66,16 @@ const Testimonials = () => {
 
   useEffect(() => {
     if (!api) return;
-    api.on("select", () => {
+
+    const handleSelect = () => {
       setCurrent(api.selectedScrollSnap());
-    });
+    };
+
+    api.on("select", handleSelect);
+    // Cleanup listener on unmount or update
+    return () => {
+      api.off("select", handleSelect);
+    };
   }, [api]);
 
   return (
@@ -103,13 +130,13 @@ const Testimonials = () => {
                       <div className="flex flex-col md:flex-row items-center justify-between border-t border-[#72BF78] pt-6">
                         <div className="flex items-center gap-4 mb-4 md:mb-0">
                           <div className="w-14 h-14 rounded-full border-2 border-[#72BF78] p-1 shadow-sm">
-                            <div className="w-full h-full rounded-full overflow-hidden">
-                              <img
-                                src={testimonial.logo}
-                                alt={testimonial.company}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
+                            <Image
+                              src={testimonial.logo}
+                              alt={`${testimonial.author} - ${testimonial.company}`}
+                              width={56}
+                              height={56}
+                              className="rounded-full object-cover"
+                            />
                           </div>
                           <div>
                             <p
@@ -159,22 +186,5 @@ const Testimonials = () => {
     </section>
   );
 };
-
-const testimonialsData = [
-  {
-    text: "Talent Spree Solutions helped us find the perfect candidates. Their attention to detail and understanding of our needs was remarkable.",
-    author: "John Doe",
-    company: "CEO, Example Corp",
-    logo: "/Images/DemoSet/User/1.png",
-    companyLogo: "/Images/DemoSet/Company/1.webp",
-  },
-  {
-    text: "A fantastic experience from start to finish. The process was seamless, and we were matched with exceptional talent.",
-    author: "Jane Smith",
-    company: "HR Manager, Tech Innovators",
-    logo: "/Images/DemoSet/User/2.png",
-    companyLogo: "/Images/DemoSet/Company/2.webp",
-  },
-];
 
 export default Testimonials;

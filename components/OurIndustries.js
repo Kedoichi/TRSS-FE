@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -61,7 +63,11 @@ const industries = [
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
 };
 
 const OurIndustries = () => {
@@ -99,23 +105,16 @@ const OurIndustries = () => {
       variants={sectionVariants}
     >
       <div className="max-w-screen-xl w-full mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between space-x-0 md:space-x-8">
-          <div className="flex flex-col justify-center text-left md:text-left text-center w-full md:w-1/3 mb-8 md:mb-0">
-            <h4
-              className={`text-[#72BF78] text-lg uppercase tracking-wider mb-2 ${poppins.className}`}
-            >
+        <div className="flex flex-col md:flex-row justify-between md:space-x-8">
+          <div className="flex flex-col justify-center text-left w-full md:w-1/3 mb-8 md:mb-0">
+            <h4 className={`text-[#72BF78] text-lg uppercase tracking-wider mb-2 ${poppins.className}`}>
               Our Industries
             </h4>
-            <h2
-              className={`text-4xl md:text-5xl text-[#333333] font-bold mb-4 leading-tight`}
-            >
+            <h2 className="text-4xl md:text-5xl text-[#333333] font-bold mb-4 leading-tight">
               We Serve a Range of Professional Careers
             </h2>
-            <p
-              className={`text-lg text-[#333333] mb-10 max-w-2xl mx-auto ${poppins.className}`}
-            >
-              Our industry expertise spans across accounting, finance, IT, and
-              more, offering innovative solutions for business growth.
+            <p className={`text-lg text-[#333333] mb-10 max-w-2xl mx-auto ${poppins.className}`}>
+              Our industry expertise spans across accounting, finance, IT, and more, offering innovative solutions for business growth.
             </p>
           </div>
 
@@ -124,7 +123,7 @@ const OurIndustries = () => {
               {industries.map(({ icon, title, description }, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white text-[#333333] p-8 rounded-xl shadow-lg text-center transition duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-2xl"
+                  className="bg-white text-[#333333] p-8 rounded-xl shadow-lg text-center transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl"
                   whileHover={{ scale: 1.03 }}
                   initial="hidden"
                   animate={controls}
@@ -149,7 +148,7 @@ const OurIndustries = () => {
                   {industries.map(({ icon, title, description }, index) => (
                     <motion.div
                       key={index}
-                      className="w-full flex-shrink-0 snap-center bg-white text-[#333333] p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:scale-[1.03]"
+                      className="w-full flex-shrink-0 snap-center bg-white text-[#333333] p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:scale-105"
                       initial="hidden"
                       animate={controls}
                       variants={sectionVariants}
@@ -157,9 +156,7 @@ const OurIndustries = () => {
                       <div className="text-5xl text-[#a0d683] mb-4">
                         <FontAwesomeIcon icon={icon} />
                       </div>
-                      <h3
-                        className={`text-xl font-semibold mb-2 ${poppins.className}`}
-                      >
+                      <h3 className={`text-xl font-semibold mb-2 ${poppins.className}`}>
                         {title}
                       </h3>
                       <p className={`text-base opacity-80 ${poppins.className}`}>

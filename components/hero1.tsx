@@ -5,7 +5,7 @@ type Hero1Props = {
   title: string;
   subtitle?: string;
   backgroundImage: string;
-  height?: "normal" | "large" | "full"; // Add more sizes as needed
+  height?: "normal" | "large" | "full";
   overlayOpacity?: "light" | "medium" | "dark";
   curveColor?: string;
   className?: string;

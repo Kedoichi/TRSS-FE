@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -46,12 +49,12 @@ const containerVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      staggerChildren: 0.15, // Stagger for smooth flow
-      duration: 0.8, // Smooth entrance
+      staggerChildren: 0.15,
+      duration: 0.8,
       ease: "easeOut",
     },
   },
-  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } }, // Exit animation
+  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } },
 };
 
 const itemVariants = {
@@ -64,7 +67,7 @@ const itemVariants = {
       ease: "anticipate",
     },
   },
-  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } }, // Scroll out animation
+  exit: { opacity: 0, y: 50, transition: { duration: 0.6 } },
 };
 
 const titleVariants = {
@@ -148,13 +151,14 @@ const HomeOurServices = () => {
           variants={itemVariants}
           className="mt-8 flex justify-center"
         >
-          <Button
-            onClick={() => (window.location.href = "/services")}
-            variant="default"
-            className={`font-semibold tracking-wide text-lg hover:scale-105 transition-transform duration-300 bg-[#72BF78] text-white hover:bg-[#5FA461] h-16 rounded-md px-8 ${poppins.className}`}
-          >
-            Explore Our Services
-          </Button>
+          <Link href="/services" passHref>
+            <Button
+              variant="default"
+              className={`font-semibold tracking-wide text-lg hover:scale-105 transition-transform duration-300 bg-[#72BF78] text-white hover:bg-[#5FA461] h-16 rounded-md px-8 ${poppins.className}`}
+            >
+              Explore Our Services
+            </Button>
+          </Link>
         </motion.div>
       </motion.div>
     </motion.section>

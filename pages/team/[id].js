@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,14 +54,20 @@ const TeamMemberDetails = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  if (!router.isReady) {
+    return <p className="text-center text-gray-600 mt-10">Loading...</p>;
+  }
+
   const member = teamMembers.find((member) => member.id === id);
 
-  if (!member) return <p className="text-center text-gray-600 mt-10">Loading...</p>;
+  if (!member) {
+    return <p className="text-center text-gray-600 mt-10">Team member not found.</p>;
+  }
 
   return (
     <>
       <Header />
-      <section className="max-w-4xl mx-auto my-20 px-6">
+      <section className="max-w-4xl mx-auto my-24 px-6">
         <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
           <div className="w-64 h-64 md:w-72 md:h-72 bg-[#72BF78] flex items-center justify-center text-white text-5xl font-bold rounded-lg">
             {member.name.split(" ")[0][0]}
@@ -68,22 +76,41 @@ const TeamMemberDetails = () => {
             <h1 className="text-4xl font-bold text-gray-900">{member.name}</h1>
             <h2 className="text-2xl text-gray-600 mt-2">{member.role}</h2>
             <div className="flex gap-6 mt-4 justify-center md:justify-start">
-              <a href={`mailto:${member.email}`} title="Email" className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]">
+              <a
+                href={`mailto:${member.email}`}
+                title="Email"
+                aria-label="Email"
+                className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]"
+              >
                 <FontAwesomeIcon icon={faEnvelope} />
               </a>
-              <a href={`tel:${member.phone}`} title="Phone" className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]">
+              <a
+                href={`tel:${member.phone}`}
+                title="Phone"
+                aria-label="Phone"
+                className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]"
+              >
                 <FontAwesomeIcon icon={faPhoneAlt} />
               </a>
-              <a href={member.linkedin} title="LinkedIn" target="_blank" rel="noopener noreferrer" className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]">
+              <a
+                href={member.linkedin}
+                title="LinkedIn"
+                aria-label="LinkedIn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#72BF78] text-2xl transition hover:text-[#FEFF9F]"
+              >
                 <FontAwesomeIcon icon={faLinkedin} />
               </a>
             </div>
           </div>
         </div>
 
-        <div className="mt-10 text-lg text-gray-800 leading-relaxed">
+        <div className="mt-12 text-lg text-gray-800 leading-relaxed">
           {member.description.map((paragraph, index) => (
-            <p key={index} className="mb-6">{paragraph}</p>
+            <p key={index} className="mb-6">
+              {paragraph}
+            </p>
           ))}
         </div>
       </section>
