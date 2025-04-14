@@ -16,9 +16,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import Header from "../components/Header";
+import Header from "@/components/Header";
 import Hero1 from "@/components/hero1";
-import Footer from "../components/Footer";
+import Footer from "@/components/Footer";
 
 const contactData = {
   hero: {

@@ -8,7 +8,7 @@ import Header from "../components/Header";
 import Hero1 from "@/components/hero1";
 import CompanyOverview from "@/components/CompanyOverview";
 
-const OurCoreValues = dynamic(() => import("../components/OurCoreValues"), {
+const OurCoreValues = dynamic(() => import("@/components/OurCoreValues"), {
   ssr: false,
   loading: () => (
     <div className="min-h-[400px] bg-muted/50 animate-pulse rounded-lg" />
@@ -22,7 +22,7 @@ const MeetOurTeam = dynamic(() => import("@/components/MeetOurTeam"), {
   ),
 });
 
-const Footer = dynamic(() => import("../components/Footer"), {
+const Footer = dynamic(() => import("@/components/Footer"), {
   ssr: false,
   loading: () => <div className="h-20 bg-muted/50 animate-pulse" />,
 });

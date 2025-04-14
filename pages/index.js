@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Header from "../components/Header";
+import Header from "@/components/Header";
 import HomeOurServices from "@/components/HomeOurServices";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

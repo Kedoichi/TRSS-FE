@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { FileUp } from "lucide-react";
 import Image from "next/image";
-import logo from "../public/Images/demoLogo1.png";
+import logo from "@/public/Images/demoLogo1.png";
 
 const navLinks = [
   { href: "/", label: "Home" },

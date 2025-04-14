@@ -4,8 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
-import Header from "../components/Header";
-import OurServices from "../components/OurServices";
+import Header from "@/components/Header";
+import OurServices from "@/components/OurServices";
 import Hero1 from "@/components/hero1";
 import OurIndustries from "@/components/OurIndustries";
 
@@ -23,7 +23,7 @@ const ContactForm = dynamic(() => import("@/components/ContactForm"), {
   ),
 });
 
-const Footer = dynamic(() => import("../components/Footer"), {
+const Footer = dynamic(() => import("@/components/Footer"), {
   ssr: false,
   loading: () => <div className="h-20 bg-muted/50 animate-pulse" />,
 });
