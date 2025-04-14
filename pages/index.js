@@ -23,7 +23,7 @@ const HeroButton = ({ children, href }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Link href={href} passHref legacyBehavior>
+    <Link href={href} passHref>
       <motion.div
         className="flex flex-col items-center justify-center h-[400px] w-full relative overflow-hidden group cursor-pointer"
         whileHover={{ scale: 1.02 }}

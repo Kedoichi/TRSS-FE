@@ -91,17 +91,17 @@ const ServiceCard = ({ icon, title, description }) => {
       whileInView="visible"
       exit="exit"
       viewport={{ once: false, amount: 0.2 }}
-      className="w-64 sm:w-full sm:max-w-[300px]"
+      className="h-full"
     >
-      <Card className="h-full bg-white border border-[#72BF78] hover:shadow-lg transition-shadow duration-300 rounded-xl">
-        <CardContent className="p-6 flex flex-col items-center">
+      <Card className="h-full flex flex-col justify-between bg-white border border-[#72BF78] hover:shadow-lg transition-shadow duration-300 rounded-xl">
+        <CardContent className="p-6 flex flex-col items-center flex-grow">
           <div className="text-5xl text-[#72BF78] mb-4">
             <FontAwesomeIcon icon={icon} />
           </div>
           <h3 className={`text-lg font-semibold text-[#1B1B1B] mb-2 ${poppins.className}`}>
             {title}
           </h3>
-          <p className={`text-sm text-[#606C38] ${poppins.className}`}>
+          <p className={`text-sm text-[#606C38] text-center ${poppins.className}`}>
             {description}
           </p>
         </CardContent>
@@ -140,7 +140,7 @@ const HomeOurServices = () => {
 
         <motion.div
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center mb-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12"
         >
           {servicesData.map((service, index) => (
             <ServiceCard key={index} {...service} />
@@ -151,7 +151,7 @@ const HomeOurServices = () => {
           variants={itemVariants}
           className="mt-8 flex justify-center"
         >
-          <Link href="/services" passHref>
+          <Link href="/services">
             <Button
               variant="default"
               className={`font-semibold tracking-wide text-lg hover:scale-105 transition-transform duration-300 bg-[#72BF78] text-white hover:bg-[#5FA461] h-16 rounded-md px-8 ${poppins.className}`}
