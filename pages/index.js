@@ -3,14 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Header from "@/components/Header";
 import HomeOurServices from "@/components/HomeOurServices";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import ContactForm from "@/components/ContactForm";
-import Footer from "@/components/Footer";
 import { Bebas_Neue } from "next/font/google";
 
 const bebasNeue = Bebas_Neue({
@@ -37,7 +35,6 @@ const HeroButton = ({ children, href }) => {
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}
         />
-
         <div className="relative z-10 flex flex-col items-center">
           <Button
             size="lg"
@@ -45,13 +42,11 @@ const HeroButton = ({ children, href }) => {
           >
             {children}
           </Button>
-
           <motion.div
             className="h-1.5 bg-[#72BF78]"
             animate={{ width: isHovered ? "220px" : "100px" }}
             transition={{ duration: 0.3 }}
           />
-
           <motion.p
             className="text-[#FEFF9F] text-xl mt-6 max-w-md text-center"
             animate={{
@@ -65,7 +60,6 @@ const HeroButton = ({ children, href }) => {
               : "Get matched with the services you need."}
           </motion.p>
         </div>
-
         <motion.div
           className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           initial={false}
@@ -76,20 +70,13 @@ const HeroButton = ({ children, href }) => {
 };
 
 const Home = () => {
-  const [isClient, setIsClient] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const scrollDifference = Math.abs(currentScrollY - lastScrollY);
-
-      if (scrollDifference > 5) {
+      if (Math.abs(currentScrollY - lastScrollY) > 5) {
         setShowHeader(currentScrollY < lastScrollY || currentScrollY < 100);
         setLastScrollY(currentScrollY);
       }
@@ -99,11 +86,10 @@ const Home = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  if (!isClient) return null;
-
   return (
     <>
-      {/* Sticky Header */}
+      {/* Optional Sticky Header if not using in _app.js */}
+      {/* 
       <motion.div
         className={`fixed top-0 left-0 right-0 bg-background z-50 transition-transform duration-300 ease-out ${
           showHeader ? "translate-y-0" : "-translate-y-28"
@@ -114,7 +100,8 @@ const Home = () => {
         style={{ willChange: "transform" }}
       >
         <Header />
-      </motion.div>
+      </motion.div> 
+      */}
 
       {/* Hero Section */}
       <section
@@ -127,9 +114,7 @@ const Home = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         />
-
         <div className="relative z-10 container mx-auto px-6 py-20 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
-          {/* Browse Jobs */}
           <motion.div
             className="w-full md:w-1/2 max-w-xl"
             initial={{ opacity: 0, x: -50 }}
@@ -137,11 +122,10 @@ const Home = () => {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <Card className="bg-transparent border-none shadow-none">
-              <HeroButton href="/browse-jobs">Browse Jobs</HeroButton>
+              <HeroButton href="/job-openings">Browse Jobs</HeroButton>
             </Card>
           </motion.div>
 
-          {/* Seek Services */}
           <motion.div
             className="w-full md:w-1/2 max-w-xl"
             initial={{ opacity: 0, x: 50 }}
@@ -162,8 +146,6 @@ const Home = () => {
         <FAQ />
         <ContactForm />
       </main>
-
-      <Footer />
     </>
   );
 };

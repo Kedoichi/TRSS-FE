@@ -13,9 +13,6 @@ import {
 import { motion } from "framer-motion";
 import { fetchJobById } from "@/utils/api/jobs";
 
-const Header = React.lazy(() => import("../../components/Header"));
-const Footer = React.lazy(() => import("../../components/Footer"));
-
 const JobDescriptionPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -67,10 +64,6 @@ const JobDescriptionPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <React.Suspense fallback={<div className="h-16 bg-white shadow animate-pulse" />}>
-        <Header />
-      </React.Suspense>
-
       {/* Custom Hero Section with Green-Toned Background Image */}
       <section
         className="relative text-white pt-20 pb-10 px-6 sm:px-10 bg-cover bg-center"
@@ -137,10 +130,6 @@ const JobDescriptionPage = () => {
           </button>
         </motion.div>
       </main>
-
-      <React.Suspense fallback={<div className="h-16 bg-white shadow animate-pulse" />}>
-        <Footer />
-      </React.Suspense>
     </div>
   );
 };

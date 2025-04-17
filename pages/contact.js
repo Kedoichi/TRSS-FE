@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
@@ -16,9 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import Header from "@/components/Header";
 import Hero1 from "@/components/hero1";
-import Footer from "@/components/Footer";
 
 const contactData = {
   hero: {
@@ -65,18 +65,31 @@ const ContactUs = () => {
   useEffect(() => {
     checkIsMobile();
     window.addEventListener("resize", checkIsMobile);
-    return () => {
-      window.removeEventListener("resize", checkIsMobile);
-    };
+    return () => window.removeEventListener("resize", checkIsMobile);
   }, [checkIsMobile]);
 
   const onSubmit = async (data) => {
     try {
-      console.log("Form submitted:", data);
+      const formData = new FormData();
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("email", data.email);
+      formData.append("phone", data.phone);
+      formData.append("message", data.message);
+      formData.append("resume", data.resume);
+
+      const response = await fetch("/api/send-contact", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Failed to send");
+
       toast({
         title: "Success!",
         description: "Your message has been sent successfully.",
       });
+
       reset();
       setFileName("");
     } catch (error) {
@@ -94,20 +107,11 @@ const ContactUs = () => {
 
     if (file) {
       if (file.type !== "application/pdf") {
-        toast({
-          title: "Error",
-          description: "Please upload a PDF file only",
-          variant: "destructive",
-        });
+        toast({ title: "Error", description: "Only PDF files are allowed.", variant: "destructive" });
         return;
       }
-
       if (file.size > maxSize) {
-        toast({
-          title: "Error",
-          description: "File size should be less than 25MB",
-          variant: "destructive",
-        });
+        toast({ title: "Error", description: "Max file size is 25MB.", variant: "destructive" });
         return;
       }
 
@@ -118,7 +122,6 @@ const ContactUs = () => {
 
   return (
     <div className="relative min-h-screen bg-gray-50">
-      <Header />
       <Hero1
         title="Contact Us"
         subtitle={contactData.hero.subtitle}
@@ -177,27 +180,77 @@ const ContactUs = () => {
               <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input placeholder="First Name" {...register("firstName", { required: "First name is required" })} />
-                    <Input placeholder="Last Name" {...register("lastName", { required: "Last name is required" })} />
+                    <div className="space-y-1">
+                      <label htmlFor="firstName" className="text-sm font-medium text-gray-800">
+                        First Name
+                      </label>
+                      <Input
+                        id="firstName"
+                        placeholder="First Name"
+                        {...register("firstName", { required: "First name is required" })}
+                        className={errors.firstName ? "border-red-500" : ""}
+                      />
+                      {errors.firstName && (
+                        <p className="text-sm text-red-600">{errors.firstName.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-1">
+                      <label htmlFor="lastName" className="text-sm font-medium text-gray-800">
+                        Last Name
+                      </label>
+                      <Input
+                        id="lastName"
+                        placeholder="Last Name"
+                        {...register("lastName", { required: "Last name is required" })}
+                        className={errors.lastName ? "border-red-500" : ""}
+                      />
+                      {errors.lastName && (
+                        <p className="text-sm text-red-600">{errors.lastName.message}</p>
+                      )}
+                    </div>
                   </div>
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Invalid email address",
-                      },
-                    })}
-                  />
-                  <Input
-                    type="tel"
-                    placeholder="Phone Number"
-                    {...register("phone", { required: "Phone number is required" })}
-                  />
-                  <div className="space-y-2">
-                    <label htmlFor="resume" className="text-sm font-semibold text-gray-800">
+
+                  <div className="space-y-1">
+                    <label htmlFor="email" className="text-sm font-medium text-gray-800">
+                      Email
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Email"
+                      {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                          message: "Invalid email address",
+                        },
+                      })}
+                      className={errors.email ? "border-red-500" : ""}
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-red-600">{errors.email.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-1">
+                    <label htmlFor="phone" className="text-sm font-medium text-gray-800">
+                      Phone Number
+                    </label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="Phone Number"
+                      {...register("phone", { required: "Phone number is required" })}
+                      className={errors.phone ? "border-red-500" : ""}
+                    />
+                    {errors.phone && (
+                      <p className="text-sm text-red-600">{errors.phone.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-1">
+                    <label htmlFor="resume" className="text-sm font-medium text-gray-800">
                       Upload Resume (PDF Only)
                     </label>
                     <Input
@@ -209,11 +262,24 @@ const ContactUs = () => {
                     />
                     {fileName && <p className="text-sm text-green-600">{fileName}</p>}
                   </div>
-                  <textarea
-                    placeholder="Comment or message"
-                    {...register("message", { required: "Message is required" })}
-                    className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg resize-none overflow-y-auto"
-                  />
+
+                  <div className="space-y-1">
+                    <label htmlFor="message" className="text-sm font-medium text-gray-800">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      placeholder="Comment or message"
+                      {...register("message", { required: "Message is required" })}
+                      className={`w-full h-32 px-4 py-2 border rounded-lg resize-none ${
+                        errors.message ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                    {errors.message && (
+                      <p className="text-sm text-red-600">{errors.message.message}</p>
+                    )}
+                  </div>
+
                   <Button
                     type="submit"
                     disabled={isSubmitting}
@@ -267,27 +333,77 @@ const ContactUs = () => {
               <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input placeholder="First Name" {...register("firstName", { required: "First name is required" })} />
-                    <Input placeholder="Last Name" {...register("lastName", { required: "Last name is required" })} />
+                    <div className="space-y-1">
+                      <label htmlFor="firstName" className="text-sm font-medium text-gray-800">
+                        First Name
+                      </label>
+                      <Input
+                        id="firstName"
+                        placeholder="First Name"
+                        {...register("firstName", { required: "First name is required" })}
+                        className={errors.firstName ? "border-red-500" : ""}
+                      />
+                      {errors.firstName && (
+                        <p className="text-sm text-red-600">{errors.firstName.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-1">
+                      <label htmlFor="lastName" className="text-sm font-medium text-gray-800">
+                        Last Name
+                      </label>
+                      <Input
+                        id="lastName"
+                        placeholder="Last Name"
+                        {...register("lastName", { required: "Last name is required" })}
+                        className={errors.lastName ? "border-red-500" : ""}
+                      />
+                      {errors.lastName && (
+                        <p className="text-sm text-red-600">{errors.lastName.message}</p>
+                      )}
+                    </div>
                   </div>
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Invalid email address",
-                      },
-                    })}
-                  />
-                  <Input
-                    type="tel"
-                    placeholder="Phone Number"
-                    {...register("phone", { required: "Phone number is required" })}
-                  />
+
+                  <div className="space-y-1">
+                    <label htmlFor="email" className="text-sm font-medium text-gray-800">
+                      Email
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Email"
+                      {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                          message: "Invalid email address",
+                        },
+                      })}
+                      className={errors.email ? "border-red-500" : ""}
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-red-600">{errors.email.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-1">
+                    <label htmlFor="phone" className="text-sm font-medium text-gray-800">
+                      Phone Number
+                    </label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="Phone Number"
+                      {...register("phone", { required: "Phone number is required" })}
+                      className={errors.phone ? "border-red-500" : ""}
+                    />
+                    {errors.phone && (
+                      <p className="text-sm text-red-600">{errors.phone.message}</p>
+                    )}
+                  </div>
+
                   <div className="space-y-2">
-                    <label htmlFor="resume" className="text-sm font-semibold text-gray-800">
+                    <label htmlFor="resume" className="text-sm font-medium text-gray-800">
                       Upload Resume (PDF Only)
                     </label>
                     <Input
@@ -299,11 +415,24 @@ const ContactUs = () => {
                     />
                     {fileName && <p className="text-sm text-green-600">{fileName}</p>}
                   </div>
-                  <textarea
-                    placeholder="Comment or message"
-                    {...register("message", { required: "Message is required" })}
-                    className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg resize-none overflow-y-auto"
-                  />
+
+                  <div className="space-y-1">
+                    <label htmlFor="message" className="text-sm font-medium text-gray-800">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      placeholder="Comment or message"
+                      {...register("message", { required: "Message is required" })}
+                      className={`w-full h-32 px-4 py-2 rounded-lg resize-none overflow-y-auto ${
+                        errors.message ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                    {errors.message && (
+                      <p className="text-sm text-red-600">{errors.message.message}</p>
+                    )}
+                  </div>
+
                   <Button
                     type="submit"
                     disabled={isSubmitting}
@@ -317,8 +446,6 @@ const ContactUs = () => {
           </div>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 };
