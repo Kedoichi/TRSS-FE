@@ -149,7 +149,7 @@ const Home = () => {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <Card className="bg-transparent border-none shadow-none">
-              <HeroButton href="/seek-services">Seek Services</HeroButton>
+              <HeroButton href="/services">Seek Services</HeroButton>
             </Card>
           </motion.div>
         </div>

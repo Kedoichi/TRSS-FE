@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link"; // ✅ Import Link
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhoneAlt, faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -54,15 +55,18 @@ const Footer = () => {
           >
             <div className="flex flex-col items-start space-y-4">
               <div className="w-40 rounded-md">
-                <Image
-                  src={logo}
-                  alt="Talent Spree Solutions"
-                  width={160}
-                  height={80}
-                  priority
-                  className="rounded-md w-full h-auto"
-                />
+                <Link href="/" className="block w-full">
+                  <Image
+                    src={logo}
+                    alt="Talent Spree Solutions"
+                    width={160}
+                    height={80}
+                    priority
+                    className="rounded-md w-full h-auto"
+                  />
+                </Link>
               </div>
+
               <p className="text-primary text-md font-medium">{aboutUs}</p>
               <p className="text-sm text-primary">
                 &copy; {new Date().getFullYear()} Talent Spree Solutions. All rights reserved.
