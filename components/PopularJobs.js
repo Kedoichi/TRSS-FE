@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
+import { fetchJobs } from "@/utils/api/jobs";
 
 const PopularJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -12,21 +13,18 @@ const PopularJobs = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchJobs = async () => {
+    const loadJobs = async () => {
       try {
-        const response = await fetch("http://localhost:5100/job");
-        if (!response.ok) throw new Error("Failed to fetch jobs");
-        const data = await response.json();
+        const data = await fetchJobs();
         setJobs(data);
       } catch (err) {
-        setError(err?.message || "Something went wrong");
-        setJobs([]);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchJobs();
+    loadJobs();
   }, []);
 
   const handleJobClick = (jobId) => {
@@ -36,7 +34,7 @@ const PopularJobs = () => {
   if (loading) {
     return (
       <section className="py-16 text-center">
-        Loading jobs...
+        <p className="text-lg text-gray-600">Loading jobs...</p>
       </section>
     );
   }

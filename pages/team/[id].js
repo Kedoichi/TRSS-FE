@@ -5,8 +5,11 @@ import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import Image from "next/image";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import ProfileImage1 from "@/public/Images/ProfileImage1.png";
+import ProfileImage2 from "@/public/Images/ProfileImage2.png";
 
 const teamMembers = [
   {
@@ -28,6 +31,7 @@ const teamMembers = [
     email: "vuong.do@oneledger.com.au",
     phone: "+123456789",
     linkedin: "https://www.linkedin.com/in/vuong-do-b3b8b576/",
+    image: ProfileImage1,
   },
   {
     id: "vanessa",
@@ -47,6 +51,7 @@ const teamMembers = [
     email: "admin@talentspreesolutions.com",
     phone: "+123456789",
     linkedin: "https://www.linkedin.com/in/jennylloyd",
+    image: ProfileImage2,
   },
 ];
 
@@ -67,11 +72,31 @@ const TeamMemberDetails = () => {
   return (
     <>
       <Header />
-      <section className="max-w-4xl mx-auto my-24 px-6">
-        <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
-          <div className="w-64 h-64 md:w-72 md:h-72 bg-[#72BF78] flex items-center justify-center text-white text-5xl font-bold rounded-lg">
-            {member.name.split(" ")[0][0]}
+      <section className="max-w-4xl mx-auto my-20 px-6">
+        {/* Go Back Button */}
+        <div className="mb-8">
+          <button
+            onClick={() => router.back()}
+            className="inline-flex items-center gap-2 text-[#72BF78] hover:text-[#5ba563] text-sm font-medium transition-all duration-300"
+          >
+            <span className="text-lg">←</span> Go Back
+          </button>
+        </div>
+
+        {/* Profile Info */}
+        <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
+          {/* Profile Image */}
+          <div className="w-64 h-64 md:w-72 md:h-72 relative rounded-lg overflow-hidden shadow-lg">
+            <Image
+              src={member.image}
+              alt={member.name}
+              layout="fill"
+              objectFit="cover"
+              objectPosition="top"
+            />
           </div>
+
+          {/* Text Info */}
           <div className="text-center md:text-left flex-1">
             <h1 className="text-4xl font-bold text-gray-900">{member.name}</h1>
             <h2 className="text-2xl text-gray-600 mt-2">{member.role}</h2>
@@ -106,11 +131,10 @@ const TeamMemberDetails = () => {
           </div>
         </div>
 
-        <div className="mt-12 text-lg text-gray-800 leading-relaxed">
+        {/* Description */}
+        <div className="mt-12 text-lg text-gray-800 leading-relaxed space-y-6">
           {member.description.map((paragraph, index) => (
-            <p key={index} className="mb-6">
-              {paragraph}
-            </p>
+            <p key={index}>{paragraph}</p>
           ))}
         </div>
       </section>

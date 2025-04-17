@@ -3,6 +3,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+import ProfileImage1 from "@/public/Images/ProfileImage1.png";
+import ProfileImage2 from "@/public/Images/ProfileImage2.png";
 
 const fadeInVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -10,7 +14,7 @@ const fadeInVariants = {
   exit: { opacity: 0, y: 50, transition: { duration: 0.6 } },
 };
 
-const TeamMemberCard = ({ name, role, id }) => {
+const TeamMemberCard = ({ name, role, id, image }) => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -28,8 +32,15 @@ const TeamMemberCard = ({ name, role, id }) => {
       className="relative w-64 md:w-72 overflow-hidden shadow-lg rounded-lg cursor-pointer transition-all duration-300"
       onClick={handleClick}
     >
-      <div className="w-full h-64 bg-red-500 flex items-center justify-center text-white text-3xl font-bold">
-        {name.split(" ")[0]}
+      <div className="w-full h-80 relative">
+        <Image
+          src={image}
+          alt={name}
+          layout="fill"
+          objectFit="cover"
+          objectPosition="top" 
+          className="brightness-75"
+        />
       </div>
       <div className="absolute inset-0 bg-black/70 text-white p-4 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center">
         <h3 className="text-xl font-bold">{name}</h3>
@@ -48,11 +59,13 @@ const MeetOurTeam = () => {
       id: "vuong-do",
       name: "Vuong Do",
       role: "Director of Connections/Founder",
+      image: ProfileImage1,
     },
     {
       id: "vanessa",
       name: "Vanessa",
       role: "Head of Executive Recruitment",
+      image: ProfileImage2,
     },
   ];
 
@@ -63,8 +76,8 @@ const MeetOurTeam = () => {
       exit="exit"
       variants={fadeInVariants}
       viewport={{ once: false, amount: 0.3 }}
-      className="text-center m-0 px-4 py-8"
-      >
+      className="text-center px-4 py-8 !mb-32"
+    >
       <motion.h4
         initial="hidden"
         whileInView="visible"

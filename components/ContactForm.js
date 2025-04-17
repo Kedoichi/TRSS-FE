@@ -1,18 +1,24 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { toast } from "react-hot-toast";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPhoneAlt,
+  faArrowRight,
   faEnvelope,
   faMapMarkerAlt,
-  faArrowRight,
+  faPhoneAlt,
 } from "@fortawesome/free-solid-svg-icons";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { toast } from 'react-hot-toast';
+
+import ProfileImage2 from "@/public/Images/ProfileImage2.png";
+
 
 const contactData = {
   title: "Contact with Our Team of Experts",
@@ -134,32 +140,35 @@ const ContactForm = () => {
 
             {/* Job Openings Section */}
             <Card className="mt-12 bg-white text-[#0D110E] rounded-t-lg rounded-b-none shadow-md">
-              <CardContent className="p-6 flex flex-row justify-between relative pb-0">
-                
+              <CardContent className="p-6 flex flex-row gap-x-8 items-center relative pb-0">
                 {/* Left Side - Text Section */}
-                <div className="flex flex-col justify-center space-y-4 w-1/2 pr-8">
-                  <h3 className="text-2xl font-bold">{contactData.jobOpening.title}</h3>
-                  <Button
-                    variant="ghost"
-                    className="group text-[#0D110E] transition-colors duration-300 text-left w-full flex justify-start 
-                              hover:bg-[#FEFF9F] hover:text-[#0D110E]"
+                <div className="flex flex-col flex-1 space-y-4">
+                  <h3 className="text-2xl font-bold text-[#0D110E]">
+                    {contactData.jobOpening.title}
+                  </h3>
+
+                  <button
                     onClick={() => window.open(contactData.jobOpening.link, "_blank")}
+                    className="flex items-center space-x-4 text-[#2F5233] hover:text-[#72BF78] transition-colors 
+                              p-4 rounded-lg hover:bg-[#72BF78]/10 w-full max-w-sm"
                   >
-                    <span className="flex items-center">
-                      {contactData.jobOpening.text}
-                      <FontAwesomeIcon
-                        icon={faArrowRight}
-                        className="ml-2 transform group-hover:translate-x-1 transition-transform"
-                      />
-                    </span>
-                  </Button>
+                    <span className="font-medium">{contactData.jobOpening.text}</span>
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="ml-1 transform transition-transform duration-200 group-hover:translate-x-1"
+                    />
+                  </button>
                 </div>
 
-                {/* Right Side - Red Box (BOTTOM-RIGHT ALIGNED, FULL WIDTH) */}
-                <div className="w-full">
-                  <div className="bg-red-500 h-60 md:h-72 w-full"></div> 
+                {/* Right Side - Image */}
+                <div className="w-64 md:w-72 relative h-60 md:h-72 rounded-lg overflow-hidden shrink-0">
+                  <Image
+                    src={ProfileImage2}
+                    alt="Job opening"
+                    fill
+                    className="object-cover object-top"
+                  />
                 </div>
-
               </CardContent>
             </Card>
           </motion.div>
@@ -380,37 +389,42 @@ const ContactForm = () => {
             transition={{ duration: 0.5 }}
             className="w-full flex justify-center"
           >
-            <Card className="bg-white text-[#0D110E] rounded-lg shadow-md w-full max-w-lg"
-              style={{ borderTopLeftRadius: '0rem', borderTopRightRadius: '0rem', marginTop: '1rem' }}
+            <Card
+              className="bg-white text-[#0D110E] rounded-t-lg rounded-b-[0] shadow-md w-full max-w-lg mt-4"
             >
-              <CardContent className="p-6 flex flex-col justify-between relative pb-0">
-                
-                {/* Left Side - Text Section */}
-                <div className="flex flex-col justify-center items-center space-y-4 w-full text-center">
-                  <h3 className="text-2xl font-bold">{contactData.jobOpening.title}</h3>
+              <CardContent className="p-6 flex flex-col justify-start items-center gap-8 pb-0">
+                {/* Top - Text Section */}
+                <div className="flex flex-col items-center text-center w-full space-y-6">
+                  <h3 className="text-2xl md:text-3xl font-bold text-[#0D110E]">
+                    {contactData.jobOpening.title}
+                  </h3>
+
                   <Button
                     variant="ghost"
-                    className="group text-[#0D110E] transition-colors duration-300 w-full flex justify-center 
-                              hover:bg-[#FEFF9F] hover:text-[#0D110E] mb-4"
+                    className="group flex items-center gap-2 bg-[#72BF78]/10 text-[#0D110E] px-6 py-3 rounded-lg transition-all 
+                              duration-300 hover:text-[#0D110E] font-medium text-lg"
                     onClick={() => window.open(contactData.jobOpening.link, "_blank")}
-                    style={{ marginBottom: '1rem' }}
                   >
-                    <span className="flex items-center">
-                      {contactData.jobOpening.text}
-                      <FontAwesomeIcon
-                        icon={faArrowRight}
-                        className="ml-2 transform group-hover:translate-x-1 transition-transform"
-                      />
-                    </span>
+                    <span>{contactData.jobOpening.text}</span>
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="transform group-hover:translate-x-1 transition-transform duration-200"
+                    />
                   </Button>
                 </div>
 
-                {/* Right Side - Red Box (Full Width) */}
-                <div className="w-full">
-                  <div className="bg-red-500 h-60 w-full"></div> 
+                {/* Bottom - Image Section */}
+                <div className="w-full relative h-80 md:h-96 rounded-b-lg overflow-hidden">
+                  <Image
+                    src={ProfileImage2}
+                    alt="Job opening"
+                    fill
+                    className="object-cover object-top"
+                  />
                 </div>
 
               </CardContent>
+
             </Card>
           </motion.div>
 
