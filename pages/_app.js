@@ -7,9 +7,13 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Header />
+
+      <div className="h-[72px] xl:h-[80px]" />
+
       <main>
         <Component {...pageProps} />
       </main>
+
       <Footer />
       <Toaster />
     </>

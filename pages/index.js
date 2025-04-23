@@ -29,12 +29,15 @@ const HeroButton = ({ children, href }) => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
+        {/* Hover overlay */}
         <motion.div
           className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10"
           initial={{ opacity: 0 }}
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}
         />
+
+        {/* Text content */}
         <div className="relative z-10 flex flex-col items-center">
           <Button
             size="lg"
@@ -42,13 +45,15 @@ const HeroButton = ({ children, href }) => {
           >
             {children}
           </Button>
+
           <motion.div
             className="h-1.5 bg-[#72BF78]"
             animate={{ width: isHovered ? "220px" : "100px" }}
             transition={{ duration: 0.3 }}
           />
+
           <motion.p
-            className="text-[#FEFF9F] text-xl mt-6 max-w-md text-center"
+            className="text-white/80 text-xl mt-6 max-w-md text-center"
             animate={{
               y: isHovered ? 0 : 10,
               opacity: isHovered ? 1 : 0.8,
@@ -60,6 +65,8 @@ const HeroButton = ({ children, href }) => {
               : "Get matched with the services you need."}
           </motion.p>
         </div>
+
+        {/* Top gradient overlay */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           initial={false}
@@ -88,21 +95,6 @@ const Home = () => {
 
   return (
     <>
-      {/* Optional Sticky Header if not using in _app.js */}
-      {/* 
-      <motion.div
-        className={`fixed top-0 left-0 right-0 bg-background z-50 transition-transform duration-300 ease-out ${
-          showHeader ? "translate-y-0" : "-translate-y-28"
-        }`}
-        initial={{ y: -100 }}
-        animate={{ y: showHeader ? 0 : -100 }}
-        transition={{ stiffness: 120, damping: 15 }}
-        style={{ willChange: "transform" }}
-      >
-        <Header />
-      </motion.div> 
-      */}
-
       {/* Hero Section */}
       <section
         className="relative flex flex-col md:flex-row justify-center items-stretch min-h-screen bg-cover bg-center bg-no-repeat"

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faCalendar, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { fetchJobs } from "@/utils/api/jobs";
 
@@ -12,18 +12,25 @@ const PopularJobs = () => {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    const loadJobs = async () => {
-      try {
-        const data = await fetchJobs();
-        setJobs(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadJobs = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const data = await fetchJobs();
+      setJobs(data);
+    } catch (err) {
+      const isNetworkError = err.message?.toLowerCase().includes("failed to fetch");
+      setError(
+        isNetworkError
+          ? "Unable to connect to the server. Please check your internet or try again shortly."
+          : err.message || "Something went wrong while loading jobs."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadJobs();
   }, []);
 
@@ -41,9 +48,15 @@ const PopularJobs = () => {
 
   if (error) {
     return (
-      <section className="py-16 text-center">
-        <h2 className="text-3xl font-bold text-[#72BF78]">Error</h2>
-        <p className="text-lg text-gray-600">{error}</p>
+      <section className="py-16 text-center px-6">
+        <h2 className="text-3xl font-bold text-[#72BF78]">Oops!</h2>
+        <p className="text-lg text-gray-600 max-w-xl mx-auto mt-2">{error}</p>
+        <button
+          onClick={loadJobs}
+          className="mt-6 inline-flex items-center gap-2 bg-[#72BF78] text-white px-5 py-2.5 rounded-md font-medium hover:bg-[#5fa461] transition"
+        >
+          <FontAwesomeIcon icon={faRedo} /> Retry
+        </button>
       </section>
     );
   }

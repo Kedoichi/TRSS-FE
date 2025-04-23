@@ -12,12 +12,15 @@ export const fetchJobs = async (params = {}) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Failed to fetch jobs: ${errorText || response.status}`);
+      throw new Error(errorText || `Error ${response.status}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error("Error fetching jobs:", error);
+    if (error.message === "Failed to fetch" || error.message.includes("NetworkError")) {
+      throw new Error("Unable to connect to the server. Please try again later.");
+    }
+
     throw new Error(error?.message || "Something went wrong while fetching jobs.");
   }
 };
@@ -28,9 +31,7 @@ export const fetchJobById = async (id) => {
 
     const response = await fetch(url, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     });
 
     if (!response.ok) {
@@ -40,7 +41,14 @@ export const fetchJobById = async (id) => {
 
     return await response.json();
   } catch (error) {
-    console.error("Error fetching job:", error);
-    throw new Error(error?.message || "Something went wrong while fetching job details.");
+    const isNetworkError = error.name === "TypeError" && error.message === "Failed to fetch";
+
+    console.error("Error fetching job by ID:", error);
+
+    throw new Error(
+      isNetworkError
+        ? "Unable to connect to the server. Please check your internet or try again later."
+        : error.message || "Something went wrong while fetching job details."
+    );
   }
 };

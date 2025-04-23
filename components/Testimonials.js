@@ -72,7 +72,7 @@ const Testimonials = () => {
     };
 
     api.on("select", handleSelect);
-    // Cleanup listener on unmount or update
+    
     return () => {
       api.off("select", handleSelect);
     };
@@ -103,7 +103,7 @@ const Testimonials = () => {
           >
             From Our Clients
           </h2>
-          <p className={`text-lg text-[#FEFF9F] ${poppins.className}`}>
+          <p className={`text-lg text-[#A0D683] ${poppins.className}`}>
             What our clients are saying
           </p>
         </motion.div>
@@ -161,10 +161,19 @@ const Testimonials = () => {
 
           {/* Hide arrows on mobile view */}
           <div className="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2 hidden md:block">
-            <CarouselPrevious className="w-12 h-12 md:w-14 md:h-14 border-2 border-[#FEFF9F] text-[#2F5233] bg-white hover:bg-[#FEFF9F] hover:text-[#2F5233] transition-all rounded-full shadow-lg" />
+            <CarouselPrevious
+              className="w-12 h-12 md:w-14 md:h-14 border-2 border-[#A0D683] text-[#2F5233] bg-white 
+              hover:bg-[#2F5233] hover:text-white hover:scale-105 hover:shadow-xl 
+              transition-all duration-300 ease-in-out rounded-full shadow-lg"
+            />
           </div>
+
           <div className="absolute -right-6 md:-right-12 top-1/2 -translate-y-1/2 hidden md:block">
-            <CarouselNext className="w-12 h-12 md:w-14 md:h-14 border-2 border-[#FEFF9F] text-[#2F5233] bg-white hover:bg-[#FEFF9F] hover:text-[#2F5233] transition-all rounded-full shadow-lg" />
+            <CarouselNext
+              className="w-12 h-12 md:w-14 md:h-14 border-2 border-[#A0D683] text-[#2F5233] bg-white 
+              hover:bg-[#2F5233] hover:text-white hover:scale-105 hover:shadow-xl 
+              transition-all duration-300 ease-in-out rounded-full shadow-lg"
+            />
           </div>
         </Carousel>
 
@@ -172,13 +181,12 @@ const Testimonials = () => {
           {testimonialsData.map((_, index) => (
             <button
               key={index}
-              className={`w-2 h-2 md:w-4 md:h-4 rounded-full border-2 transition-all duration-300 
-                ${
-                  index === current
-                    ? "bg-[#FEFF9F] border-[#FEFF9F] w-6"
-                    : "bg-[#A0D683] border-[#A0D683] hover:bg-[#FEFF9F] hover:border-[#FEFF9F]"
-                }`}
               onClick={() => api?.scrollTo(index)}
+              className={`w-2 h-2 md:w-4 md:h-4 rounded-full border-2 transition-all duration-300 ${
+                index === current
+                  ? "bg-[#72BF78] border-[#72BF78] w-6"
+                  : "bg-white border-white hover:bg-[#72BF78] hover:border-[#72BF78]"
+              }`}
             />
           ))}
         </div>

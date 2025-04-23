@@ -68,7 +68,7 @@ const TeamMemberDetails = () => {
   }
 
   return (
-    <section className="max-w-4xl mx-auto my-20 px-6">
+    <section className="max-w-4xl mx-auto my-20 px-6 md:mt-52 mt-36">
       {/* Go Back Button */}
       <div className="mb-8">
         <button
