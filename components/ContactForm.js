@@ -166,6 +166,7 @@ const ContactForm = () => {
                     src={ProfileImage2}
                     alt="Job opening"
                     fill
+                    draggable={false}
                     className="object-cover object-top"
                   />
                 </div>
@@ -419,6 +420,7 @@ const ContactForm = () => {
                     src={ProfileImage2}
                     alt="Job opening"
                     fill
+                    draggable={false}
                     className="object-cover object-top"
                   />
                 </div>

@@ -50,7 +50,6 @@ const PopularJobs = () => {
     return (
       <section className="py-16 text-center px-6">
         <h2 className="text-3xl font-bold text-[#72BF78]">Oops!</h2>
-        <p className="text-lg text-gray-600 max-w-xl mx-auto mt-2">{error}</p>
         <button
           onClick={loadJobs}
           className="mt-6 inline-flex items-center gap-2 bg-[#72BF78] text-white px-5 py-2.5 rounded-md font-medium hover:bg-[#5fa461] transition"

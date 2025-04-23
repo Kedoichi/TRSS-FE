@@ -27,17 +27,17 @@ const NavLink = ({ href, label }) => {
   return (
     <Link href={href} className="relative group">
       <motion.span
-        className="text-lg font-semibold px-4 py-2 rounded-md transition-all duration-200 hover:bg-gray-200/20 block"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+        className={`text-lg font-semibold px-4 py-2 rounded-md transition-colors duration-200 block ${
+          isActive ? "text-[#72BF78]" : "text-gray-800"
+        } group-hover:text-[#72BF78]`}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.97 }}
       >
         {label}
-        <motion.span
-          className="absolute bottom-0 left-0 h-0.5 w-full origin-left"
-          style={{ backgroundColor: "#72BF78" }}
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: isActive ? 1 : 0 }}
-          transition={{ duration: 0.2 }}
+        <span
+          className={`absolute bottom-0 left-0 h-0.5 bg-[#72BF78] transition-all duration-300 ${
+            isActive ? "w-full" : "w-0 group-hover:w-full"
+          }`}
         />
       </motion.span>
     </Link>
@@ -76,7 +76,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" aria-label="Home">
+          <Link href="/" draggable={false} aria-label="Home">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -85,6 +85,7 @@ const Header = () => {
               <Image
                 src={logo}
                 alt="Company Logo"
+                draggable={false}
                 priority
                 className="w-40 sm:w-52 md:w-64 h-auto"
               />

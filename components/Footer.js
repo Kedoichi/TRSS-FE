@@ -55,14 +55,15 @@ const Footer = () => {
           >
             <div className="flex flex-col items-start space-y-4">
               <div className="w-40 rounded-md">
-                <Link href="/" className="block w-full">
+                <Link href="/" draggable={false} className="block w-full">
                   <Image
                     src={logo}
                     alt="Talent Spree Solutions"
                     width={160}
                     height={80}
+                    draggable={false}
                     priority
-                    className="rounded-md w-full h-auto"
+                    className="rounded-md w-full h-auto select-none"
                   />
                 </Link>
               </div>
