@@ -3,11 +3,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 import { FileUp } from "lucide-react";
 import Image from "next/image";
 import logo from "@/public/Images/demoLogo1.png";
@@ -20,26 +18,24 @@ const navLinks = [
   { href: "/contact", label: "Let's Talk" },
 ];
 
-const NavLink = ({ href, label }) => {
+const NavLink = ({ href, label, onClick }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
 
   return (
-    <Link href={href} className="relative group">
-      <motion.span
-        className={`text-lg font-semibold px-4 py-2 rounded-md transition-colors duration-200 block ${
+    <Link href={href} onClick={onClick} className="relative group block">
+      <span
+        className={`text-lg font-semibold block px-4 py-2 ${
           isActive ? "text-[#72BF78]" : "text-gray-800"
         } group-hover:text-[#72BF78]`}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.97 }}
       >
         {label}
         <span
-          className={`absolute bottom-0 left-0 h-0.5 bg-[#72BF78] transition-all duration-300 ${
+          className={`block h-0.5 bg-[#72BF78] transition-all duration-300 ${
             isActive ? "w-full" : "w-0 group-hover:w-full"
           }`}
         />
-      </motion.span>
+      </span>
     </Link>
   );
 };
@@ -65,22 +61,23 @@ const Header = () => {
   }, []);
 
   return (
-    <motion.header
-      animate={{
-        y: visible ? 0 : -100,
-        opacity: visible ? 1 : 0,
-      }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="fixed top-0 left-0 w-full z-50 backdrop-blur-sm bg-white shadow-md"
-    >
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+    <>
+      <motion.header
+        animate={{
+          y: visible ? 0 : -100,
+          opacity: visible ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed top-0 left-0 w-full z-50 backdrop-blur-sm bg-white shadow-sm"
+      >
+        <div className="container mx-auto flex items-center justify-between px-4 md:px-8 py-3 md:py-4">
           {/* Logo */}
           <Link href="/" draggable={false} aria-label="Home">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
+              className="flex-shrink-0"
             >
               <Image
                 src={logo}
@@ -99,7 +96,7 @@ const Header = () => {
             ))}
             <Link href="/contact" className="group">
               <motion.div
-                className="flex items-center gap-2 px-4 py-2 text-lg font-medium rounded-md border-2 border-[#72BF78] transition-all duration-300"
+                className="flex items-center gap-2 px-4 py-2 text-base md:text-lg font-medium rounded-md border-2 border-[#72BF78] transition-all duration-300"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -112,44 +109,65 @@ const Header = () => {
             </Link>
           </nav>
 
-          {/* Mobile Nav */}
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild className="xl:hidden">
-              <Button variant="ghost" size="icon" className="hover:bg-gray-200/20">
-                <motion.div
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <FontAwesomeIcon
-                    icon={isOpen ? faTimes : faBars}
-                    className="text-xl"
-                  />
-                </motion.div>
-              </Button>
-            </SheetTrigger>
-
-            <SheetContent
-              side="right"
-              className="w-[300px] bg-white/90 backdrop-blur-md shadow-lg"
+          {/* Mobile Menu Icon */}
+          <div className="xl:hidden">
+            <button
+              onClick={() => setIsOpen(true)}
+              className="p-3 rounded-full hover:bg-gray-100 transition"
             >
-              <nav className="flex flex-col space-y-4 mt-12">
-                {navLinks.map((link, index) => (
-                  <motion.div
+              <FontAwesomeIcon icon={faBars} className="text-2xl text-gray-800" />
+            </button>
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Mobile Nav Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Dark Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[9998]"
+            />
+
+            {/* Slide-In Menu */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.3 }}
+              className="fixed top-0 right-0 w-[80%] max-w-xs h-full bg-white z-[9999] shadow-xl p-6"
+            >
+              {/* Close Button */}
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-3 rounded-full hover:bg-gray-100 transition"
+                >
+                  <FontAwesomeIcon icon={faTimes} className="text-xl text-gray-800" />
+                </button>
+              </div>
+
+              {/* Navigation */}
+              <nav className="flex flex-col space-y-6 mt-8">
+                {navLinks.map((link) => (
+                  <NavLink
                     key={link.href}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <NavLink {...link} />
-                  </motion.div>
+                    {...link}
+                    onClick={() => setIsOpen(false)}
+                  />
                 ))}
               </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </div>
-    </motion.header>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

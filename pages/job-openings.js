@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Hero1 from "@/components/hero1";
+import Hero1 from "@/components/HeroSection";
 import PopularJobs from "@/components/PopularJobs";
 
 const JobOpenings = () => {

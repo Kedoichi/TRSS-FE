@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
-import Hero1 from "@/components/hero1";
+import Hero1 from "@/components/HeroSection";
 import CompanyOverview from "@/components/CompanyOverview";
 
 const OurCoreValues = dynamic(() => import("@/components/OurCoreValues"), {

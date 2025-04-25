@@ -68,7 +68,11 @@ const ServiceCard = ({ icon, title, description }) => {
       <Card className="h-full flex flex-col justify-between bg-white border border-[#72BF78] hover:shadow-lg transition-shadow duration-300 rounded-xl">
         <CardContent className="p-6 flex flex-col items-center flex-grow">
           <div className="text-5xl text-[#72BF78] mb-4">
-            <FontAwesomeIcon icon={icon} />
+            {icon ? (
+              <FontAwesomeIcon icon={icon} aria-label={title} />
+            ) : (
+              <div>No Icon Available</div>
+            )}
           </div>
           <h3 className={`text-lg font-semibold text-[#1B1B1B] mb-2 ${poppins.className}`}>
             {title}

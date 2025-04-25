@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }) {
     <>
       <Header />
 
-      <div className="h-[72px] xl:h-[80px]" />
+      <div className="pointer-events-none invisible h-[72px] xl:h-[80px]" aria-hidden="true" />
 
       <main>
         <Component {...pageProps} />

@@ -1,15 +1,8 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
-
-type Hero1Props = {
-  title: string;
-  subtitle?: string;
-  backgroundImage: string;
-  height?: "normal" | "large" | "full";
-  overlayOpacity?: "light" | "medium" | "dark";
-  curveColor?: string;
-  className?: string;
-};
+import Image from "next/image";
 
 const Hero1 = ({
   title,
@@ -19,8 +12,7 @@ const Hero1 = ({
   overlayOpacity = "medium",
   curveColor = "bg-background",
   className = "",
-}: Hero1Props) => {
-  // Height classes mapping
+}) => {
   const heightClasses = {
     normal: "h-[60vh]",
     medium: "h-[65vh]",
@@ -28,7 +20,6 @@ const Hero1 = ({
     full: "h-screen",
   };
 
-  // Overlay opacity mapping
   const overlayClasses = {
     light: "bg-black/30",
     medium: "bg-black/40",
@@ -38,25 +29,32 @@ const Hero1 = ({
   return (
     <section
       className={`
-        relative w-full bg-cover bg-center bg-no-repeat overflow-hidden
+        relative w-full overflow-hidden
         ${heightClasses[height]}
         ${className}
-        rounded-br-[120px] bg-transparent
+        rounded-br-[120px]
       `}
-      style={{
-        backgroundImage: `url('${backgroundImage}')`,
-      }}
     >
-      {/* Dark overlay with configurable opacity */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={backgroundImage}
+          alt="Hero background"
+          fill
+          priority
+          placeholder="blur"
+          blurDataURL="/Images/blur-placeholder.jpg"
+          className="object-cover object-center"
+        />
+      </div>
+
       <motion.div
-        className={`absolute inset-0 ${overlayClasses[overlayOpacity]}`}
+        className={`absolute inset-0 ${overlayClasses[overlayOpacity]} z-10`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.8 }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto h-full px-4 flex flex-col justify-center">
+      <div className="relative z-20 container mx-auto h-full px-4 flex flex-col justify-center">
         <motion.div
           className="max-w-3xl space-y-6"
           initial={{ opacity: 0, y: 20 }}
