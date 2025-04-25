@@ -5,61 +5,15 @@ import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLightbulb,
-  faChartLine,
-  faSearch,
-  faPaintBrush,
-  faRocket,
-  faCog,
-} from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
+import { industries } from "@/constants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const poppins = Poppins({
   weight: ["400", "600"],
   style: ["normal"],
   subsets: ["latin"],
 });
-
-const industries = [
-  {
-    icon: faChartLine,
-    title: "Accounting",
-    description:
-      "Professional accounting services to manage financial records and tax filings.",
-  },
-  {
-    icon: faCog,
-    title: "Finance",
-    description:
-      "Strategic financial services including investment advice and financial planning.",
-  },
-  {
-    icon: faSearch,
-    title: "IT Services",
-    description:
-      "Expert IT solutions to support and optimize technology infrastructures.",
-  },
-  {
-    icon: faLightbulb,
-    title: "Consulting",
-    description:
-      "Providing business consultancy to improve strategy and operations.",
-  },
-  {
-    icon: faRocket,
-    title: "Marketing",
-    description:
-      "Creative marketing solutions for brand building and customer acquisition.",
-  },
-  {
-    icon: faPaintBrush,
-    title: "Design",
-    description:
-      "Graphic and UX/UI design services to enhance user experience and branding.",
-  },
-];
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },

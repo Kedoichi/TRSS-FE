@@ -6,30 +6,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { servicesData } from "@/constants";
 
 const OurServices = () => {
   const router = useRouter();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
-
-  const servicesData = {
-    title: "Our Expertise in Connecting Talent and Opportunity",
-    description:
-      "At Talent Spree Solutions, we specialize in connecting businesses with top talent in the industry. We provide innovative solutions to help you find the best candidates quickly and efficiently.",
-    list: [
-      "Streamlined recruitment process to find the best talent.",
-      "Tailored solutions to meet your specific hiring needs.",
-      "Expert guidance for both employers and job seekers.",
-    ],
-    buttonText: "Discover More",
-    buttonLink: "/job-openings",
-    images: [
-      "/Images/Image3.jpg",
-      "/Images/Image4.jpg",
-      "/Images/Image5.jpg",
-      "/Images/Image2.jpg",
-    ],
-  };
 
   return (
     <motion.section

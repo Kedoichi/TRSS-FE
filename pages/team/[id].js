@@ -6,52 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import Image from "next/image";
-import ProfileImage1 from "@/public/Images/ProfileImage1.png";
-import ProfileImage2 from "@/public/Images/ProfileImage2.png";
-
-const teamMembers = [
-  {
-    id: "vuong-do",
-    name: "Vuong Do",
-    role: "Director of Connections/Founder",
-    description: [
-      `Vuong graduated with a Bachelor of Accounting and Finance from Monash University. 
-      As the founder of OneLedger, a business offering accounting, finance, and insurance services, 
-      Vuong has extensive experience in starting and growing multiple successful businesses, 
-      both in Australia and offshore.`,
-      `His entrepreneurial journey has given him valuable insights into the challenges of offshoring, 
-      leading him to identify a gap in the recruitment market—especially when it comes to ensuring a seamless 
-      recruitment process in Australia for offshore ventures.`,
-      `Outside of work, Vuong is a passionate sports fan who loves all teams red and black - 
-      Chicago Bulls, Essendon Bombers, Man United, and Ferrari. 
-      He is also a proud husband and father of two boys and hopes to one day travel to Mars.`,
-    ],
-    email: "vuong.do@oneledger.com.au",
-    phone: "+123456789",
-    linkedin: "https://www.linkedin.com/in/vuong-do-b3b8b576/",
-    image: ProfileImage1,
-  },
-  {
-    id: "vanessa",
-    name: "Vanessa",
-    role: "Head of Executive Recruitment",
-    description: [
-      `Vanessa kicked off her career in the banking industry after college but soon discovered her passion 
-      for recruitment when she joined a startup outsourcing company in Cebu.`,
-      `With over seven years of experience in end-to-end hiring, she has worked closely with clients in Australia 
-      and the US to provide tailored recruitment solutions. She has a knack for finding top talent in Recruitment, 
-      Executive Assistance, and Finance roles—always believing that the best candidates aren’t “perfect,” but 
-      the ones whose values align with the business.`,
-      `Outside of work, Vanessa keeps active with running—she’s conquered a full marathon and plans to make it a yearly goal! 
-      She also enjoys functional workouts and loves traveling with family. Game nights are her thing, and she’s always the 
-      enthusiastic game master at family parties. When she’s not on the move, she’s hanging out with her adorable three-year-old pup, Rafa.`,
-    ],
-    email: "admin@talentspreesolutions.com",
-    phone: "+123456789",
-    linkedin: "https://www.linkedin.com/in/jennylloyd",
-    image: ProfileImage2,
-  },
-];
+import { teamMembersDetails } from "@/constants";
 
 const TeamMemberDetails = () => {
   const router = useRouter();
@@ -61,14 +16,14 @@ const TeamMemberDetails = () => {
     return <p className="text-center text-gray-600 mt-10">Loading...</p>;
   }
 
-  const member = teamMembers.find((member) => member.id === id);
+  const member = teamMembersDetails.find((member) => member.id === id);
 
   if (!member) {
     return <p className="text-center text-gray-600 mt-10">Team member not found.</p>;
   }
 
   return (
-    <section className="max-w-4xl mx-auto my-20 px-6 md:mt-52 mt-36">
+    <section className="max-w-4xl mx-auto my-20 px-6">
       {/* Go Back Button */}
       <div className="mb-8">
         <button

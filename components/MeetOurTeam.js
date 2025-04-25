@@ -5,8 +5,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
-import ProfileImage1 from "@/public/Images/ProfileImage1.png";
-import ProfileImage2 from "@/public/Images/ProfileImage2.png";
+import { teamMembers } from "@/constants";
 
 const poppins = Poppins({
   weight: ["400", "600"],
@@ -46,21 +45,6 @@ const TeamMemberCard = ({ name, role, id, image }) => {
 };
 
 const MeetOurTeam = () => {
-  const teamMembers = [
-    {
-      id: "vuong-do",
-      name: "Vuong Do",
-      role: "Director of Connections/Founder",
-      image: ProfileImage1,
-    },
-    {
-      id: "vanessa",
-      name: "Vanessa",
-      role: "Head of Executive Recruitment",
-      image: ProfileImage2,
-    },
-  ];
-
   return (
     <section className="text-center px-4 py-20 bg-[#f9f9fb]">
       <motion.div

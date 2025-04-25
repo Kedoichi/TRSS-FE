@@ -9,29 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Poppins } from "next/font/google";
-
-const faqData = [
-  {
-    question: "What is your recruitment process?",
-    answer:
-      "Our recruitment process involves understanding your needs, sourcing candidates, conducting interviews, and facilitating job placements.",
-  },
-  {
-    question: "How do you find candidates?",
-    answer:
-      "We use a variety of channels, including job boards, social media, and networking, to find the best candidates for your role.",
-  },
-  {
-    question: "Do you help with candidate onboarding?",
-    answer:
-      "Yes, we assist with the entire onboarding process, including document management, scheduling, and ensuring the candidate is ready to start.",
-  },
-  {
-    question: "What is the typical timeframe to fill a position?",
-    answer:
-      "Depending on the role and level of seniority, it usually takes 2 to 6 weeks to fill a position from start to finish.",
-  },
-];
+import { faqData } from "@/constants";
 
 const poppins = Poppins({
   weight: ["400", "600"],
@@ -95,7 +73,6 @@ const FAQ = () => {
           </motion.h2>
         </motion.div>
 
-        {/* FAQ Accordion */}
         <motion.div
           variants={containerVariants}
           initial="hidden"

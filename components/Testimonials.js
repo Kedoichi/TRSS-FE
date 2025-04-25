@@ -13,6 +13,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Poppins } from "next/font/google";
+import { testimonialsData } from "@/constants";
 
 const poppins = Poppins({
   weight: ["400", "600"],
@@ -32,23 +33,6 @@ const fadeInVariants = {
   },
   exit: { opacity: 0, y: 50, transition: { duration: 0.6 } },
 };
-
-const testimonialsData = [
-  {
-    text: "Talent Spree Solutions helped us find the perfect candidates. Their attention to detail and understanding of our needs was remarkable.",
-    author: "John Doe",
-    company: "CEO, Example Corp",
-    logo: "/Images/DemoSet/User/1.png",
-    companyLogo: "/Images/DemoSet/Company/1.webp",
-  },
-  {
-    text: "A fantastic experience from start to finish. The process was seamless, and we were matched with exceptional talent.",
-    author: "Jane Smith",
-    company: "HR Manager, Tech Innovators",
-    logo: "/Images/DemoSet/User/2.png",
-    companyLogo: "/Images/DemoSet/Company/2.webp",
-  },
-];
 
 const Testimonials = () => {
   const [api, setApi] = useState(null);

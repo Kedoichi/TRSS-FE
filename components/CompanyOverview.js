@@ -2,48 +2,16 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChartLine,
-  faClock,
-  faGlobe,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
+import { CompanyOverviewCards } from "@/constants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const poppins = Poppins({
   weight: ["400", "600"],
   style: ["normal"],
   subsets: ["latin"],
 });
-
-const cards = [
-  {
-    icon: faChartLine,
-    title: "Faster Hiring",
-    description:
-      "Our streamlined processes and proactive sourcing help you fill roles quickly—without sacrificing quality.",
-  },
-  {
-    icon: faMagnifyingGlass,
-    title: "Precision Matching",
-    description:
-      "We dig deeper than resumes. Our candidate vetting ensures strong alignment in skills, culture, and growth potential.",
-  },
-  {
-    icon: faClock,
-    title: "Save Time & Resources",
-    description:
-      "Let us handle the heavy lifting—sourcing, screening, shortlisting—so your team can stay focused on results.",
-  },
-  {
-    icon: faGlobe,
-    title: "Global Reach, Local Expertise",
-    description:
-      "From Australian SMEs to offshore ventures, we deliver talent solutions tailored to your business model.",
-  },
-];
 
 const CompanyOverview = () => {
   return (
@@ -75,7 +43,7 @@ const CompanyOverview = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mb-12">
-        {cards.map((card, index) => (
+        {CompanyOverviewCards.map((card, index) => (
           <motion.div
             key={index}
             className="bg-white border border-[#D8E9DA] rounded-xl p-6 flex flex-col items-center text-center shadow-md hover:shadow-xl transition-shadow"

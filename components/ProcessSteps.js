@@ -3,34 +3,7 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-
-const steps = [
-  {
-    title: "Client Engagement & Job Order",
-    description:
-      "Initial client request to discuss and finalize the job specifications and role requirements.",
-  },
-  {
-    title: "Candidate Sourcing & Screening",
-    description:
-      "Receiving the job order to identify and submit the initial list of candidates.",
-  },
-  {
-    title: "Interview Process",
-    description:
-      "Submitting the shortlist to schedule interviews and completing the interview rounds.",
-  },
-  {
-    title: "Decision, Offer & Negotiation",
-    description:
-      "Extending an offer to the selected candidate after the final interview. Negotiations between client and candidate may occur.",
-  },
-  {
-    title: "Placement & Onboarding",
-    description:
-      "Confirming the candidate’s start date after the offer is accepted and assisting with onboarding tasks.",
-  },
-];
+import { processSteps } from "@/constants";
 
 const stepVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -95,7 +68,7 @@ const ProcessSteps = () => {
           </motion.p>
 
           <div className="space-y-6">
-            {steps.map((step, index) => (
+            {processSteps.map((step, index) => (
               <motion.div
                 key={index}
                 custom={index}

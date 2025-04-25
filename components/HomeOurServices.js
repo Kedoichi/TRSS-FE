@@ -6,42 +6,14 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faComments,
-  faUserTie,
-  faUsers,
-  faDesktop,
-} from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
+import { whatWeOfferData } from "@/constants";
 
 const poppins = Poppins({
   weight: ["400", "600"],
   style: ["normal"],
   subsets: ["latin"],
 });
-
-const servicesData = [
-  {
-    icon: faComments,
-    title: "Client Consultation",
-    description: "We help businesses hire the best talent.",
-  },
-  {
-    icon: faUserTie,
-    title: "Talent Sourcing",
-    description: "We deliver top candidates for your needs.",
-  },
-  {
-    icon: faUsers,
-    title: "Employee Onboarding",
-    description: "We ensure a smooth start for new hires.",
-  },
-  {
-    icon: faDesktop,
-    title: "IT Support",
-    description: "We provide solutions for your IT systems and support needs.",
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -142,7 +114,7 @@ const HomeOurServices = () => {
           variants={containerVariants}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12"
         >
-          {servicesData.map((service, index) => (
+          {whatWeOfferData.map((service, index) => (
             <ServiceCard key={index} {...service} />
           ))}
         </motion.div>

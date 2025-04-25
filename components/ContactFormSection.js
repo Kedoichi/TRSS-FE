@@ -2,55 +2,23 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhoneAlt, faMapMarkerAlt, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-
-import image from "@/public/Images/Image6.jpg";
-
-import { useToast } from "@/hooks/use-toast";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { useContactForm } from "@/hooks/useContactForm";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-export const contactContent = {
-  contactInfo: [
-    {
-      icon: faMapMarkerAlt,
-      label: "Location",
-      text: "Cebu City, Philippines",
-    },
-    {
-      icon: faPhoneAlt,
-      label: "Phone",
-      text: "+61283245788",
-    },
-    {
-      icon: faEnvelope,
-      label: "Email",
-      text: "admin@talentspreesolutions.com",
-    },
-  ],
-};
+import { contactContent } from "@/constants";
+import image from "@/public/Images/Image6.jpg";
 
 const ContactFormSection = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-    setValue,
-  } = useForm();
+  const methods = useForm();
 
-  const { toast } = useToast();
   const [isMobile, setIsMobile] = useState(false);
-  const [fileName, setFileName] = useState("");
 
   const checkIsMobile = useCallback(() => {
     setIsMobile(window.innerWidth < 1023);
@@ -61,58 +29,6 @@ const ContactFormSection = () => {
     window.addEventListener("resize", checkIsMobile);
     return () => window.removeEventListener("resize", checkIsMobile);
   }, [checkIsMobile]);
-
-  const onSubmit = async (data) => {
-    try {
-      const formData = new FormData();
-      formData.append("firstName", data.firstName);
-      formData.append("lastName", data.lastName);
-      formData.append("email", data.email);
-      formData.append("phone", data.phone);
-      formData.append("message", data.message);
-      formData.append("resume", data.resume);
-
-      const response = await fetch("/api/send-contact", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error("Failed to send");
-
-      toast({
-        title: "Success!",
-        description: "Your message has been sent successfully.",
-      });
-
-      reset();
-      setFileName("");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    const maxSize = 25 * 1024 * 1024;
-
-    if (file) {
-      if (file.type !== "application/pdf") {
-        toast({ title: "Error", description: "Only PDF files are allowed.", variant: "destructive" });
-        return;
-      }
-      if (file.size > maxSize) {
-        toast({ title: "Error", description: "Max file size is 25MB.", variant: "destructive" });
-        return;
-      }
-
-      setFileName(file.name);
-      setValue("resume", file);
-    }
-  };
 
   return (
     <section>
@@ -163,116 +79,9 @@ const ContactFormSection = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label htmlFor="firstName" className="text-sm font-medium text-gray-800">
-                        First Name
-                      </label>
-                      <Input
-                        id="firstName"
-                        placeholder="First Name"
-                        {...register("firstName", { required: "First name is required" })}
-                        className={errors.firstName ? "border-red-500" : ""}
-                      />
-                      {errors.firstName && (
-                        <p className="text-sm text-red-600">{errors.firstName.message}</p>
-                      )}
-                    </div>
-
-                    <div className="space-y-1">
-                      <label htmlFor="lastName" className="text-sm font-medium text-gray-800">
-                        Last Name
-                      </label>
-                      <Input
-                        id="lastName"
-                        placeholder="Last Name"
-                        {...register("lastName", { required: "Last name is required" })}
-                        className={errors.lastName ? "border-red-500" : ""}
-                      />
-                      {errors.lastName && (
-                        <p className="text-sm text-red-600">{errors.lastName.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label htmlFor="email" className="text-sm font-medium text-gray-800">
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="Email"
-                      {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                          message: "Invalid email address",
-                        },
-                      })}
-                      className={errors.email ? "border-red-500" : ""}
-                    />
-                    {errors.email && (
-                      <p className="text-sm text-red-600">{errors.email.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-1">
-                    <label htmlFor="phone" className="text-sm font-medium text-gray-800">
-                      Phone Number
-                    </label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Phone Number"
-                      {...register("phone", { required: "Phone number is required" })}
-                      className={errors.phone ? "border-red-500" : ""}
-                    />
-                    {errors.phone && (
-                      <p className="text-sm text-red-600">{errors.phone.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-1">
-                    <label htmlFor="resume" className="text-sm font-medium text-gray-800">
-                      Upload Resume (PDF Only)
-                    </label>
-                    <Input
-                      id="resume"
-                      type="file"
-                      accept=".pdf"
-                      onChange={handleFileChange}
-                      className="border border-gray-300 rounded-lg px-4 py-2"
-                    />
-                    {fileName && <p className="text-sm text-green-600">{fileName}</p>}
-                  </div>
-
-                  <div className="space-y-1">
-                    <label htmlFor="message" className="text-sm font-medium text-gray-800">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      placeholder="Comment or message"
-                      {...register("message", { required: "Message is required" })}
-                      className={`w-full h-32 px-4 py-2 border rounded-lg resize-none ${
-                        errors.message ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.message && (
-                      <p className="text-sm text-red-600">{errors.message.message}</p>
-                    )}
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#6FBF73] text-white py-3 rounded-lg hover:brightness-110 transition-all shadow-md"
-                  >
-                    {isSubmitting ? "Sending..." : "Submit"}
-                  </Button>
-                </form>
+                <FormProvider {...methods}>
+                  <InnerContactForm/>
+                </FormProvider>
               </CardContent>
             </Card>
           </div>
@@ -316,116 +125,9 @@ const ContactFormSection = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label htmlFor="firstName" className="text-sm font-medium text-gray-800">
-                        First Name
-                      </label>
-                      <Input
-                        id="firstName"
-                        placeholder="First Name"
-                        {...register("firstName", { required: "First name is required" })}
-                        className={errors.firstName ? "border-red-500" : ""}
-                      />
-                      {errors.firstName && (
-                        <p className="text-sm text-red-600">{errors.firstName.message}</p>
-                      )}
-                    </div>
-
-                    <div className="space-y-1">
-                      <label htmlFor="lastName" className="text-sm font-medium text-gray-800">
-                        Last Name
-                      </label>
-                      <Input
-                        id="lastName"
-                        placeholder="Last Name"
-                        {...register("lastName", { required: "Last name is required" })}
-                        className={errors.lastName ? "border-red-500" : ""}
-                      />
-                      {errors.lastName && (
-                        <p className="text-sm text-red-600">{errors.lastName.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label htmlFor="email" className="text-sm font-medium text-gray-800">
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="Email"
-                      {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                          message: "Invalid email address",
-                        },
-                      })}
-                      className={errors.email ? "border-red-500" : ""}
-                    />
-                    {errors.email && (
-                      <p className="text-sm text-red-600">{errors.email.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-1">
-                    <label htmlFor="phone" className="text-sm font-medium text-gray-800">
-                      Phone Number
-                    </label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Phone Number"
-                      {...register("phone", { required: "Phone number is required" })}
-                      className={errors.phone ? "border-red-500" : ""}
-                    />
-                    {errors.phone && (
-                      <p className="text-sm text-red-600">{errors.phone.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="resume" className="text-sm font-medium text-gray-800">
-                      Upload Resume (PDF Only)
-                    </label>
-                    <Input
-                      id="resume"
-                      type="file"
-                      accept=".pdf"
-                      onChange={handleFileChange}
-                      className="border border-gray-300 rounded-lg px-4 py-2"
-                    />
-                    {fileName && <p className="text-sm text-green-600">{fileName}</p>}
-                  </div>
-
-                  <div className="space-y-1">
-                    <label htmlFor="message" className="text-sm font-medium text-gray-800">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      placeholder="Comment or message"
-                      {...register("message", { required: "Message is required" })}
-                      className={`w-full h-32 px-4 py-2 rounded-lg resize-none overflow-y-auto ${
-                        errors.message ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.message && (
-                      <p className="text-sm text-red-600">{errors.message.message}</p>
-                    )}
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#6FBF73] text-white py-3 rounded-lg hover:brightness-110 transition-all shadow-md"
-                  >
-                    {isSubmitting ? "Sending..." : "Submit"}
-                  </Button>
-                </form>
+                <FormProvider {...methods}>
+                  <InnerContactForm/>
+                </FormProvider>
               </CardContent>
             </Card>
           </div>
@@ -434,5 +136,147 @@ const ContactFormSection = () => {
     </section>
   );
 };
+
+const InnerContactForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useFormContext();
+
+  const {
+    file,
+    fileName,
+    isDragging,
+    handleFileChange,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    onSubmit,
+  } = useContactForm();
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      {/* First & Last Name */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* First Name */}
+        <div className="relative">
+          <input
+            id="firstName"
+            type="text"
+            placeholder=" "
+            {...register("firstName", { required: "First name is required" })}
+            className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+              errors.firstName ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+            }`}
+          />
+          <label htmlFor="firstName" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
+            First Name
+          </label>
+          {errors.firstName && <p className="text-sm text-red-600 mt-1">{errors.firstName.message}</p>}
+        </div>
+
+        {/* Last Name */}
+        <div className="relative">
+          <input
+            id="lastName"
+            type="text"
+            placeholder=" "
+            {...register("lastName", { required: "Last name is required" })}
+            className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+              errors.lastName ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+            }`}
+          />
+          <label htmlFor="lastName" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
+            Last Name
+          </label>
+          {errors.lastName && <p className="text-sm text-red-600 mt-1">{errors.lastName.message}</p>}
+        </div>
+      </div>
+
+      {/* Email */}
+      <div className="relative">
+        <input
+          id="email"
+          type="email"
+          placeholder=" "
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Invalid email address",
+            },
+          })}
+          className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+            errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+          }`}
+        />
+        <label htmlFor="email" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
+          Email
+        </label>
+        {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>}
+      </div>
+
+      {/* Phone */}
+      <div className="relative">
+        <input
+          id="phone"
+          type="tel"
+          placeholder=" "
+          {...register("phone", { required: "Phone number is required" })}
+          className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+            errors.phone ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+          }`}
+        />
+        <label htmlFor="phone" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
+          Phone Number
+        </label>
+        {errors.phone && <p className="text-sm text-red-600 mt-1">{errors.phone.message}</p>}
+      </div>
+
+      {/* Resume Upload (Drag & Drop) */}
+      <div
+        className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#6FBF73] ${
+          isDragging ? "bg-[#E8F5E9]" : "hover:bg-[#F3FDF4]"
+        }`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={() => document.getElementById("file-input")?.click()}
+      >
+        <input type="file" id="file-input" accept=".pdf" onChange={handleFileChange} className="hidden" />
+        <p className="text-sm text-[#0D110E]">
+          {file ? file.name : "Drag and drop your Resume/CV here or click to upload"}
+        </p>
+      </div>
+
+      {/* Message */}
+      <div className="relative">
+        <textarea
+          id="message"
+          placeholder=" "
+          {...register("message", { required: "Message is required" })}
+          className={`peer block w-full h-32 px-4 pt-6 pb-2 border rounded-md text-sm bg-white text-gray-900 placeholder-transparent resize-none focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+            errors.message ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+          }`}
+        />
+        <label htmlFor="message" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
+          Message
+        </label>
+        {errors.message && <p className="text-sm text-red-600 mt-1">{errors.message.message}</p>}
+      </div>
+
+      {/* Submit */}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-[#6FBF73] text-white py-3 rounded-lg hover:brightness-110 transition-all shadow-md"
+      >
+        {isSubmitting ? "Sending..." : "Submit"}
+      </button>
+    </form>
+  );
+};
+
 
 export default ContactFormSection;

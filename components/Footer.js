@@ -1,41 +1,12 @@
 "use client";
 
 import React from "react";
-import Link from "next/link"; // ✅ Import Link
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhoneAlt, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faLinkedin, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import Image from "next/image";
-
-const footerData = {
-  logo: "/Images/demoLogo.png",
-  aboutUs:
-    "Talent Spree Solutions connects businesses with top talent through innovative solutions and exceptional service.",
-  quickLinks: [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "/about-us" },
-    { label: "Services", href: "/services" },
-    { label: "Job Openings", href: "/job-openings" },
-    { label: "Contact Us", href: "/contact" },
-  ],
-  socialLinks: [
-    {
-      platform: "LinkedIn",
-      href: "https://www.linkedin.com",
-      icon: faLinkedin,
-    },
-    {
-      platform: "Facebook",
-      href: "https://www.facebook.com",
-      icon: faFacebook,
-    },
-  ],
-  contact: {
-    phone: "(+123) 456-7890",
-    email: "admin@talentspreesolutions.com",
-  },
-};
+import { footerData } from "@/constants";
 
 const Footer = () => {
   const { logo, aboutUs, quickLinks, socialLinks, contact } = footerData;
