@@ -41,71 +41,16 @@ const ContactForm = () => {
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           
-          {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="w-full space-y-6"
           >
-            <div className="space-y-4 text-left">
-              <h2 className="text-3xl md:text-4xl font-bold text-[#72BF78]">{contactData.title}</h2>
-              <p className="text-lg text-[#2F5233]">{contactData.subtitle}</p>
-            </div>
+            <ContactDataComponent />
 
-            <div className="space-y-4">
-              {contactData.contactInfo.map((info, index) => (
-                <motion.button
-                  key={index}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex items-center space-x-4 text-[#2F5233] hover:text-[#72BF78] transition-colors p-4 rounded-lg hover:bg-[#72BF78]/10 w-full"
-                  onClick={() =>
-                    info.action === "copy"
-                      ? navigator.clipboard.writeText(info.text)
-                      : window.open(info.url, "_blank")
-                  }
-                >
-                  <FontAwesomeIcon icon={info.icon} className="text-[#72BF78] text-xl" />
-                  <span className="font-medium">{info.text}</span>
-                </motion.button>
-              ))}
-            </div>
+            <JobOpeningCard isMobile={isMobile}/>
 
-            {/* Job Openings Section */}
-            <Card className="mt-12 bg-white text-[#0D110E] rounded-t-lg rounded-b-none shadow-md">
-              <CardContent className="p-6 flex flex-row gap-x-8 items-center relative pb-0">
-                {/* Left Side - Text Section */}
-                <div className="flex flex-col flex-1 space-y-4">
-                  <h3 className="text-2xl font-bold text-[#0D110E]">
-                    {contactData.jobOpening.title}
-                  </h3>
-
-                  <button
-                    onClick={() => window.open(contactData.jobOpening.link, "_blank")}
-                    className="flex items-center space-x-4 text-[#2F5233] hover:text-[#72BF78] transition-colors 
-                              p-4 rounded-lg hover:bg-[#72BF78]/10 w-full max-w-sm"
-                  >
-                    <span className="font-medium">{contactData.jobOpening.text}</span>
-                    <FontAwesomeIcon
-                      icon={faArrowRight}
-                      className="ml-1 transform transition-transform duration-200 group-hover:translate-x-1"
-                    />
-                  </button>
-                </div>
-
-                {/* Right Side - Image */}
-                <div className="w-64 md:w-72 relative h-60 md:h-72 rounded-lg overflow-hidden shrink-0">
-                  <Image
-                    src={ProfileImage2}
-                    alt="Job opening"
-                    fill
-                    draggable={false}
-                    className="object-cover object-top"
-                  />
-                </div>
-              </CardContent>
-            </Card>
           </motion.div>
 
           {/* Contact Form */}
@@ -132,36 +77,7 @@ const ContactForm = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
           
           {/* Contact Information */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="w-full space-y-6"
-          >
-            <div className="space-y-4 text-left">
-              <h2 className="text-3xl md:text-4xl font-bold text-[#72BF78]">{contactData.title}</h2>
-              <p className="text-lg text-[#2F5233]">{contactData.subtitle}</p>
-            </div>
-
-            <div className="space-y-4">
-              {contactData.contactInfo.map((info, index) => (
-                <motion.button
-                  key={index}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex items-center space-x-4 text-[#2F5233] hover:text-[#72BF78] transition-colors p-4 rounded-lg hover:bg-[#72BF78]/10 w-full"
-                  onClick={() =>
-                    info.action === "copy"
-                      ? navigator.clipboard.writeText(info.text)
-                      : window.open(info.url, "_blank")
-                  }
-                >
-                  <FontAwesomeIcon icon={info.icon} className="text-[#72BF78] text-xl" />
-                  <span className="font-medium">{info.text}</span>
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
+          <ContactDataComponent />
 
           {/* Contact Form */}
           <motion.div
@@ -189,50 +105,88 @@ const ContactForm = () => {
             transition={{ duration: 0.5 }}
             className="w-full flex justify-center"
           >
-            <Card
-              className="bg-white text-[#0D110E] rounded-t-lg rounded-b-[0] shadow-md w-full max-w-lg mt-4"
-            >
-              <CardContent className="p-6 flex flex-col justify-start items-center gap-8 pb-0">
-                {/* Top - Text Section */}
-                <div className="flex flex-col items-center text-center w-full space-y-6">
-                  <h3 className="text-2xl md:text-3xl font-bold text-[#0D110E]">
-                    {contactData.jobOpening.title}
-                  </h3>
-
-                  <Button
-                    variant="ghost"
-                    className="group flex items-center gap-2 bg-[#72BF78]/10 text-[#0D110E] px-6 py-3 rounded-lg transition-all 
-                              duration-300 hover:text-[#0D110E] font-medium text-lg"
-                    onClick={() => window.open(contactData.jobOpening.link, "_blank")}
-                  >
-                    <span>{contactData.jobOpening.text}</span>
-                    <FontAwesomeIcon
-                      icon={faArrowRight}
-                      className="transform group-hover:translate-x-1 transition-transform duration-200"
-                    />
-                  </Button>
-                </div>
-
-                {/* Bottom - Image Section */}
-                <div className="w-full relative h-80 md:h-96 rounded-b-lg overflow-hidden">
-                  <Image
-                    src={ProfileImage2}
-                    alt="Job opening"
-                    fill
-                    draggable={false}
-                    className="object-cover object-top"
-                  />
-                </div>
-
-              </CardContent>
-
-            </Card>
+            <JobOpeningCard isMobile={isMobile} />
           </motion.div>
 
         </div>
       </div>
     )}
     </section>
+  );
+};
+
+const ContactDataComponent = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="w-full space-y-6"
+    >
+      <div className="space-y-4 text-left">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#72BF78]">{contactData.title}</h2>
+        <p className="text-lg text-[#2F5233]">{contactData.subtitle}</p>
+      </div>
+
+      <div className="space-y-4">
+        {contactData.contactInfo.map((info, index) => (
+          <motion.button
+            key={index}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center space-x-4 text-[#2F5233] hover:text-[#72BF78] transition-colors p-4 rounded-lg hover:bg-[#72BF78]/10 w-full"
+            onClick={() =>
+              info.action === "copy"
+                ? navigator.clipboard.writeText(info.text)
+                : window.open(info.url, "_blank")
+            }
+          >
+            <FontAwesomeIcon icon={info.icon} className="text-[#72BF78] text-xl" />
+            <span className="font-medium">{info.text}</span>
+          </motion.button>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
+const JobOpeningCard = ({ isMobile }) => {
+  return (
+    <div>
+      <Card className="mt-12 bg-white text-[#0D110E] rounded-t-lg rounded-b-none shadow-md">
+        <CardContent className={`p-6 flex ${isMobile ? "flex-col gap-8 items-center" : "flex-row gap-x-8 items-center"} pb-0`}>
+          {/* Left Side - Text Section */}
+          <div className={`flex flex-col flex-1 space-y-4 ${isMobile ? "items-center text-center" : ""}`}>
+            <h3 className="text-2xl font-bold text-[#0D110E]">
+              {contactData.jobOpening.title}
+            </h3>
+
+            <button
+              onClick={() => window.open(contactData.jobOpening.link, "_blank")}
+              className="flex items-center space-x-4 text-[#2F5233] hover:text-[#72BF78] transition-colors 
+                        p-4 rounded-lg hover:bg-[#72BF78]/10 w-full max-w-sm"
+            >
+              <span className="font-medium">{contactData.jobOpening.text}</span>
+              <FontAwesomeIcon
+                icon={faArrowRight}
+                className="ml-1 transform transition-transform duration-200 group-hover:translate-x-1"
+              />
+            </button>
+          </div>
+
+          {/* Right Side - Image */}
+          <div className={`relative ${isMobile ? "w-full h-80 md:h-96" : "w-64 md:w-72 h-60 md:h-72"} rounded-lg overflow-hidden shrink-0`}>
+            <Image
+              src={ProfileImage2}
+              alt="Job opening"
+              fill
+              draggable={false}
+              className="object-cover object-top"
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

@@ -155,6 +155,11 @@ const InnerContactForm = () => {
     onSubmit,
   } = useContactForm();
 
+  const inputs = [
+    { id: "email", type: "email", label: "Email" },
+    { id: "phone", type: "tel", label: "Phone Number" },
+  ];  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* First & Last Name */}
@@ -194,48 +199,33 @@ const InnerContactForm = () => {
         </div>
       </div>
 
-      {/* Email */}
-      <div className="relative">
-        <input
-          id="email"
-          type="email"
-          placeholder=" "
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Invalid email address",
-            },
-          })}
-          className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
-            errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300"
-          }`}
-        />
-        <label htmlFor="email" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
-          Email
-        </label>
-        {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>}
-      </div>
-
-      {/* Phone */}
-      <div className="relative">
-        <input
-          id="phone"
-          type="tel"
-          placeholder=" "
-          {...register("phone", { required: "Phone number is required" })}
-          className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
-            errors.phone ? "border-red-500 focus:ring-red-500" : "border-gray-300"
-          }`}
-        />
-        <label htmlFor="phone" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
-          Phone Number
-        </label>
-        {errors.phone && <p className="text-sm text-red-600 mt-1">{errors.phone.message}</p>}
-      </div>
+      {inputs.map(({ id, type, label }) => (
+        <div key={id} className="relative">
+          <input
+            id={id}
+            type={type}
+            placeholder=" "
+            {...register(id, { required: `${label} is required` })}
+            className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+              errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+            }`}
+          />
+          <label
+            htmlFor={id}
+            className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]"
+          >
+            {label}
+          </label>
+          {errors[id] && (
+            <p className="text-sm text-red-600 mt-1">{errors[id]?.message}</p>
+          )}
+        </div>
+      ))}
 
       {/* Resume Upload (Drag & Drop) */}
       <div
+        role="button"
+        aria-label="Upload your Resume"
         className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#6FBF73] ${
           isDragging ? "bg-[#E8F5E9]" : "hover:bg-[#F3FDF4]"
         }`}
@@ -277,6 +267,5 @@ const InnerContactForm = () => {
     </form>
   );
 };
-
 
 export default ContactFormSection;

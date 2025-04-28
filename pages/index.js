@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Head from "next/head";
 import Link from "next/link";
 import HomeOurServices from "@/components/HomeOurServices";
 import { Button } from "@/components/ui/button";
@@ -94,6 +95,21 @@ const Home = () => {
 
   return (
     <>
+      <Head>
+        <title>Talent Spree Solutions | Find Jobs and Services</title>
+        <meta
+          name="description"
+          content="Discover career opportunities and service solutions with Talent Spree Solutions. Browse jobs, seek services, and build your future today."
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://yourdomain.com/" />
+
+        {/* Open Graph (Social Sharing) */}
+        <meta property="og:title" content="Talent Spree Solutions | Find Jobs and Services" />
+        <meta property="og:description" content="Discover career opportunities and service solutions with Talent Spree Solutions." />
+        <meta property="og:url" content="https://yourdomain.com/" />
+      </Head>
+
       {/* Hero Section */}
       <section
         className="relative flex flex-col md:flex-row justify-center items-stretch min-h-screen bg-cover bg-center bg-no-repeat"
@@ -105,6 +121,16 @@ const Home = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         />
+
+        <motion.h1
+          className="sr-only"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          Talent Spree Solutions - Find Jobs and Services
+        </motion.h1>
+        
         <div className="relative z-10 container mx-auto px-4 sm:px-6 py-20 flex flex-col md:flex-row justify-center items-center gap-10 md:gap-16">
           <motion.div
             className="w-full md:w-1/2"

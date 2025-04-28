@@ -3,12 +3,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useFormContext } from "react-hook-form";
 
 export const useContactForm = () => {
-  const { toast } = useToast();
+  const { showToast } = useToast();
 
   const form = useFormContext();
   if (!form) {
     throw new Error(
-      "❌ useContactForm must be used within a <FormProvider>. Wrap your component with <FormProvider> from react-hook-form."
+      "useContactForm must be used within a <FormProvider>. Wrap your component with <FormProvider> from react-hook-form."
     );
   }
 
@@ -24,32 +24,28 @@ export const useContactForm = () => {
     if (!fileInput) return false;
 
     if (fileInput.type !== "application/pdf") {
-      toast({
-        title: "Error",
-        description: "Only PDF files are allowed.",
-        variant: "destructive",
-      });
+      showToast("Only PDF files are allowed.", "error");
       return false;
     }
 
     if (fileInput.size > maxSize) {
-      toast({
-        title: "Error",
-        description: "Maximum file size is 25MB.",
-        variant: "destructive",
-      });
+      showToast("Maximum file size is 25MB.", "error");
       return false;
     }
 
     return true;
   };
 
+  const handleValidFile = (fileInput) => {
+    if (handleFileValidation(fileInput)) {
+      setFile(fileInput);
+      setFileName(fileInput.name);
+    }
+  }
+
   const handleFileChange = (e) => {
     const selected = e.target.files?.[0];
-    if (handleFileValidation(selected)) {
-      setFile(selected);
-      setFileName(selected.name);
-    }
+    handleValidFile(selected)
   };
 
   const handleDragOver = (e) => {
@@ -65,10 +61,7 @@ export const useContactForm = () => {
     e.preventDefault();
     setIsDragging(false);
     const droppedFile = e.dataTransfer?.files?.[0];
-    if (handleFileValidation(droppedFile)) {
-      setFile(droppedFile);
-      setFileName(droppedFile.name);
-    }
+    handleValidFile(droppedFile)
   };
 
   const onSubmit = async (data) => {
@@ -91,21 +84,14 @@ export const useContactForm = () => {
 
       if (!response.ok) throw new Error("Failed to send message.");
 
-      toast({
-        title: "Success!",
-        description: "Your message has been sent successfully.",
-      });
+      showToast("Your message has been sent successfully.", "success")
 
       reset();
       setFile(null);
       setFileName("");
     } catch (err) {
       console.error("Form submission error:", err);
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+      showToast("Something went wrong. Please try again.", "error")
     }
   };
 
