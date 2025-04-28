@@ -24,7 +24,7 @@ const ProcessSteps = () => {
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="bg-[#f8fdef] py-20 px-6 md:px-16 lg:px-20 !mt-0"
+      className="bg-[#E6F0E6] py-20 px-6 md:px-16 lg:px-20 !mt-0"
     >
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
         {/* Left Column: Image */}

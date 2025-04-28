@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import { useContactForm } from "@/hooks/useContactForm";
+import Toast from "@/components/ui/toast";
 import {
   Card,
   CardContent,
@@ -146,125 +147,129 @@ const InnerContactForm = () => {
 
   const {
     file,
-    fileName,
     isDragging,
     handleFileChange,
     handleDragOver,
     handleDragLeave,
     handleDrop,
     onSubmit,
+    toast,
   } = useContactForm();
 
   const inputs = [
     { id: "email", type: "email", label: "Email" },
     { id: "phone", type: "tel", label: "Phone Number" },
-  ];  
+  ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-      {/* First & Last Name */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* First Name */}
-        <div className="relative">
-          <input
-            id="firstName"
-            type="text"
-            placeholder=" "
-            {...register("firstName", { required: "First name is required" })}
-            className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
-              errors.firstName ? "border-red-500 focus:ring-red-500" : "border-gray-300"
-            }`}
-          />
-          <label htmlFor="firstName" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
-            First Name
-          </label>
-          {errors.firstName && <p className="text-sm text-red-600 mt-1">{errors.firstName.message}</p>}
+    <>
+      {/* Toast notification */}
+      <Toast type={toast.type} message={toast.message} />
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        {/* First & Last Name */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {["firstName", "lastName"].map((field, index) => (
+            <div key={field} className="relative">
+              <input
+                id={field}
+                type="text"
+                placeholder=" "
+                {...register(field, { required: `${field === "firstName" ? "First" : "Last"} name is required` })}
+                className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+                  errors[field] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                }`}
+              />
+              <label
+                htmlFor={field}
+                className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]"
+              >
+                {field === "firstName" ? "First Name" : "Last Name"}
+              </label>
+              {errors[field] && (
+                <p className="text-sm text-red-600 mt-1">{errors[field]?.message}</p>
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* Last Name */}
-        <div className="relative">
-          <input
-            id="lastName"
-            type="text"
-            placeholder=" "
-            {...register("lastName", { required: "Last name is required" })}
-            className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
-              errors.lastName ? "border-red-500 focus:ring-red-500" : "border-gray-300"
-            }`}
-          />
-          <label htmlFor="lastName" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
-            Last Name
-          </label>
-          {errors.lastName && <p className="text-sm text-red-600 mt-1">{errors.lastName.message}</p>}
-        </div>
-      </div>
+        {/* Email and Phone */}
+        {inputs.map(({ id, type, label }) => (
+          <div key={id} className="relative">
+            <input
+              id={id}
+              type={type}
+              placeholder=" "
+              {...register(id, { required: `${label} is required` })}
+              className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+                errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+              }`}
+            />
+            <label
+              htmlFor={id}
+              className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]"
+            >
+              {label}
+            </label>
+            {errors[id] && (
+              <p className="text-sm text-red-600 mt-1">{errors[id]?.message}</p>
+            )}
+          </div>
+        ))}
 
-      {inputs.map(({ id, type, label }) => (
-        <div key={id} className="relative">
+        {/* Resume Upload */}
+        <div
+          role="button"
+          aria-label="Upload your Resume"
+          className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#6FBF73] ${
+            isDragging ? "bg-[#E8F5E9]" : "hover:bg-[#F3FDF4]"
+          }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => document.getElementById("file-input")?.click()}
+        >
           <input
-            id={id}
-            type={type}
+            type="file"
+            id="file-input"
+            accept=".pdf"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <p className="text-sm text-[#0D110E]">
+            {file ? file.name : "Drag and drop your Resume/CV here or click to upload"}
+          </p>
+        </div>
+
+        {/* Message */}
+        <div className="relative">
+          <textarea
+            id="message"
             placeholder=" "
-            {...register(id, { required: `${label} is required` })}
-            className={`peer w-full border rounded-md px-4 pt-6 pb-2 text-sm bg-white text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
-              errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+            {...register("message", { required: "Message is required" })}
+            className={`peer block w-full h-32 px-4 pt-6 pb-2 border rounded-md text-sm bg-white text-gray-900 placeholder-transparent resize-none focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
+              errors.message ? "border-red-500 focus:ring-red-500" : "border-gray-300"
             }`}
           />
           <label
-            htmlFor={id}
+            htmlFor="message"
             className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]"
           >
-            {label}
+            Message
           </label>
-          {errors[id] && (
-            <p className="text-sm text-red-600 mt-1">{errors[id]?.message}</p>
-          )}
+          {errors.message && <p className="text-sm text-red-600 mt-1">{errors.message.message}</p>}
         </div>
-      ))}
 
-      {/* Resume Upload (Drag & Drop) */}
-      <div
-        role="button"
-        aria-label="Upload your Resume"
-        className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#6FBF73] ${
-          isDragging ? "bg-[#E8F5E9]" : "hover:bg-[#F3FDF4]"
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        onClick={() => document.getElementById("file-input")?.click()}
-      >
-        <input type="file" id="file-input" accept=".pdf" onChange={handleFileChange} className="hidden" />
-        <p className="text-sm text-[#0D110E]">
-          {file ? file.name : "Drag and drop your Resume/CV here or click to upload"}
-        </p>
-      </div>
-
-      {/* Message */}
-      <div className="relative">
-        <textarea
-          id="message"
-          placeholder=" "
-          {...register("message", { required: "Message is required" })}
-          className={`peer block w-full h-32 px-4 pt-6 pb-2 border rounded-md text-sm bg-white text-gray-900 placeholder-transparent resize-none focus:outline-none focus:ring-2 focus:ring-[#6FBF73] focus:border-[#6FBF73] ${
-            errors.message ? "border-red-500 focus:ring-red-500" : "border-gray-300"
-          }`}
-        />
-        <label htmlFor="message" className="absolute left-4 top-2 text-sm text-gray-500 transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#6FBF73]">
-          Message
-        </label>
-        {errors.message && <p className="text-sm text-red-600 mt-1">{errors.message.message}</p>}
-      </div>
-
-      {/* Submit */}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full bg-[#6FBF73] text-white py-3 rounded-lg hover:brightness-110 transition-all shadow-md"
-      >
-        {isSubmitting ? "Sending..." : "Submit"}
-      </button>
-    </form>
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full bg-[#6FBF73] text-white py-3 rounded-lg hover:brightness-110 transition-all shadow-md"
+        >
+          {isSubmitting ? "Sending..." : "Submit"}
+        </button>
+      </form>
+    </>
   );
 };
 

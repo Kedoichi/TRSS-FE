@@ -14,6 +14,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import Toast from "@/components/ui/toast";
 import ProfileImage2 from "@/public/Images/ProfileImage2.png";
 
 const ContactForm = () => {
@@ -37,6 +38,7 @@ const ContactForm = () => {
     <section className="relative bg-[#E6F0E6] py-16 px-4 md:px-8"
       style={{ paddingBottom: '0rem', borderBottomLeftRadius: '0rem', borderBottomRightRadius: '0rem' }}
     >
+
     {!isMobile ? (
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
@@ -199,8 +201,8 @@ const InnerContactForm = () => {
 
   const {
     file,
-    fileName,
     isDragging,
+    toast,
     handleFileChange,
     handleDragOver,
     handleDragLeave,
@@ -208,31 +210,110 @@ const InnerContactForm = () => {
     onSubmit,
   } = useContactForm();
 
+  const inputs = [
+    { 
+      id: "name", 
+      type: "text", 
+      placeholder: "Your name", 
+      validation: { required: "Name is required" } 
+    },
+    { 
+      id: "email", 
+      type: "email", 
+      placeholder: "Your email", 
+      validation: { 
+        required: "Email is required", 
+        pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email address" } 
+      }
+    },
+    { 
+      id: "phone", 
+      type: "tel", 
+      placeholder: "Your phone number", 
+      validation: { 
+        required: "Phone number is required", 
+        pattern: { value: /^[0-9]+$/, message: "Phone number must be digits only" } 
+      }
+    },
+  ];
+
   return (
-    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <Input {...register("name", { required: "Name is required" })} id="name" placeholder="Your name" className="border-[#72BF78] bg-white text-[#0D110E] placeholder:text-gray-400" />
-        {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>}
-      </div>
-      <div>
-        <Input {...register("email", { required: "Email is required", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email address" } })} id="email" type="email" placeholder="Your email" className="border-[#72BF78] bg-white text-[#0D110E] placeholder:text-gray-400" />
-        {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>}
-      </div>
-      <div>
-        <Input {...register("phone")} id="phone" placeholder="Your phone number" className="border-[#72BF78] bg-white text-[#0D110E] placeholder:text-gray-400" />
-      </div>
-      <div>
-        <Textarea {...register("message", { required: "Message is required" })} id="message" placeholder="Your message" className="border-[#72BF78] bg-white text-[#0D110E] min-h-[120px] placeholder:text-gray-400" />
-        {errors.message && <p className="text-sm text-red-600 mt-1">{errors.message.message}</p>}
-      </div>
-      <div className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#72BF78] ${isDragging ? "bg-[#E8F5E9]" : "hover:bg-[#F3FDF4]"}`} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} onClick={() => document.getElementById("file-input")?.click()}>
-        <input type="file" id="file-input" accept=".pdf" onChange={handleFileChange} className="hidden" />
-        <p className="text-sm text-[#0D110E]">{file ? file.name : "Drag and drop your Resume/CV here or click to upload"}</p>
-      </div>
-      <Button type="submit" size="lg" className="w-full bg-[#72BF78] text-white font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#5CA965] transition-all duration-300">
-        Send
-      </Button>
-    </form>
+    <>
+      <Toast type={toast.type} message={toast.message} />
+
+      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        {/* Mapped Inputs */}
+        {inputs.map(({ id, type, placeholder, validation }) => (
+          <div key={id}>
+            <Input
+              id={id}
+              type={type}
+              placeholder={placeholder}
+              {...register(id, validation)}
+              className="border-[#72BF78] bg-white text-[#0D110E] placeholder:text-gray-400"
+              onInput={(e) => {
+                if (id === "phone") {
+                  e.target.value = e.target.value.replace(/\D/g, "");
+                }
+              }}
+            />
+            {errors[id] && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors[id]?.message}
+              </p>
+            )}
+          </div>
+        ))}
+
+        {/* Textarea for message */}
+        <div>
+          <Textarea
+            id="message"
+            placeholder="Your message"
+            {...register("message", { required: "Message is required" })}
+            className="border-[#72BF78] bg-white text-[#0D110E] min-h-[120px] placeholder:text-gray-400"
+          />
+          {errors.message && (
+            <p className="text-sm text-red-600 mt-1">
+              {errors.message.message}
+            </p>
+          )}
+        </div>
+
+        {/* Resume Upload */}
+        <div
+          role="button"
+          aria-label="Upload your Resume"
+          className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors border-[#72BF78] ${
+            isDragging ? "bg-[#E8F5E9]" : "hover:bg-[#F3FDF4]"
+          }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => document.getElementById("file-input")?.click()}
+        >
+          <input
+            type="file"
+            id="file-input"
+            accept=".pdf"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <p className="text-sm text-[#0D110E]">
+            {file ? file.name : "Drag and drop your Resume/CV here or click to upload"}
+          </p>
+        </div>
+
+        {/* Submit Button */}
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full bg-[#72BF78] text-white font-semibold text-lg border-2 border-[#72BF78] hover:bg-[#5CA965] transition-all duration-300"
+        >
+          Send
+        </Button>
+      </form>
+    </>
   );
 };
 

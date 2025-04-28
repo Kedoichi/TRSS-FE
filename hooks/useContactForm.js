@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 import { useFormContext } from "react-hook-form";
 
 export const useContactForm = () => {
-  const { showToast } = useToast();
-
   const form = useFormContext();
   if (!form) {
-    throw new Error(
-      "useContactForm must be used within a <FormProvider>. Wrap your component with <FormProvider> from react-hook-form."
-    );
+    throw new Error("useContactForm must be used within a FormProvider.");
   }
 
   const { reset } = form;
 
   const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState("");
   const [isDragging, setIsDragging] = useState(false);
+  
+  const [toast, setToast] = useState({ type: "", message: "" });
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type});
+    setTimeout(() => setToast({ type: "", message: "" }), 3000);
+  }
 
   const handleFileValidation = (fileInput) => {
     const maxSize = 25 * 1024 * 1024;
@@ -24,11 +25,13 @@ export const useContactForm = () => {
     if (!fileInput) return false;
 
     if (fileInput.type !== "application/pdf") {
+      console.error("Only PDF files are allowed.");
       showToast("Only PDF files are allowed.", "error");
       return false;
     }
 
     if (fileInput.size > maxSize) {
+      console.error("Maximum file size is 25MB.");
       showToast("Maximum file size is 25MB.", "error");
       return false;
     }
@@ -39,13 +42,13 @@ export const useContactForm = () => {
   const handleValidFile = (fileInput) => {
     if (handleFileValidation(fileInput)) {
       setFile(fileInput);
-      setFileName(fileInput.name);
+      showToast("PDF uploaded successfully.", "success");
     }
-  }
+  };
 
   const handleFileChange = (e) => {
     const selected = e.target.files?.[0];
-    handleValidFile(selected)
+    handleValidFile(selected);
   };
 
   const handleDragOver = (e) => {
@@ -61,7 +64,7 @@ export const useContactForm = () => {
     e.preventDefault();
     setIsDragging(false);
     const droppedFile = e.dataTransfer?.files?.[0];
-    handleValidFile(droppedFile)
+    handleValidFile(droppedFile);
   };
 
   const onSubmit = async (data) => {
@@ -84,21 +87,21 @@ export const useContactForm = () => {
 
       if (!response.ok) throw new Error("Failed to send message.");
 
-      showToast("Your message has been sent successfully.", "success")
+      showToast("Message sent successfully!", "success");
+      console.log("✅ Message sent successfully!");
 
       reset();
       setFile(null);
-      setFileName("");
     } catch (err) {
-      console.error("Form submission error:", err);
-      showToast("Something went wrong. Please try again.", "error")
+      showToast("Failed to send message. Please try again.", "error");
+      console.error("❌ Form submission error:", err);
     }
   };
 
   return {
     file,
-    fileName,
     isDragging,
+    toast,
     onSubmit,
     handleFileChange,
     handleDragOver,
